@@ -5,8 +5,8 @@
   "window": {
     "title": "Komanda",
     "icon": "images/icon.png",
-    "toolbar": true,
-    "frame": true,
+    "toolbar": false,
+    "frame": false,
     "width": 962,
     "height": 600,
     "min_width": 962,

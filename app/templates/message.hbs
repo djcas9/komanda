@@ -1,0 +1,26 @@
+<div class="message">
+
+  <div class="body">
+
+    <span class="timestamp">
+      {{timestamp}}
+    </span>
+
+    {{#if nick}}
+    <span class="nickname" style="color:{{random-color nick }}">
+      {{nick}}:
+    </span>
+    {{else}}
+    <span class="nickname">
+      -->
+    </span>
+    {{/if}}
+
+
+    <span class="text">
+      {{text}}
+    </span>
+
+  </div>
+
+</div>

@@ -13,6 +13,10 @@ define([
       // ... 
     },
 
+    onRender: function() {
+      console.log("WORD?@?!?#!?@#?!@?#");
+    }
+
   });
 
   return settings;

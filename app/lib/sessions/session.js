@@ -3,10 +3,9 @@ define([
   'uuid'
 ], function(Backbone, uuid) {
 
-  var Session = Backbone.Model.extend({
-    localStorage: new Backbone.LocalStorage('komanda.sessions'),
-    store : 'sessions',
+  var Session = Backbone.NestedModel.extend({
     idAttribute: 'name',
+    _modelBinder: undefined,
 
     defaults: {
       name: "Default",
@@ -36,6 +35,11 @@ define([
     },
 
     initialize: function () {
+      this._modelBinder = new Backbone.ModelBinder();
+    },
+
+    onClose: function() {
+      this._modelBinder.unbind();
     }
 
   });

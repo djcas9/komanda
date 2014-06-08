@@ -5,16 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <title>Swatch</title>
+    <title>komanda</title>
 
-    <!-- build:[href] swatch.css -->
+    <!-- build:[href] komanda.css -->
     <link rel="stylesheet" href="/app/styles/index.css">
     <!-- /build -->
   </head>
 
   <body>
 
-    <div id="wrapper" style="-webkit-app-region: drag">
+    <div id="header" style="-webkit-app-region: drag">
+      <div class="title">
+        Komanda
+      </div>
+
+      <div class="window-controls">
+        <div class="window-button close"></div>
+        <div class="window-button minimize"></div>
+        <div class="window-button maximize"></div>
+      </div>
+    </div>
+
+    <div id="wrapper">
+      <div id="sidebar"></div>
       <div id="content"></div>
     </div>
 
@@ -23,7 +36,7 @@
     </script>
 
 
-    <!-- build:[src] swatch.js -->
+    <!-- build:[src] komanda.js -->
     <script data-main="/app/main" src="/vendor/bower/requirejs/require.js"></script>
     <!-- /build -->
 
