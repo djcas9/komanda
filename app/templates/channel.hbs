@@ -1,0 +1,25 @@
+<div class="topic">
+  {{channel}}
+  <span class='title' title="{{topic.topic}}">
+    {{topic.topic}}
+  </span>
+</div>
+
+<div class="messages"></div>
+
+<div class="names">
+  {{#each names}}
+  <div class="user" data-name="{{@key}}">
+    <span class="status">
+      {{this}}
+    </span>
+
+    {{@key}}
+  </div>
+  {{/each}}
+</div>
+
+<div class="input">
+  <input type="text" autocomplete=off>
+</div>
+

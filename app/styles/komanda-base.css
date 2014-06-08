@@ -1,99 +1,150 @@
-html,body{
-	background: #363842 url(images/bg.png) repeat;
-}
+/* @group Reset */
 
-#color-manipulation button{
-	width: 70px;
-	display: inline-block;
-	position: relative;
-	overflow: hidden;
-	border-style: none;
-	margin: 15px 5px 0 0;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
 	padding: 0;
-	background-color: rgba(0,0,0,0.8);
-	color: #fff;
-	font-size: 0.9em;
-	height: 30px;
-	outline: none;
-	
--webkit-border-radius: 3px;
--moz-border-radius: 3px;
-border-radius: 3px;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
 }
-
-#color-manipulation button:hover{
-	background-color: #4185e1;
-	text-shadow: #000 0 -1px 0;
-}
-
-#color-manipulation button:active{
-	background-color: #40db17;
-	text-shadow: #000 0 -1px 0;	
-}
-
-#color-manipulation button.hex{
-	margin-left: 11px;
-}
-
-input#alpha-control{
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
 	display: block;
-	position: relative;
-	margin: 15px auto auto;
-	-webkit-app-region: no-drag;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* @end */
+
+/* @group fonts */
+
+@font-face {
+    font-family: 'Lato';
+    src: url('fonts/lato-hai-webfont.eot');
+    src: url('fonts/lato-hai-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lato-hai-webfont.woff') format('woff'),
+         url('fonts/lato-hai-webfont.ttf') format('truetype'),
+         url('fonts/lato-hai-webfont.svg#latohairline') format('svg');
+    font-weight: 100;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('fonts/lato-lig-webfont.eot');
+    src: url('fonts/lato-lig-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lato-lig-webfont.woff') format('woff'),
+         url('fonts/lato-lig-webfont.ttf') format('truetype'),
+         url('fonts/lato-lig-webfont.svg#latolight') format('svg');
+    font-weight: 300;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('fonts/lato-reg-webfont.eot');
+    src: url('fonts/lato-reg-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lato-reg-webfont.woff') format('woff'),
+         url('fonts/lato-reg-webfont.ttf') format('truetype'),
+         url('fonts/lato-reg-webfont.svg#latoregular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('fonts/lato-bol-webfont.eot');
+    src: url('fonts/lato-bol-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lato-bol-webfont.woff') format('woff'),
+         url('fonts/lato-bol-webfont.ttf') format('truetype'),
+         url('fonts/lato-bol-webfont.svg#latobold') format('svg');
+    font-weight: 700;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('fonts/lato-bla-webfont.eot');
+    src: url('fonts/lato-bla-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lato-bla-webfont.woff') format('woff'),
+         url('fonts/lato-bla-webfont.ttf') format('truetype'),
+         url('fonts/lato-bla-webfont.svg#latoblack') format('svg');
+    font-weight: 900;
+    font-style: normal;
+
+}
+
+/* @end */
+
+/* @group Scroll Bar */
+
+/* @end */
+
+/* @group Main */
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+ }
+
+html, body{
+	color: #fff;
+	background: #151a1f;
+ 	-webkit-font-smoothing: antialiased;
+	font: 1.0em 'Lato', Calibri, Arial, sans-serif;
+	overflow: hidden;
+	font-weight: normal;	
 }
 
 #wrapper{
-	height: 330px;
-	width: 250px;
-	background-color: #363842;
-	display: block;
-	position: relative;
-	overflow: hidden;
-}
-
-.input-holder{
-	z-index: 99999999;
-	display: block;
-	position: relative;
 	display: block;
 	position: absolute;
-	top: 37px;
-	width: 20px;
-	right: 10px;
+	top: 30px;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
-.input-holder i{
-	z-index: 0;
-	color:  #fff;
-	display: inline-block;
-	position: relative;
-	right: 5px;
-	top: 5px;
-	background-color: rgba(0,0,0,0.59);
-	
--webkit-border-radius: 100px;
--moz-border-radius: 100px;
-border-radius: 100px;
+/* @end */
 
-	width: 25px;
-	height: 25px;
-	text-align: center;
-	font-size: 0.7em;
-	line-height: 28.5px;
-}
+/* @group Header */
 
-input#more-color-options{
-	cursor: pointer;
-	width: 18px;
-	opacity:0;
-	display: inline-block;
-	position: relative;
-	top: -17px;
-	right: 5px;
-}
-
-#swatch-header{
+#header{
 	height: 30px;
+	display: block;
 /*background-color: #3b3b43;*/
 background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(59, 59, 67, 0.80)), to(rgba(38, 39, 44, 0.80)));
 background-image: -webkit-linear-gradient(top, rgba(59, 59, 67, 0.80), rgba(38, 39, 44, 0.80));
@@ -106,7 +157,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 	
 }
 
-#swatch-header .title{
+#header .title{
 	height: 30px;
 	display: block;
 	position: absolute;
@@ -119,9 +170,10 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 	color: #fff;
 	text-shadow: rgba(0,0,0,0.5) 0 -1px 0;
 	font-size: 0.85em;
+	text-transform: capitalize;
 }
 
-#swatch-header .window-controls{
+#header .window-controls{
 	height: 30px;
 	z-index: 9999;
 	display: block;
@@ -134,7 +186,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 	margin-top: 9px;
 }
 
-#swatch-header .window-controls .window-button{
+#header .window-controls .window-button{
 	cursor: pointer;
 	background-color: #000000;
 	
@@ -148,108 +200,301 @@ border-radius: 100px 100px 100px 100px;
 	margin-right: 5px;
 }
 
-#swatch-header .window-controls .window-button.close:hover{
+#header .window-controls .window-button.close:hover{
 	background-color: #ff2600;
 }
 
-#swatch-header .window-controls .window-button.minimize:hover{
+#header .window-controls .window-button.minimize:hover{
 	background-color: #ffe900;
 }
 
+#header .window-controls .window-button.maximize:hover{
+	background-color: #10cf00;
+}
+
+
+/* @end */
+
+/* @group Content  */
+
 #content{
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 200px;
+	background-color: #151a1f;
+}
+
+/* @end */
+
+/* @group Sidebar */
+
+#sidebar{
+	width: 200px;
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background-color: #333c44;
+	border-right: 1px solid #000;
+	padding: 0;
+	overflow-x: hidden;
+		overflow-y: scroll;
+}
+
+#sidebar .session{
 	display: block;
 	position: relative;
 	overflow: hidden;
 }
 
-#color-wheel{
-	margin-top: 20px;
-}
-
-/* @group Color Wheel */
-
-.farbtastic {
-  position: relative;
+#sidebar .session .server{
+background-color: #30353f;
+background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(48, 53, 63)), to(rgb(33, 43, 48)));
+background-image: -webkit-linear-gradient(top, rgb(48, 53, 63), rgb(33, 43, 48));
+background-image: -moz-linear-gradient(top, rgb(48, 53, 63), rgb(33, 43, 48));
+background-image: -o-linear-gradient(top, rgb(48, 53, 63), rgb(33, 43, 48));
+background-image: -ms-linear-gradient(top, rgb(48, 53, 63), rgb(33, 43, 48));
+background-image: linear-gradient(top, rgb(48, 53, 63), rgb(33, 43, 48));
+filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#30353f', EndColorStr='#212b30');
+	
+	
+	height: 40px;
+	line-height: 40px;
 	display: block;
-	margin: auto;
-}
-.farbtastic * {
-  position: absolute;
-  cursor: crosshair;
-	-webkit-app-region: no-drag;
-}
-.farbtastic, .farbtastic .wheel {
-  width: 195px;
-  height: 195px;
-}
-.farbtastic .color, .farbtastic .overlay {
-  top: 47px;
-  left: 47px;
-  width: 101px;
-  height: 101px;
-}
-.farbtastic .wheel {
-  background: url(images/wheel.png) no-repeat;
-  width: 195px;
-  height: 195px;
-}
-.farbtastic .overlay {
-  background: url(images/mask.png) no-repeat;
-}
-.farbtastic .marker {
-  width: 17px;
-  height: 17px;
-  margin: -8px 0 0 -8px;
-  overflow: hidden; 
-  background: url(images/marker.png) no-repeat;
-}
-
-
-.cw-colorwheel {
 	position: relative;
-	width: 200px;
-	height: 200px;
-	cursor: crosshair;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
-	-ms-user-select: none;
+	border-bottom: 1px solid #000;
+	padding-left: 10px;
+	padding-right: 10px;
+	
+	cursor: pointer;
+	overflow: hidden;
+}
+
+#sidebar .session .server i{
+	margin-right: 10px;
+}
+
+#sidebar .session .server i.show-hide-icon{
+	opacity: 0.7;
+	margin: 0;
 	display: block;
-	margin-right: auto;
-	margin-bottom: auto;
-	margin-left: auto;
-}
-
-.cw-colorwheel .cw-h {
-	width: 200px;
-	height: 200px;
-	background: url(images/cw-sprites.png) no-repeat 0 0;
-	-webkit-app-region: no-drag;
-}
-
-.cw-colorwheel .cw-sl {
 	position: absolute;
-	top: 50px;
-	left: 50px;
-	width: 100px;
-	height: 100px;
-	background: white url(images/cw-sprites.png) no-repeat 0 -200px;
-	box-shadow: 0 0 0 rgba(0,0,0,0);
+	top: 1px;
+	color: #fff;
+	width: 30px;
+	height: 30px;
+	right: -7px;
+	font-size: 0.6em;
 }
 
-.cw-colorwheel .cw-marker {
+#sidebar .session .channel-list{
+	display: block;
+	position: relative;
+	overflow: hidden;
+}
+
+#sidebar .session .channel-list ul.channels{
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+#sidebar .session .channel-list ul.channels li{
+	cursor: pointer;
+	height: 35px;
+	line-height: 35px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #40484f;
+	border-top: 1px solid rgba(254,255,255,0.1);
+	border-bottom: 1px solid rgba(0,0,0,0.6);
+	font-size: 0.8em;
+}
+
+#sidebar .session .channel-list ul.channels li:hover{
+	background-color: #4c565e;	
+}
+
+#sidebar .session .channel-list ul.channels li.selected,
+#sidebar .session .channel-list ul.channels li.selected:hover{
+	background-color: #4c90ff;
+}
+
+#sidebar .session .channel-list ul.channels li div.status{
+	cursor: pointer;
+	background-color: #90a5b5;
+	
+-webkit-border-radius: 100px 100px 100px 100px;
+-moz-border-radius: 100px 100px 100px 100px;
+border-radius: 100px 100px 100px 100px;
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	float: left;
+	margin-right: 10px;
+	margin-top: 11px;
+}
+
+
+/* @end */
+
+/* @group Channel */
+
+.channel{
+	display: none;
 	position: absolute;
-	width: 16px;
-	height: 16px;
-	margin: -7px 0 0 -7px;
-	background: url(images/cw-sprites.png) no-repeat 0 -300px;
+	overflow: hidden;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
-.cw-colorwheel .cw-swatch {
+.channel .names{
+	display: block;
 	position: absolute;
-	width: 8px;
-	height: 8px;
-	margin: -4px 0 0 -4px;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 180px;
+	background-color: #333c44;
+	border-left: 1px solid #000;
+	overflow-x:hidden;
+	overflow-y:scroll;
 }
 
-/* @end */#swatch-header .window-controls .window-button
+.channel .names div.user{
+	height: 30px;
+	line-height: 30px;
+	color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-bottom: 1px solid #111316;
+	font-size: 0.8em;
+	cursor: pointer;
+	
+background-color: #424855;
+
+	border-top: 1px solid rgba(216,232,255,0.1);
+}
+
+.channel .names div.user:hover,
+.channel .names div.user.selected:hover{
+	background-color: #525a6a;	
+}
+
+.channel .messages{
+	display: block;
+	position: absolute;
+	top: 40px;
+	right: 180px;
+	bottom: 50px;
+	left: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.channel .topic{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+	height: 40px;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 180px;
+	left: 0;
+	background-color: #4b5966;
+	border-bottom: 1px solid #000;
+	line-height: 40px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 0.9em;
+}
+
+.channel .input{
+	left: 0;
+	bottom: 0;
+	right: 180px;
+display: -webkit-flex;
+	position: absolute;
+	height: 50px;
+	background-color: #3a434a;
+	overflow: hidden;
+	border-top: 1px solid #000;
+}
+
+.channel .input input{
+	outline: none;
+-webkit-flex: 1;
+	background-color: #21252a;
+	border: 1px solid #4d5967;
+	clear: both;
+	position: relative;
+	padding: 7px;
+	margin: 4px 3px;
+	font-size: 0.9em;
+	color: #fff;
+}
+
+/* @end */
+
+/* @group Message */
+
+div.message{
+	display: block;
+	position: relative;
+	margin-bottom: 4px;
+	margin-top: 4px;
+	padding-left: 5px;
+	padding-right: 5px;
+	word-wrap:break-word;
+	font-size: 14px;
+}
+
+div.message .body{
+	position: relative;
+	display: inline-block;
+	word-wrap:break-word;
+}
+
+div.message .body .timestamp{
+	position: relative;
+	color: #39474c;
+}
+
+div.message .body .nickname{
+	position: relative;
+	/*width: 155px;*/
+	display: inline-block;
+	text-align: right;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+div.message .body .text{
+	position: relative;
+	word-wrap:break-word;
+	color: #e8e8e8;
+	line-height: 17px;
+}
+
+/* @end */
+
+/* @group Options */
+
+
+
+/* @end */
+
+/* @group Input */
+
+
+
+/* @end */
+

@@ -2,8 +2,13 @@ define([
   "app",
   'underscore',
   'lib/channels/channels',
-  'lib/channels/channel'
-], function(Komanda, _, Channels, Channel) {
+  'lib/channels/channel',
+  'lib/channels/channel-view',
+  'lib/channels/channels-view',
+  "hbs!templates/message",
+  "hbs!templates/names",
+  "moment"
+], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, NamesView, moment) {
 
   var Client = function(session) {
     this.irc = window.requireNode('irc');
@@ -11,11 +16,11 @@ define([
     this.nick = session.attributes.nick;
     this.socket = null;
     this.session = session;
+    this.session.set("channels", []);
     this.topics = {};
     this.binded = false;
 
     this.channels = new Channels();
-
     this.channels.fetch({reset: true});
 
     return this;
@@ -49,13 +54,54 @@ define([
     if (self.binded) return;
     self.binded = true;
 
+    Komanda.vent.on(self.options.uuid + ':send', function(data) {
+      var data = {
+        nick: self.nick,
+        to: data.target,
+        text: data.message,
+        timestamp: moment().format('MM/DD/YY hh:mm:ss')
+      };
+
+      var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+data.to+'"] div.messages');
+
+      if (channel.length > 0) {
+        var html = Message(data);
+        channel.append(html);
+        var objDiv = channel.get(0);
+        objDiv.scrollTop = objDiv.scrollHeight;
+      }
+
+      self.socket.say(data.to, data.text);
+    });
+
     Komanda.vent.on('get:channel:list', function() {
       self.channels.fetch({reset: true});
       var channelNames = _.map(self.channels.models, function(m) {
         return m.get('channel');
       });
 
-      console.log(self.session.server, channelNames);
+    });
+
+    self.socket.addListener('message', function(nick, to, text, message) {
+      var data = {
+        nick: nick,
+        to: to,
+        text: text,
+        message: message,
+        timestamp: moment().format('MM/DD/YY hh:mm:ss')
+      };
+
+      var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
+
+      if (channel.length > 0) {
+        var html = Message(data);
+        channel.append(html);
+        var objDiv = channel.get(0);
+        objDiv.scrollTop = objDiv.scrollHeight;
+      }
+
+
+      Komanda.vent.trigger('message', data);
     });
 
     self.socket.addListener('registered', function(message) {
@@ -77,9 +123,9 @@ define([
     self.socket.addListener('names', function(channel, names) {
       var channelTopic = "";
 
-      if (self.topics.hasOwnProperty(self.options.server)) {
-        if (self.topics[self.options.server].hasOwnProperty(self.options.channel)) {
-          var topic = self.topics[self.options.server][self.options.channel];
+      if (self.topics.hasOwnProperty(self.options.uuid)) {
+        if (self.topics[self.options.uuid].hasOwnProperty(channel)) {
+          var topic = self.topics[self.options.uuid][channel];
           if (topic) channelTopic = topic;
         }
       }
@@ -92,15 +138,56 @@ define([
         name: self.options.name
       };
 
-      var c = new Channel({channel: channel.toLowerCase()});
-      c.set(data);
-      self.channels.add(c);
-      c.save();
+      if (channel) {
+        var c = new Channel({channel: channel.toLowerCase()});
+        c.set(data);
 
-      console.log(self.channels.length);
+        self.channels.add(c)
 
-      Komanda.vent.trigger('names', data);
-      Komanda.vent.trigger('channel/join', c, data);
+        Komanda.vent.trigger('names', data);
+        Komanda.vent.trigger('channel/join', c, data);
+
+        var view = new ChannelView({
+          model: c
+        });
+
+        var channelsView = new ChannelsView({
+          collection: self.channels
+        });
+
+        if (!Komanda.store.hasOwnProperty(self.options.uuid)) {
+          Komanda.store[self.options.uuid] = {};
+        }
+
+        if (!Komanda.store[self.options.uuid].hasOwnProperty('views')) {
+          Komanda.store[self.options.uuid].views = {};
+        }
+
+        Komanda.store[self.options.uuid].views[channel] = {
+          view: view,
+          model: c
+        };
+
+        var html = channelsView.render().el;
+
+        var selector = $('#sidebar div.session[data-id="'+self.options.uuid+'"]');
+        if (selector.find('.channel-list').length > 0) {
+          selector.find('.channel-list').replaceWith(channelsView.render().el);
+        } else {
+          selector.append(channelsView.render().el);
+        }
+
+        $('.channel-holder').append(view.render().el);
+
+        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel.toLowerCase()+'"] div.messages');
+        $('#content .channel').hide();
+        chan.parent('.channel').show();
+
+        if (!Komanda.store.hasOwnProperty(self.options.uuid)) Komanda.store[self.options.uuid] = {};
+        Komanda.store[self.options.uuid].current_channel = channel.toLowerCase();
+
+        selector.find('li.channel-item[data-name="'+channel.toLowerCase()+'"]').addClass('selected');
+      }
     });
 
     self.socket.addListener('join', function(channel, nick, message) {
@@ -114,18 +201,17 @@ define([
 
       var chan = self.findChannel(channel);
 
-      alert(channel + "" + nick + "" + self.nick)
-      console.log(data);
-
       if (chan) {
         if (!self.me(nick)) {
           var names = chan.get('names');
           names[nick] = "";
-          chan.set({
-            names: names
-          });
-          chan.save();
-        };
+
+          var d = chan.attributes;
+          d.names = names;
+          chan.set(d);
+          chan.save(null);
+          chan.trigger('change');
+        }
       }
 
       Komanda.vent.trigger('join', data);
@@ -134,7 +220,7 @@ define([
     self.socket.addListener('topic', function(channel, topic, nick, message) {
 
       var data = {
-        channel: channel,
+        channel: channel.toLowerCase(),
         nick: nick,
         topic: topic,
         message: message,
@@ -146,30 +232,21 @@ define([
         self.topics[self.options.uuid] = {};
       }
 
-      self.topics[data.server][channel] = data;
+      self.topics[data.server][channel.toLowerCase()] = data;
 
-      var chan = self.findChannel(channel);
+      var chan = self.findChannel(channel.toLowerCase());
 
       if (chan) {
-        chan.set({
-          topic: data
-        });
+        var d = chan.attributes;
+        chan.set(d);
 
-        chan.save();
+        chan.save(null);
+        Komanda.vent.trigger('topic', data);
       }
 
-      Komanda.vent.trigger('topic', {
-        channel: channel,
-        nick: nick,
-        topic: topic,
-        message: message,
-        server: self.options.uuid,
-        name: self.options.name
-      });
     });
 
     self.socket.addListener('error', function(message) {
-      window.console.error(message);
 
       Komanda.vent.trigger('error', {
         error: message,
@@ -196,9 +273,7 @@ define([
         name: self.options.name
       };
 
-      console.log(data);
-
-      if (self.me(nick)) {
+      if (self.me(oldnick)) {
         self.nick = newnick;
       }
 
@@ -210,7 +285,10 @@ define([
           var value = names[oldnick];
           var update = _.omit(names, oldnick);
           update[newnick] = value;
-          chan.set({names: update}).save();
+
+          var d = chan.attributes;
+          d.names = update;
+          chan.set(d).save(null);
         }
       }
 
@@ -275,6 +353,31 @@ define([
   Client.prototype.removeUser = function(channel, nick) {
     var self = this;
 
+    console.log("REMOVE USER", nick, channel);
+
+    var callback = function() {
+      var server = self.options.uuid;
+
+      if (Komanda.store.hasOwnProperty(server)) {
+        if (Komanda.store[server].hasOwnProperty('current_channel')) {
+          $('li.channel-item').removeClass('selected');
+          $('li.channel-item[data-server-id="'+server+'"][data-name="'+Komanda.store[server].current_channel+'"]').addClass('selected');
+        }
+      }
+
+      if (Komanda.store[server].views.hasOwnProperty(channel)) {
+        var names = Komanda.store[server].views[channel].view.model.get('names'); 
+        console.log("BEFORE:", names);
+        var html = NamesView({
+          names: names
+        });
+
+        console.log(html);
+        $('#content .channel[data-server-id="'+server+'"][data-name="'+channel+'"] .names').replaceWith(html);
+        console.log("AFTER:", names);
+      }
+    };
+
     if (typeof channel === "string") {
       var chan = self.findChannel(channel);
 
@@ -283,36 +386,68 @@ define([
         if (self.me(nick)) {
           chan.destroy();
         } else {
+
+          console.log('NAMES BEFORE DUDE::', chan.get('names'));
           var names = _.omit(chan.get('names'), nick);
-          chan.set({
-            names: names
+
+          console.log('NAMES DUDE:', names);
+
+          var d = chan.attributes;
+          d.names = names;
+          chan.save(d, {
+            success: function() {
+              callback();
+            },
+            wait: true
           });
-          chan.save();
+          chan.trigger('change');
         }
-      };
+      }
+
 
     } else {
 
       for (var i = 0; i < channel.length; i += 1) {
-        var chan = self.findChannel(channel[i]);
-        console.log(channel[i], chan);
-        if (chan) {
-          var names = _.omit(chan.get('names'), nick);
-          chan.set({
-            names: names
+        var chans = self.findChannel(channel[i]);
+
+        if (chans) {
+          var namesd = _.omit(chans.get('names'), nick);
+
+          var dd = chans.attributes;
+          dd.names = namesd;
+          chans.save(dd, {
+            success: function() {
+              callback();
+            },
+            wait: true
           });
-          chan.save();
-        };
+
+          chans.trigger('change');
+        }
       }
     }
 
+
+    
   };
 
   Client.prototype.findChannel = function(channel) {
     var self = this;
-    self.channels.fetch({reset: true});
+    var item = Komanda.store[self.options.uuid]
+
+    self.channels.fetch({reset: true, wait: true});
     var chan = self.channels.get(channel);
     return chan;
+
+    if (item) {
+      if (item.hasOwnProperty('views')) {
+        if (item.views.hasOwnProperty(channel)) {
+          return item.views[channel].model
+        }
+      }
+    } else {
+      return self.channels.get({channel: channel});
+    }
   };
 
   Client.prototype.me = function(nick) {

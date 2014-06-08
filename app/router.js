@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
   var Marionette = require('marionette');
+  var _ = require('underscore');
 
   module.exports = Marionette.AppRouter.extend({
 
@@ -9,6 +10,19 @@ define(function(require, exports, module) {
 
     index: function() {
       var self = this;
+
+      var SessionView = require("lib/sessions/session-view");
+      var Session = require("lib/sessions/session");
+
+      Komanda.settings.fetch();
+
+      _.each(Komanda.settings.models, function(m) {
+        var view = new SessionView({
+          model: m
+        });
+        $('#sidebar').append(view.render().el);
+      });
+
     },
 
     loadView: function(item) {
