@@ -1,0 +1,21 @@
+# mac osx
+.DS_Store
+.AppleDouble
+.LSOverride
+.Trashes
+
+# vim
+*~
+*.swp
+*.swo
+
+# build
+/build/
+/dist/
+/tmp/
+/vendor
+/node_modules/
+/vendor/bower/
+/test/coverage/
+npm-debug.log
+

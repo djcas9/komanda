@@ -1,0 +1,48 @@
+{
+  "name": "Komanda",
+  "version": "0.1.0",
+  "main": "app://host/index.html",
+  "window": {
+    "title": "Komanda",
+    "icon": "images/icon.png",
+    "toolbar": true,
+    "frame": true,
+    "width": 962,
+    "height": 600,
+    "min_width": 962,
+    "min_height": 600,
+    "resizable": true
+  },
+  "devDependencies": {
+    "bbb": "~0.2.0",
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-compress": "~0.6.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-cssmin": "~0.7.0",
+    "grunt-contrib-handlebars": "^0.8.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-open": "^0.2.3",
+    "grunt-processhtml": "~0.3.0",
+    "grunt-remove": "^0.1.0",
+    "bower": "^1.3.3",
+    "grunt-bbb-server": "0.1.0-alpha.13",
+    "grunt-bbb-styles": "0.1.0-alpha.5",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-node-webkit-builder": "^0.1.21",
+    "rimraf": "^2.2.8",
+    "grunt-shell": "^0.7.0",
+    "fs-extra": "^0.9.1"
+  },
+  "peerDependencies": {
+    "bower": "*",
+    "grunt-cli": "*"
+  },
+  "scripts": {
+    "postinstall": "node_modules/.bin/bower install"
+  },
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "irc": "^0.3.7"
+  }
+}
