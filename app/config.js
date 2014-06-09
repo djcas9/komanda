@@ -5,6 +5,10 @@ requirejs.config({
     "vendor": "../vendor",
     "almond": "../vendor/bower/almond/almond",
     "jquery": "../vendor/bower/jquery/dist/jquery",
+    autolink: "lib/deps/autolink",
+    caret: "lib/deps/caret",
+    tabcomplete: "lib/deps/tab-complete",
+
     "underscore": "../vendor/bower/lodash/dist/lodash.underscore",
     "moment": "../vendor/bower/momentjs/moment",
     "backbone": "../vendor/bower/backbone/backbone",
@@ -39,6 +43,12 @@ requirejs.config({
     "backbone": {
       "deps": ["underscore", "jquery"],
       "exports": "Backbone"
+    },
+    "autolink": {
+      "deps": ["jquery"]
+    },
+    "caret": {
+      "deps": ["jquery"]
     },
     'backbone-modelbinder': ["backbone"],
     "uuid": {

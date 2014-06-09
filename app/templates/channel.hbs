@@ -7,19 +7,9 @@
 
 <div class="messages"></div>
 
-<div class="names">
-  {{#each names}}
-  <div class="user" data-name="{{@key}}">
-    <span class="status">
-      {{this}}
-    </span>
-
-    {{@key}}
-  </div>
-  {{/each}}
-</div>
+{{> templates/partials/names this }}
 
 <div class="input">
-  <input type="text" autocomplete=off>
+  <input type="text" autocomplete=""off"" spellcheck="true"></input>
 </div>
 

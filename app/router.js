@@ -11,18 +11,21 @@ define(function(require, exports, module) {
     index: function() {
       var self = this;
 
-      var SessionView = require("lib/sessions/session-view");
+      if (Komanda.test) return;
+      Komanda.test = true;
+
+      var SessionsView = require("lib/sessions/sessions-view");
       var Session = require("lib/sessions/session");
 
       Komanda.settings.fetch();
 
-      _.each(Komanda.settings.models, function(m) {
-        var view = new SessionView({
-          model: m
-        });
-        $('#sidebar').append(view.render().el);
+      var view = new SessionsView({
+        collection: Komanda.settings,
+        model: new Session()
       });
 
+      var region = new Backbone.Marionette.Region({ el: '#sidebar' });
+      region.show(view);
     },
 
     loadView: function(item) {

@@ -12,35 +12,25 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(this.model, 'change', this.channelItemUpdate);
-      this._modelBinder = new Backbone.ModelBinder();
+      this.listenTo(this.model, 'change', this.render());
     },
 
     onClose: function() {
-      this._modelBinder.unbind();
-    },
-
-    channelitemUpdate: function() {
-      this.render();
     },
 
     onRender: function() {
       var $this = $(this.el);
-      $this.attr('data-server-id', this.model.get('server'));
-      $this.attr('data-name', this.model.get('channel'));
+      var server = this.model.get('server');
+      var channel = this.model.get('channel');
 
-      var server = $this.attr('data-server-id');
+      $this.attr('data-server-id', server);
+      $this.attr('data-name', channel);
 
-      if (!server) {
-        server = $this.parents('.session').attr('data-id');
+      if (Komanda.current.server === server && Komanda.current.channel === channel) {
+        $('li.channel-list').removeClass('selected');
+        $this.addClass('selected');
       }
 
-      if (Komanda.store.hasOwnProperty(server)) {
-        if (Komanda.store[server].hasOwnProperty('current_channel')) {
-          $('li.channel-item').removeClass('selected');
-          $('li.channel-item[data-server-id="'+server+'"][data-name="'+Komanda.store[server].current_channel+'"]').addClass('selected');
-        }
-      }
     }
   });
 

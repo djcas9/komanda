@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "main": "app://host/index.html",
   "window": {
+    "show": false,
     "title": "Komanda",
     "icon": "images/icon.png",
     "toolbar": false,
     "frame": false,
-    "width": 962,
-    "height": 600,
-    "min_width": 962,
-    "min_height": 600,
+    "width": 800,
+    "height": 500,
+    "min_width": 800,
+    "min_height": 500,
     "resizable": true
   },
   "devDependencies": {

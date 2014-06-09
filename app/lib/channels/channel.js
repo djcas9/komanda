@@ -13,12 +13,21 @@ define([
       topic: "",
       names: "",
       server: "",
-      uuid: uuid.v4()
+      uuid: uuid.v4(),
+      selected: false
     },
 
     initialize: function() {
-      // ... 
+      this._modelBinder = new Backbone.ModelBinder();
     },
+
+    onClose: function() {
+      this._modelBinder.unbind();
+    },
+
+    select: function() {
+      console.log(this);
+    }
 
   });
 

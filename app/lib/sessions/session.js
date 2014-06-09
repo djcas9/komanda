@@ -4,11 +4,11 @@ define([
 ], function(Backbone, uuid) {
 
   var Session = Backbone.NestedModel.extend({
-    idAttribute: 'name',
+    idAttribute: 'uuid',
     _modelBinder: undefined,
 
     defaults: {
-      name: "Default",
+      name: "Freenode",
       server: "irc.freenode.net",
       nick: "komanda",
       userName: 'komanda',
@@ -35,11 +35,9 @@ define([
     },
 
     initialize: function () {
-      this._modelBinder = new Backbone.ModelBinder();
     },
 
     onClose: function() {
-      this._modelBinder.unbind();
     }
 
   });

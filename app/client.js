@@ -11,17 +11,27 @@ define([
 ], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, NamesView, moment) {
 
   var Client = function(session) {
-    this.irc = window.requireNode('irc');
-    this.options = session.attributes;
-    this.nick = session.attributes.nick;
-    this.socket = null;
-    this.session = session;
-    this.session.set("channels", []);
-    this.topics = {};
-    this.binded = false;
+    var self = this;
 
-    this.channels = new Channels();
-    this.channels.fetch({reset: true});
+    self.irc = window.requireNode('irc');
+    self.options = session.attributes;
+    self.nick = session.attributes.nick;
+    self.socket = null;
+    self.session = session;
+    self.session.set("channels", []);
+    self.topics = {};
+
+    self.binded = false;
+
+    self.channels = new Channels();
+
+    self.channel = new Channel();
+    self.region = new Backbone.Marionette.Region({ el: '#sidebar'});
+
+    self.channelsView = new ChannelsView({
+      collection: self.channels,
+      model: self.channel
+    });
 
     return this;
   };
@@ -75,7 +85,6 @@ define([
     });
 
     Komanda.vent.on('get:channel:list', function() {
-      self.channels.fetch({reset: true});
       var channelNames = _.map(self.channels.models, function(m) {
         return m.get('channel');
       });
@@ -100,6 +109,7 @@ define([
         objDiv.scrollTop = objDiv.scrollHeight;
       }
 
+      // Komanda.window.setBadgeLabel(Komanda.message_count++);
 
       Komanda.vent.trigger('message', data);
     });
@@ -141,7 +151,6 @@ define([
       if (channel) {
         var c = new Channel({channel: channel.toLowerCase()});
         c.set(data);
-
         self.channels.add(c)
 
         Komanda.vent.trigger('names', data);
@@ -151,30 +160,13 @@ define([
           model: c
         });
 
-        var channelsView = new ChannelsView({
-          collection: self.channels
-        });
-
-        if (!Komanda.store.hasOwnProperty(self.options.uuid)) {
-          Komanda.store[self.options.uuid] = {};
-        }
-
-        if (!Komanda.store[self.options.uuid].hasOwnProperty('views')) {
-          Komanda.store[self.options.uuid].views = {};
-        }
-
-        Komanda.store[self.options.uuid].views[channel] = {
-          view: view,
-          model: c
-        };
-
-        var html = channelsView.render().el;
+        var html = self.channelsView.render().el;
 
         var selector = $('#sidebar div.session[data-id="'+self.options.uuid+'"]');
         if (selector.find('.channel-list').length > 0) {
-          selector.find('.channel-list').replaceWith(channelsView.render().el);
+          selector.find('.channel-list').replaceWith(self.channelsView.render().el);
         } else {
-          selector.append(channelsView.render().el);
+          selector.append(self.channelsView.render().el);
         }
 
         $('.channel-holder').append(view.render().el);
@@ -183,9 +175,9 @@ define([
         $('#content .channel').hide();
         chan.parent('.channel').show();
 
-        if (!Komanda.store.hasOwnProperty(self.options.uuid)) Komanda.store[self.options.uuid] = {};
-        Komanda.store[self.options.uuid].current_channel = channel.toLowerCase();
-
+        Komanda.current.channel = channel.toLowerCase();
+        Komanda.current.server = self.options.uuid;
+        $('li.channel-item').removeClass('selected');
         selector.find('li.channel-item[data-name="'+channel.toLowerCase()+'"]').addClass('selected');
       }
     });
@@ -209,10 +201,13 @@ define([
           var d = chan.attributes;
           d.names = names;
           chan.set(d);
-          chan.save(null);
-          chan.trigger('change');
+          self.updateNames(chan);
         }
       }
+
+      self.channelsView.render();
+
+      self.addMessage(channel, nick + " has joined the room.");
 
       Komanda.vent.trigger('join', data);
     });
@@ -240,7 +235,6 @@ define([
         var d = chan.attributes;
         chan.set(d);
 
-        chan.save(null);
         Komanda.vent.trigger('topic', data);
       }
 
@@ -288,7 +282,7 @@ define([
 
           var d = chan.attributes;
           d.names = update;
-          chan.set(d).save(null);
+          chan.set(d);
         }
       }
 
@@ -305,6 +299,9 @@ define([
       };
 
       self.removeUser(channel, nick);
+
+      self.addMessage(channel, nick + " has left the room. " + (reason ? "["+reason+"]" : "") + "");
+
       Komanda.vent.trigger('part', data);
     });
 
@@ -350,33 +347,24 @@ define([
 
   };
 
-  Client.prototype.removeUser = function(channel, nick) {
+  Client.prototype.updateNames = function(channel) {
     var self = this;
 
-    console.log("REMOVE USER", nick, channel);
+    if (channel) {
+      var names = channel.get('names')
 
-    var callback = function() {
-      var server = self.options.uuid;
+      var html = NamesView({
+        names: names
+      });
 
-      if (Komanda.store.hasOwnProperty(server)) {
-        if (Komanda.store[server].hasOwnProperty('current_channel')) {
-          $('li.channel-item').removeClass('selected');
-          $('li.channel-item[data-server-id="'+server+'"][data-name="'+Komanda.store[server].current_channel+'"]').addClass('selected');
-        }
-      }
+      $('#content .channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel.get("channel")+'"] .names').replaceWith(html);
+    }
 
-      if (Komanda.store[server].views.hasOwnProperty(channel)) {
-        var names = Komanda.store[server].views[channel].view.model.get('names'); 
-        console.log("BEFORE:", names);
-        var html = NamesView({
-          names: names
-        });
+    self.channelsView.render();
+  };
 
-        console.log(html);
-        $('#content .channel[data-server-id="'+server+'"][data-name="'+channel+'"] .names').replaceWith(html);
-        console.log("AFTER:", names);
-      }
-    };
+  Client.prototype.removeUser = function(channel, nick) {
+    var self = this;
 
     if (typeof channel === "string") {
       var chan = self.findChannel(channel);
@@ -387,20 +375,12 @@ define([
           chan.destroy();
         } else {
 
-          console.log('NAMES BEFORE DUDE::', chan.get('names'));
           var names = _.omit(chan.get('names'), nick);
-
-          console.log('NAMES DUDE:', names);
 
           var d = chan.attributes;
           d.names = names;
-          chan.save(d, {
-            success: function() {
-              callback();
-            },
-            wait: true
-          });
-          chan.trigger('change');
+          chan.set(d);
+          self.updateNames(chan);
         }
       }
 
@@ -415,39 +395,18 @@ define([
 
           var dd = chans.attributes;
           dd.names = namesd;
-          chans.save(dd, {
-            success: function() {
-              callback();
-            },
-            wait: true
-          });
-
-          chans.trigger('change');
+          chans.set(dd);
+          self.updateNames(chans);
         }
       }
     }
-
-
-    
   };
 
   Client.prototype.findChannel = function(channel) {
     var self = this;
-    var item = Komanda.store[self.options.uuid]
 
-    self.channels.fetch({reset: true, wait: true});
     var chan = self.channels.get(channel);
     return chan;
-
-    if (item) {
-      if (item.hasOwnProperty('views')) {
-        if (item.views.hasOwnProperty(channel)) {
-          return item.views[channel].model
-        }
-      }
-    } else {
-      return self.channels.get({channel: channel});
-    }
   };
 
   Client.prototype.me = function(nick) {
@@ -455,6 +414,27 @@ define([
 
     if (nick === self.nick) return true;
     return false;
+  };
+
+
+  Client.prototype.addMessage = function(channel, message) {
+    var self = this;
+    var server = self.options.uuid;
+
+    var chan = $('div.channel[data-server-id="'+server+'"][data-name="'+channel.toLowerCase()+'"] div.messages');
+
+    if (chan.length > 0) {
+      var html = Message({
+        text: message,
+        timestamp: moment().format('MM/DD/YY hh:mm:ss')
+      });
+
+      chan.append(html);
+
+      var objDiv = chan.get(0);
+      objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
   };
 
   return Client;

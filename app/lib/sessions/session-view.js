@@ -13,12 +13,13 @@ define([
     },
 
     initialize: function() {
-      // this.listenTo(this.model, 'change', this.render);
     },
 
     toggleSession: function(e) {
       e.preventDefault();
-      $(e.currentTarget).parents('.session').find('.channel-list').toggle();
+      var parent = $(e.currentTarget).parents('.session')
+      parent.find('.channel-list').toggle();
+      parent.find('.server-metadata').toggle();
     },
 
     onRender: function() {

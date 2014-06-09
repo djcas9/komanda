@@ -6,7 +6,7 @@ define([
 
   var channels = Backbone.Collection.extend({
     model: channel,
-    localStorage: new Backbone.LocalStorage('komanda.channels'),
+    // localStorage: new Backbone.LocalStorage('komanda.channels'),
 
 
     initialize: function() {

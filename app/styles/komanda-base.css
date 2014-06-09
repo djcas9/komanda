@@ -143,6 +143,13 @@ html, body{
 /* @group Header */
 
 #header{
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+
 	height: 30px;
 	display: block;
 /*background-color: #3b3b43;*/
@@ -200,14 +207,17 @@ border-radius: 100px 100px 100px 100px;
 	margin-right: 5px;
 }
 
+/*#header .window-controls .window-button.close,*/
 #header .window-controls .window-button.close:hover{
 	background-color: #ff2600;
 }
 
+/*#header .window-controls .window-button.minimize,*/
 #header .window-controls .window-button.minimize:hover{
 	background-color: #ffe900;
 }
 
+/*#header .window-controls .window-button.maximize,*/
 #header .window-controls .window-button.maximize:hover{
 	background-color: #10cf00;
 }
@@ -252,6 +262,13 @@ border-radius: 100px 100px 100px 100px;
 }
 
 #sidebar .session .server{
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+
 background-color: #30353f;
 background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(48, 53, 63)), to(rgb(33, 43, 48)));
 background-image: -webkit-linear-gradient(top, rgb(48, 53, 63), rgb(33, 43, 48));
@@ -276,6 +293,26 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 
 #sidebar .session .server i{
 	margin-right: 10px;
+}
+
+#sidebar .session .server-metadata{
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+
+	cursor: pointer;
+	height: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #2e3439;
+	border-top: 1px solid rgba(254,255,255,0.1);
+	border-bottom: 1px solid rgba(0,0,0,0.6);
+	display: block;
+	position: relative;
+	font-size: 0.7em;
 }
 
 #sidebar .session .server i.show-hide-icon{
@@ -304,6 +341,13 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 }
 
 #sidebar .session .channel-list ul.channels li{
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+
 	cursor: pointer;
 	height: 35px;
 	line-height: 35px;
@@ -313,6 +357,40 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 	border-top: 1px solid rgba(254,255,255,0.1);
 	border-bottom: 1px solid rgba(0,0,0,0.6);
 	font-size: 0.8em;
+	display: block;
+	position: relative;
+}
+
+#sidebar .session .channel-list ul.channels li span.user-count{
+	height: 15px;
+	line-height: 15px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #4b4b4b;
+	font-size: 0.7em;
+	text-align: center;
+	border-bottom: 1px solid #000;
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	padding-right: 5px;
+	padding-left: 5px;
+	top: -4px;
+}
+
+#sidebar .session .channel-list ul.channels li i{
+	opacity: 0.4;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 10px;
+	font-size: 0.7em;
+}
+
+#sidebar .session .channel-list ul.channels li.selected i,
+#sidebar .session .channel-list ul.channels li:hover i{
+	opacity: 1;
 }
 
 #sidebar .session .channel-list ul.channels li:hover{
@@ -380,6 +458,19 @@ border-radius: 100px 100px 100px 100px;
 background-color: #424855;
 
 	border-top: 1px solid rgba(216,232,255,0.1);
+	
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+.channel .names div.user i {
+	opacity: 0.5;
+	font-size: 0.8em;
+	margin-right: 5px;
 }
 
 .channel .names div.user:hover,
@@ -430,6 +521,7 @@ display: -webkit-flex;
 }
 
 .channel .input input{
+resize: none;
 	outline: none;
 -webkit-flex: 1;
 	background-color: #21252a;
@@ -482,6 +574,19 @@ div.message .body .text{
 	word-wrap:break-word;
 	color: #e8e8e8;
 	line-height: 17px;
+}
+
+div.message .body .text a{
+	color: #96b5c4;
+}
+
+div.message .body .text a:hover{
+	color: #abcddf;	
+}
+
+div.message .body .text img{
+	max-width: 200px;
+	max-height: 200px;
 }
 
 /* @end */
