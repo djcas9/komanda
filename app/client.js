@@ -160,14 +160,14 @@ define([
 
       var data = {
         topic: channelTopic,
-        channel: channel.toLowerCase(),
+        channel: channel,
         names: names,
         server: self.options.uuid,
         name: self.options.name
       };
 
       if (channel) {
-        var c = new Channel({channel: channel.toLowerCase()});
+        var c = new Channel({channel: channel});
         c.set(data);
         self.channels.add(c)
 
@@ -189,14 +189,14 @@ define([
 
         $('.channel-holder').append(view.render().el);
 
-        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel.toLowerCase()+'"] div.messages');
+        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] div.messages');
         $('#content .channel').hide();
         chan.parent('.channel').show();
 
-        Komanda.current.channel = channel.toLowerCase();
+        Komanda.current.channel = channel;
         Komanda.current.server = self.options.uuid;
         $('li.channel-item').removeClass('selected');
-        selector.find('li.channel-item[data-name="'+channel.toLowerCase()+'"]').addClass('selected');
+        selector.find('li.channel-item[data-name="'+channel+'"]').addClass('selected');
       }
     });
 
@@ -233,7 +233,7 @@ define([
     self.socket.addListener('topic', function(channel, topic, nick, message) {
 
       var data = {
-        channel: channel.toLowerCase(),
+        channel: channel,
         nick: nick,
         topic: topic,
         message: message,
@@ -245,9 +245,9 @@ define([
         self.topics[self.options.uuid] = {};
       }
 
-      self.topics[data.server][channel.toLowerCase()] = data;
+      self.topics[data.server][channel] = data;
 
-      var chan = self.findChannel(channel.toLowerCase());
+      var chan = self.findChannel(channel);
 
       if (chan) {
         var d = chan.attributes;
@@ -439,7 +439,7 @@ define([
     var self = this;
     var server = self.options.uuid;
 
-    var chan = $('div.channel[data-server-id="'+server+'"][data-name="'+channel.toLowerCase()+'"] div.messages');
+    var chan = $('div.channel[data-server-id="'+server+'"][data-name="'+channel+'"] div.messages');
 
     if (chan.length > 0) {
       var html = Message({
