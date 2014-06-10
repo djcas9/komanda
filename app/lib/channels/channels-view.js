@@ -12,10 +12,26 @@ define([
     itemViewContainer: "ul.channels",
 
     events: {
-      "click li.channel-item": "openChannel"
+      "click li.channel-item": "openChannel",
+      "click i.part-channel": "partChannel"
     },
 
     initialize: function() {
+    },
+
+    partChannel: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var item = $(e.currentTarget).parent('.channel-item');
+      var channel = item.attr('data-name');
+      var server = item.attr('data-server-id');
+
+      if (!server) {
+        server = item.parents('.session').attr('data-id');
+      }
+
+      Komanda.vent.trigger(server + ":part", channel);
     },
 
     openChannel: function(e) {
@@ -32,13 +48,14 @@ define([
       }
 
       if (Komanda.store.hasOwnProperty(server)) {
-        Komanda.store[server][channel] = false;
+        Komanda.store[server][channel] = 0;
       } else {
         Komanda.store[server] = {};
-        Komanda.store[server][channel] = false;
+        Komanda.store[server][channel] = 0;
       }
 
       item.find('div.status').removeClass('new-messages');
+      item.find('div.status').removeClass('highlight');
 
       $('li.channel-item').removeClass('selected');
       item.addClass('selected');

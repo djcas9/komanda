@@ -64,6 +64,13 @@ define([
     if (self.binded) return;
     self.binded = true;
 
+    Komanda.vent.on(self.options.uuid + ":part", function(channel) {
+      self.socket.part(channel, "Bye!", function() {
+        chan.removeChannel(channel, self.options.uuid);
+        Komanda.vent.trigger('channel/part', self.options.uuid, channel);
+      }); 
+    });
+
     Komanda.vent.on(self.options.uuid + ':send', function(data) {
       var data = {
         nick: self.nick,
@@ -117,13 +124,25 @@ define([
           var server = self.options.uuid;
 
           if (Komanda.store.hasOwnProperty(server)) {
-            Komanda.store[server][to] = true;
+            if (data.highlight) {
+              Komanda.store[server][to] = 2;
+            } else {
+              if (Komanda.store[server][to] != 2) Komanda.store[server][to] = 1;
+            }
           } else {
             Komanda.store[server] = {};
-            Komanda.store[server][to] = true;
+            if (data.highlight) {
+              Komanda.store[server][to] = 2;
+            } else {
+              if (Komanda.store[server][to] != 2) Komanda.store[server][to] = 1;
+            }
           }
 
-         $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('new-messages');
+          if (Komanda.store[server][to] == 1) {
+            $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('new-messages');
+          } else {
+            $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('highlight');
+          }
         }
       }
 
@@ -197,6 +216,9 @@ define([
         Komanda.current.server = self.options.uuid;
         $('li.channel-item').removeClass('selected');
         selector.find('li.channel-item[data-name="'+channel+'"]').addClass('selected');
+
+
+        self.addMessage(channel, "Topic: " + channelTopic.topic);
       }
     });
 
@@ -291,16 +313,19 @@ define([
 
       for (var i = 0; i < channels.length; i += 1) {
         var chan = self.findChannel(channels[i]);
-        var names = chan.get('names');
 
-        if (_.has(names, oldnick)) {
-          var value = names[oldnick];
-          var update = _.omit(names, oldnick);
-          update[newnick] = value;
+        if (chan) {
+          var names = chan.get('names');
 
-          var d = chan.attributes;
-          d.names = update;
-          chan.set(d);
+          if (_.has(names, oldnick)) {
+            var value = names[oldnick];
+            var update = _.omit(names, oldnick);
+            update[newnick] = value;
+
+            var d = chan.attributes;
+            d.names = update;
+            chan.set(d);
+          }
         }
       }
 
@@ -390,7 +415,7 @@ define([
       if (chan) {
 
         if (self.me(nick)) {
-          chan.destroy();
+          chan.removeChannel(channel, self.options.uuid);
         } else {
 
           var names = _.omit(chan.get('names'), nick);

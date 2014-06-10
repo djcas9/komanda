@@ -421,6 +421,9 @@ border-radius: 100px 100px 100px 100px;
 	background-color: #ff2a1d;
 }
 
+#sidebar .session .channel-list ul.channels li div.status.highlight{
+	background-color: #fcd900;
+}
 
 /* @end */
 
@@ -551,6 +554,10 @@ div.message{
 	padding-right: 5px;
 	word-wrap:break-word;
 	font-size: 14px;
+}
+
+div.message.highlight{
+	background-color: rgba(254,255,255,0.05);
 }
 
 div.message .body{

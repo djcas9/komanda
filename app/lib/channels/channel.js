@@ -27,6 +27,14 @@ define([
 
     select: function() {
       console.log(this);
+    },
+
+    removeChannel: function(channel, server) {
+      var self = this; 
+      console.log(channel, server);
+      $('li.channel-item[data-server-id="'+server+'"][data-name="'+channel+'"]').remove();
+      $('.channel-holder div.channel[data-server-id="'+server+'"][data-name="'+channel+'"]').remove();
+      self.destroy();
     }
 
   });

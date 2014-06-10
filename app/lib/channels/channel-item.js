@@ -33,13 +33,15 @@ define([
 
       if (Komanda.store.hasOwnProperty(server)) {
         if (Komanda.store[server].hasOwnProperty(channel)) {
-          if (Komanda.store[server][channel]) {
+          if (Komanda.store[server][channel] == 1) {
             $this.find('div.status').addClass('new-messages');
+          } else if (Komanda.store[server][channel] == 2) {
+            $this.find('div.status').addClass('highlight');
           }
         }
       } else {
         Komanda.store[server] = {};
-        Komanda.store[server][channel] = false;
+        Komanda.store[server][channel] = 0;
       }
 
     }
