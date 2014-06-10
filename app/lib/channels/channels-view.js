@@ -24,13 +24,21 @@ define([
       $('.channel-holder .channel').hide();
 
       var item = $(e.currentTarget);
-
       var channel = item.attr('data-name');
       var server = item.attr('data-server-id');
 
       if (!server) {
         server = item.parents('.session').attr('data-id');
       }
+
+      if (Komanda.store.hasOwnProperty(server)) {
+        Komanda.store[server][channel] = false;
+      } else {
+        Komanda.store[server] = {};
+        Komanda.store[server][channel] = false;
+      }
+
+      item.find('div.status').removeClass('new-messages');
 
       $('li.channel-item').removeClass('selected');
       item.addClass('selected');

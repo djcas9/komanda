@@ -92,6 +92,7 @@ define([
     });
 
     self.socket.addListener('message', function(nick, to, text, message) {
+
       var data = {
         nick: nick,
         to: to,
@@ -100,6 +101,10 @@ define([
         timestamp: moment().format('MM/DD/YY hh:mm:ss')
       };
 
+      if (text.match(self.nick)) {
+        data.highlight = true;
+      }
+
       var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
 
       if (channel.length > 0) {
@@ -107,6 +112,19 @@ define([
         channel.append(html);
         var objDiv = channel.get(0);
         objDiv.scrollTop = objDiv.scrollHeight;
+
+        if (Komanda.current.channel !== to) {
+          var server = self.options.uuid;
+
+          if (Komanda.store.hasOwnProperty(server)) {
+            Komanda.store[server][to] = true;
+          } else {
+            Komanda.store[server] = {};
+            Komanda.store[server][to] = true;
+          }
+
+         $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('new-messages');
+        }
       }
 
       // Komanda.window.setBadgeLabel(Komanda.message_count++);

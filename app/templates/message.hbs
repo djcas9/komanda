@@ -7,7 +7,7 @@
     </span>
 
     {{#if nick}}
-    <span class="nickname" style="color:{{random-color nick }}">
+    <span class="nickname {{#if highlight}}highlight{{/if}}" style="color:{{random-color nick }}">
       {{nick}}:
     </span>
     {{else}}

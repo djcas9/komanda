@@ -20,7 +20,6 @@ define([
    * Add a list of words to the trie.
    */
   Trie.prototype.words = function (words) {
-    console.log(words);
     __.each(words, function (w) { this.word(w); }, this);
     return this;
   }
@@ -123,8 +122,6 @@ define([
           items[(items.length - 1)] = trie.uniquePrefix();
           e.target.value = items.join(' ');
           var choices = trie.choices();
-
-          console.log(choices);
 
           if (choices.length > 1) {
           } else {

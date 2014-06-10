@@ -31,6 +31,17 @@ define([
         $this.addClass('selected');
       }
 
+      if (Komanda.store.hasOwnProperty(server)) {
+        if (Komanda.store[server].hasOwnProperty(channel)) {
+          if (Komanda.store[server][channel]) {
+            $this.find('div.status').addClass('new-messages');
+          }
+        }
+      } else {
+        Komanda.store[server] = {};
+        Komanda.store[server][channel] = false;
+      }
+
     }
   });
 

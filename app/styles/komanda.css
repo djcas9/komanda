@@ -417,6 +417,10 @@ border-radius: 100px 100px 100px 100px;
 	margin-top: 11px;
 }
 
+#sidebar .session .channel-list ul.channels li div.status.new-messages{
+	background-color: #ff2a1d;
+}
+
 
 /* @end */
 
@@ -569,6 +573,11 @@ div.message .body .nickname{
 	margin-right: 5px;
 }
 
+div.message .body .nickname.highlight{
+	color: #ffe900 !important;
+	font-weight: bold !important;
+}
+
 div.message .body .text{
 	position: relative;
 	word-wrap:break-word;
@@ -602,4 +611,3 @@ div.message .body .text img{
 
 
 /* @end */
-
