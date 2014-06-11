@@ -29,11 +29,9 @@ requirejs.config({
     // Keybindings             :
     'Mousetrap'                :  '../vendor/bower/mousetrap/mousetrap',
     'mousetrap-pause'          :  '../vendor/bower/mousetrap/plugins/pause/mousetrap-pause',
-    'backbone.mousetrap'       :  '../vendor/bower/backbone.mousetrap/backbone.mousetrap',
+    'backbone-mousetrap'       :  'lib/deps/backbone-mousetrap',
     // sotage
-    localStorage               :  '../vendor/bower/backbone.localStorage/backbone.localStorage',
-    IndexedDBShim              :  '../vendor/bower/IndexedDBShim/dist/IndexedDBShim',
-    indexedDB                  :  '../vendor/bower/indexeddb-backbonejs-adapter/backbone-indexeddb'
+    localStorage               :  '../vendor/bower/backbone.localStorage/backbone.localStorage'
   },
 
   shim: {
@@ -50,27 +48,20 @@ requirejs.config({
     "caret": {
       "deps": ["jquery"]
     },
+    'Mousetrap': {
+      exports: "Mousetrap"
+    },
+    'mousetrap-pause': {
+      deps: ['Mousetrap'],
+      exports: "Mousetrap"
+    },
     'backbone-modelbinder': ["backbone"],
     "uuid": {
       exports: "uuid"
     },
     localStorage: {
       deps: ['underscore', 'backbone']
-    },
-    indexedDB: {
-      deps: ['underscore', 'backbone']
-    },
-    'IndexedDBShim': {
-      exports: 'shimIndexedDB'
-    },
-    // Mousetrap
-    'Mousetrap': { },
-    'mousetrap-pause': {
-      deps: ['Mousetrap']
-    },
-    'backbone.mousetrap': {
-      deps: ['Mousetrap', 'mousetrap-pause', 'underscore', 'backbone']
-    },
+    }
   },
 
   hbs: {

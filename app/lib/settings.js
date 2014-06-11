@@ -14,7 +14,6 @@ define([
     },
 
     onRender: function() {
-      console.log("WORD?@?!?#!?@#?!@?#");
     }
 
   });

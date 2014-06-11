@@ -1,4 +1,9 @@
+{{#if status}}
+<div class="status server-status"></div>
+{{channel}} 
+{{else}}
 <div class="status"></div>
 {{channel}} 
-<i class="iconic part-channel" data-glyph="trash"></i>
+<i class="iconic part-channel" data-glyph="x"></i>
+{{/if}}
 

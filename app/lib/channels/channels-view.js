@@ -56,7 +56,6 @@ define([
 
       item.find('div.status').removeClass('new-messages');
       item.find('div.status').removeClass('highlight');
-
       $('li.channel-item').removeClass('selected');
       item.addClass('selected');
 
@@ -70,6 +69,8 @@ define([
 
       var objDiv = $(select).find('.messages').get(0);
       if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+
+      $(select).find('input').focus();
     },
 
     getEmptyView: function() {}

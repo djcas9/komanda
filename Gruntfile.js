@@ -62,9 +62,9 @@ module.exports = function(grunt) {
       release: {
         options: {
           mainConfigFile: "app/config.js",
-          generateSourceMaps: true,
+          generateSourceMaps: false,
           include: ["main"],
-          out: "build/komanda-source/komanada.js",
+          out: "build/komanda-source/komanda.js",
           optimize: "uglify2",
 
           // Since we bootstrap with nested `require` calls this option allows
@@ -152,7 +152,7 @@ module.exports = function(grunt) {
     copy: {
       release: {
         files: [
-          { src: "node-webkit-package.json", dest: "build/package.json" },
+          { src: "package.json", dest: "build/komanda-source/package.json" },
           { src: ["app/**"], dest: "build/komanda-source/" },
           { src: "vendor/**", dest: "build/komanda-source/" }
         ]
@@ -183,14 +183,8 @@ module.exports = function(grunt) {
       },
       // src: ['./**/*'],
       src: [
-        './app/styles/**', 
-        './app/fonts/**', 
-        './app/images/**', 
-        './app/**', 
-        './node_modules/**', 
-        '!./node_modules/grunt*/**', 
-        './index.html', 
-        './package.json'
+        './build/komanda-source/**/*',
+        // './node_modules/irc/**/*',
       ]
     },
 

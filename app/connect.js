@@ -1,7 +1,8 @@
 define([
   'app',
-  'client'
-], function(Komanda, Client) {
+  'client',
+  'underscore'
+], function(Komanda, Client, _) {
 
   var Connect = function(session, options) {
     this.session = session;
@@ -14,9 +15,7 @@ define([
     self.client = new Client(self.session); 
 
     self.client.connect(function() {
-      self.client.bind();
-      self.bind();
-      if (callback && typeof callback === "function") callback();
+      if (callback && typeof callback === "function") callback(self.session.uuid);
     });
   };
 

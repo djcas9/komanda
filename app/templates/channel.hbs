@@ -1,15 +1,24 @@
-<div class="topic">
+<div class="topic {{#if status}}full{{/if}}">
+  {{#if status}}
+  <span class='title' title="{{topic.topic}}">
+    Server Status Information
+  </span>
+  {{else}}
   {{channel}}
   <span class='title' title="{{topic.topic}}">
     {{topic.topic}}
   </span>
+  {{/if}}
 </div>
 
-<div class="messages"></div>
+<div class="messages {{#if status}}full{{/if}}"></div>
 
+{{#if status}}
+{{else}}
 {{> templates/partials/names this }}
+{{/if}}
 
-<div class="input">
-  <input type="text" autocomplete=""off"" spellcheck="true"></input>
+<div class="input {{#if status}}full{{/if}}">
+  <input type="text" autocomplete=""off"" spellcheck="true" class="mousetrap"></input>
 </div>
 

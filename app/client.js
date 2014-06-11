@@ -18,7 +18,6 @@ define([
     self.nick = session.attributes.nick;
     self.socket = null;
     self.session = session;
-    self.session.set("channels", []);
     self.topics = {};
 
     self.binded = false;
@@ -33,12 +32,43 @@ define([
       model: self.channel
     });
 
+    var c = new Channel({
+      channel: "*status",
+      topic: false,
+      names: false,
+      name: "Server Status",
+      server: self.options.uuid,
+      status: true
+    });
+
+    self.channels.add(c);
+
+    var view = new ChannelView({
+      model: c
+    });
+
+    Komanda.current = {
+      server: self.options.uuid,
+      channel: "*status"
+    };
+
+    $('.channel-holder').append(view.render().el);
+    var selector = $('#sidebar div.session[data-id="'+self.options.uuid+'"]');
+    if (selector.find('.channel-list').length > 0) {
+      selector.find('.channel-list').replaceWith(self.channelsView.render().el);
+    } else {
+      selector.append(self.channelsView.render().el);
+    }
     return this;
   };
 
   Client.prototype.connect = function(callback) {
     var self = this;
-    self.socket = new this.irc.Client(this.options.server, this.options.nick, this.options);
+    var options = _.extend({}, this.options);
+    options.channels = [];
+    self.socket = new this.irc.Client(this.options.server, this.options.nick, options);
+    self.bind();
+
     self.socket.connect(10, function() {
       if (callback && typeof callback === "function") callback(self);
       Komanda.vent.trigger('connect', {
@@ -66,29 +96,76 @@ define([
 
     Komanda.vent.on(self.options.uuid + ":part", function(channel) {
       self.socket.part(channel, "Bye!", function() {
-        chan.removeChannel(channel, self.options.uuid);
+        var chan = self.findChannel(channel);
+        if (chan) chan.removeChannel(channel, self.options.uuid);
         Komanda.vent.trigger('channel/part', self.options.uuid, channel);
       }); 
     });
 
+    Komanda.vent.on(self.options.uuid + ":join", function(channel) {
+      self.socket.join(channel, function() {
+        Komanda.vent.trigger('channel/join', self.options.uuid, channel);
+      }); 
+    });
+
     Komanda.vent.on(self.options.uuid + ':send', function(data) {
-      var data = {
-        nick: self.nick,
-        to: data.target,
-        text: data.message,
-        timestamp: moment().format('MM/DD/YY hh:mm:ss')
+      var render = function() {
+        var dd = {
+          nick: self.nick,
+          to: data.target || "",
+          text: data.message,
+          timestamp: moment().format('MM/DD/YY hh:mm:ss')
+        };
+
+        var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+dd.to+'"] div.messages');
+
+        if (channel.length > 0) {
+          var html = Message(dd);
+          channel.append(html);
+          var objDiv = channel.get(0);
+          objDiv.scrollTop = objDiv.scrollHeight;
+        }
+
+        self.socket.say(dd.to, dd.text);
       };
 
-      var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+data.to+'"] div.messages');
+      if (data.message && data.message.match(/^\//)) {
+        var command = data.message.split(' ');
+        var $channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+data.target+'"] div.messages');
+        
 
-      if (channel.length > 0) {
-        var html = Message(data);
-        channel.append(html);
-        var objDiv = channel.get(0);
-        objDiv.scrollTop = objDiv.scrollHeight;
+      switch(command[0]) {
+        case '/topic':
+          var chan = self.findChannel(data.target);
+          if (chan) {
+            self.addMessage(data.target, "Topic: " + chan.get('topic').topic);
+          } 
+          break;
+        case '/join':
+          self.socket.join(command[1]);
+        break;
+        case '/part':
+          self.socket.part(data.target, "Bye!", function() {
+          var chan = self.findChannel(data.target);
+          if (chan) {
+            chan.removeChannel(data.target, self.options.uuid);
+            self.channels.remove(chan);
+          }
+          Komanda.vent.trigger('channel/part', self.options.uuid, data.target);
+        }); 
+        break;
+
+        case '/clear':
+          $channel.html("");
+        break;
+
+        default:
+          render();
       }
 
-      self.socket.say(data.to, data.text);
+      } else {
+        render();
+      }
     });
 
     Komanda.vent.on('get:channel:list', function() {
@@ -188,7 +265,7 @@ define([
       if (channel) {
         var c = new Channel({channel: channel});
         c.set(data);
-        self.channels.add(c)
+        self.channels.add(c);
 
         Komanda.vent.trigger('names', data);
         Komanda.vent.trigger('channel/join', c, data);
@@ -197,8 +274,6 @@ define([
           model: c
         });
 
-        var html = self.channelsView.render().el;
-
         var selector = $('#sidebar div.session[data-id="'+self.options.uuid+'"]');
         if (selector.find('.channel-list').length > 0) {
           selector.find('.channel-list').replaceWith(self.channelsView.render().el);
@@ -206,19 +281,10 @@ define([
           selector.append(self.channelsView.render().el);
         }
 
+        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"]');
+        
+        if (chan.length > 0) return;
         $('.channel-holder').append(view.render().el);
-
-        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] div.messages');
-        $('#content .channel').hide();
-        chan.parent('.channel').show();
-
-        Komanda.current.channel = channel;
-        Komanda.current.server = self.options.uuid;
-        $('li.channel-item').removeClass('selected');
-        selector.find('li.channel-item[data-name="'+channel+'"]').addClass('selected');
-
-
-        self.addMessage(channel, "Topic: " + channelTopic.topic);
       }
     });
 
@@ -247,7 +313,7 @@ define([
 
       self.channelsView.render();
 
-      self.addMessage(channel, nick + " has joined the room.");
+      self.addMessage(channel, nick + " has joined the room. ["+message.prefix+"]");
 
       Komanda.vent.trigger('join', data);
     });
@@ -275,6 +341,7 @@ define([
         var d = chan.attributes;
         chan.set(d);
 
+        self.addMessage(channel, "Topic: " + topic);
         Komanda.vent.trigger('topic', data);
       }
 
@@ -290,6 +357,19 @@ define([
     });
 
     self.socket.addListener('raw', function(message) {
+      var codes = [
+        "001", "002", "003", "004", "005", "006", "007",
+        "375", "372", "377", "378", "376", "221",
+        // errors
+        "401", "402", "403", "404", "405", "406", "407", "408", "409", "411", "412", "413",
+        "414", "415", "416", "421", "422", "423", "424", "431", "432", "433", "436", "437", 
+        "438", "439", "441", "442", "443", "444", "445", "446", "451", "461", "462", "463", 
+        "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477", 
+        "478", "481", "482", "483", "484", "485", "491", "501", "502", "511"
+      ];
+      if (_.contains(codes, message.rawCommand)) {
+        self.addMessage("*status", message.args.join(' '));
+      }
       // Komanda.vent.trigger('raw', {
         // message: message,
         // server: self.options.uuid,
@@ -371,7 +451,10 @@ define([
         message: message
       };
 
-      self.removeUser(channels, nick);
+      _.each(self.channelsForUser(nick), function(channel) {
+        self.addMessage(channel.get('channel'), nick + " has left IRC. " + (reason ? "["+reason+"]" : "") + "");
+      });
+
       Komanda.vent.trigger('quit', data);
     });
 
@@ -394,7 +477,7 @@ define([
     var self = this;
 
     if (channel) {
-      var names = channel.get('names')
+      var names = channel.get('names');
 
       var html = NamesView({
         names: names
@@ -404,6 +487,18 @@ define([
     }
 
     self.channelsView.render();
+  };
+
+  Client.prototype.channelsForUser = function(user) {
+    var self = this; 
+    var channels = [];
+
+    _.each(self.channels.models, function(m) {
+      if (_.contains(m.get('names')), user) {
+        channels.push(m);    
+        self.removeUser(m.get('channel'), user);
+      }
+    });
   };
 
   Client.prototype.removeUser = function(channel, nick) {
@@ -416,6 +511,7 @@ define([
 
         if (self.me(nick)) {
           chan.removeChannel(channel, self.options.uuid);
+          self.channels.remove(chan);
         } else {
 
           var names = _.omit(chan.get('names'), nick);

@@ -9,7 +9,7 @@ define('templates/helpers/sortNames', [
     var voice = [];
     var normal = [];
 
-    for (user in context) {
+    for (var user in context) {
       var value = context[user];
 
       if (value === "@") {
@@ -21,9 +21,17 @@ define('templates/helpers/sortNames', [
       }
     }
 
-    op.sort();
-    voice.sort();
-    normal.sort();
+    op.sort(function (a, b) {
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+
+    voice.sort(function (a, b) {
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+
+    normal.sort(function (a, b) {
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
 
     for (var i = 0; i < op.length; i += 1) {
       var name = op[i];
@@ -34,20 +42,20 @@ define('templates/helpers/sortNames', [
       });
     }
 
-    for (var i = 0; i < voice.length; i += 1) {
-      var name = voice[i];
+    for (var x = 0; x < voice.length; x += 1) {
+      var xname = voice[x];
 
       buffer += options.fn({
-        name: name,
+        name: xname,
         value: "+"
       });
     }
 
-    for (var i = 0; i < normal.length; i += 1) {
-      var name = normal[i];
+    for (var y = 0; y < normal.length; y += 1) {
+      var yname = normal[y];
 
       buffer += options.fn({
-        name: name,
+        name: yname,
         value: ""
       });
     }

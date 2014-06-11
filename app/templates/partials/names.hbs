@@ -1,10 +1,20 @@
 <div class="names">
-  {{#sortNames names}}
-  <div class="user" data-name="{{name}}">
-
-    {{{user-icon value}}}
-
-    {{name}}
+  <div class="names-header header-box">
+    <i class="iconic" data-glyph="people"></i>
+    Users ({{count names}})
   </div>
-  {{/sortNames}}
+
+<div class="break"></div>
+
+  <div class="user-list">
+    {{#sortNames names}}
+    <div class="user" data-name="{{name}}" data-value="{{value}}">
+
+      {{{user-icon value}}}
+
+      {{name}}
+    </div>
+    {{/sortNames}}
+  </div>
+
 </div>
