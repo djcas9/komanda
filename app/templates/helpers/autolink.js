@@ -9,7 +9,7 @@ define('templates/helpers/autolink', [
     var message = Handlebars.Utils.escapeExpression(text).autoLink({
       target: "_blank", rel: "nofollow",
       callback: function(url) {
-        return /\.(gif|png|jpe?g)$/i.test(url) ? '<a href="'+url+'" target="_BLANK"><img src="' + url + '"></a>' : null;       
+      return /\.(gif|png|jpe?g)$/i.test(url) ? '<a href="'+url+'" target="_BLANK">'+url+'</a><br /><a href="'+url+'" target="_BLANK"><img src="' + url + '"></a><br />' : null;       
       }
     });
 

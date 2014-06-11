@@ -1,7 +1,12 @@
-<div class="topic {{#if status}}full{{/if}}">
+<div class="topic {{#if status}}full{{/if}} {{#if pm}}full{{/if}}">
   {{#if status}}
   <span class='title' title="{{topic.topic}}">
     Server Status Information
+  </span>
+  {{else}}
+  {{#if pm}}
+  <span class='title' title="{{topic.topic}}">
+    Private Message (PM) From {{nick}}
   </span>
   {{else}}
   {{channel}}
@@ -9,16 +14,21 @@
     {{topic.topic}}
   </span>
   {{/if}}
+  {{/if}}
 </div>
 
-<div class="messages {{#if status}}full{{/if}}"></div>
+<div id="{{messages-id this}}" class="messages {{#if status}}full{{/if}} {{#if pm}}full{{/if}}"></div>
+
 
 {{#if status}}
 {{else}}
+{{#if pm}}
+{{else}}
 {{> templates/partials/names this }}
 {{/if}}
+{{/if}}
 
-<div class="input {{#if status}}full{{/if}}">
+<div class="input {{#if status}}full{{/if}} {{#if pm}}full{{/if}}">
   <input type="text" autocomplete=""off"" spellcheck="true" class="mousetrap"></input>
 </div>
 

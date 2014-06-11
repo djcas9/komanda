@@ -677,6 +677,8 @@ div.message .body .text a:hover{
 div.message .body .text img{
 	max-width: 200px;
 	max-height: 200px;
+	margin-top: 10px;
+	margin-left: 10px;
 }
 
 /* @end */

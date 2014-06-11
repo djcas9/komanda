@@ -8,6 +8,7 @@ requirejs.config({
     autolink: "lib/deps/autolink",
     caret: "lib/deps/caret",
     tabcomplete: "lib/deps/tab-complete",
+    IScroll: "lib/deps/iscroll",
 
     "underscore": "../vendor/bower/lodash/dist/lodash.underscore",
     "moment": "../vendor/bower/momentjs/moment",
@@ -35,6 +36,9 @@ requirejs.config({
   },
 
   shim: {
+    'IScroll': {
+      exports: 'IScroll'
+    },
     'underscore': {
       exports: "_"
     },

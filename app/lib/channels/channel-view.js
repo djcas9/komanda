@@ -2,7 +2,7 @@ define([
   "marionette", 
   "hbs!templates/channel",
   "underscore",
-  "tabcomplete"
+  "tabcomplete",
 ], function(Marionette, template, _, tab) {
 
   return Marionette.ItemView.extend({
@@ -19,6 +19,10 @@ define([
     },
 
     onClose: function() {
+      if (self.scroll) {
+        self.scroll.destroy();
+        self.scroll = null;
+      }
     },
 
     setupAutoComplete: function() {
@@ -39,7 +43,6 @@ define([
       var $this = $(this.el);
       $this.attr('data-server-id', this.model.get('server'));
       $this.attr('data-name', this.model.get('channel'));
-
       self.setupAutoComplete();
     },
 

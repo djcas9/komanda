@@ -64,6 +64,7 @@ define([
 
   Client.prototype.connect = function(callback) {
     var self = this;
+
     var options = _.extend({}, this.options);
     options.channels = [];
     self.socket = new this.irc.Client(this.options.server, this.options.nick, options);
@@ -93,6 +94,108 @@ define([
 
     if (self.binded) return;
     self.binded = true;
+
+    self.socket.addListener('names', function(channel, names) {
+      var channelTopic = "";
+
+      if (self.topics.hasOwnProperty(self.options.uuid)) {
+        if (self.topics[self.options.uuid].hasOwnProperty(channel)) {
+          var topic = self.topics[self.options.uuid][channel];
+          if (topic) channelTopic = topic;
+        }
+      }
+
+      var data = {
+        topic: channelTopic,
+        channel: channel,
+        names: names,
+        server: self.options.uuid,
+        name: self.options.name
+      };
+
+      if (channel) {
+        var c = new Channel({
+          channel: channel,
+          server: self.options.uuid
+        });
+
+        c.set(data);
+
+        self.channels.add(c);
+
+        var view = new ChannelView({
+          model: c
+        });
+
+        Komanda.vent.trigger('names', data);
+        Komanda.vent.trigger('channel/join', c, data);
+
+        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"]');
+
+        if (chan.length > 0) return;
+        $('.channel-holder').append(view.render().el);
+        self.addMessage(channel, "Topic: " + channelTopic.topic);
+      }
+    });
+
+    self.socket.addListener('join', function(channel, nick, message) {
+      var data = {
+        channel: channel,
+        nick: nick,
+        message: message,
+        server: self.options.uuid,
+        name: self.options.name
+      };
+
+      var chan = self.findChannel(channel);
+
+      if (chan) {
+        if (!self.me(nick)) {
+          var names = chan.get('names');
+          names[nick] = "";
+
+          var d = chan.attributes;
+          d.names = names;
+          chan.set(d);
+          self.updateNames(chan);
+        }
+      }
+
+      self.channelsView.render();
+
+      self.addMessage(channel, nick + " has joined the room. ["+message.prefix+"]");
+
+      Komanda.vent.trigger('join', data);
+    });
+
+    self.socket.addListener('topic', function(channel, topic, nick, message) {
+
+      var data = {
+        channel: channel,
+        nick: nick,
+        topic: topic,
+        message: message,
+        server: self.options.uuid,
+        name: self.options.name
+      };
+
+      if (!self.topics.hasOwnProperty(self.options.uuid)) {
+        self.topics[self.options.uuid] = {};
+      }
+
+      self.topics[data.server][channel] = data;
+
+      var chan = self.findChannel(channel);
+
+      if (chan) {
+        var d = chan.attributes;
+        chan.set(d);
+
+        self.addMessage(channel, "Topic: " + topic);
+        Komanda.vent.trigger('topic', data);
+      }
+
+    });
 
     Komanda.vent.on(self.options.uuid + ":part", function(channel) {
       self.socket.part(channel, "Bye!", function() {
@@ -168,64 +271,35 @@ define([
       }
     });
 
-    Komanda.vent.on('get:channel:list', function() {
-      var channelNames = _.map(self.channels.models, function(m) {
-        return m.get('channel');
-      });
+    self.socket.addListener('pm', function(nick, text, message) {
+       var chan = self.findChannel(nick);
 
+       if (!chan) {
+          chan = new Channel({
+            channel: nick,
+            server: self.options.uuid,
+            names: false,
+            name: nick,
+            pm: true,
+            status: false
+          });
+
+          var view = new ChannelView({
+            model: chan
+          });
+
+          self.channels.add(chan);
+
+        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+nick+'"]');
+        $('.channel-holder').append(view.render().el);
+       }
+
+       self.sendMessage(nick, nick, text, message);
     });
 
     self.socket.addListener('message', function(nick, to, text, message) {
-
-      var data = {
-        nick: nick,
-        to: to,
-        text: text,
-        message: message,
-        timestamp: moment().format('MM/DD/YY hh:mm:ss')
-      };
-
-      if (text.match(self.nick)) {
-        data.highlight = true;
-      }
-
-      var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
-
-      if (channel.length > 0) {
-        var html = Message(data);
-        channel.append(html);
-        var objDiv = channel.get(0);
-        objDiv.scrollTop = objDiv.scrollHeight;
-
-        if (Komanda.current.channel !== to) {
-          var server = self.options.uuid;
-
-          if (Komanda.store.hasOwnProperty(server)) {
-            if (data.highlight) {
-              Komanda.store[server][to] = 2;
-            } else {
-              if (Komanda.store[server][to] != 2) Komanda.store[server][to] = 1;
-            }
-          } else {
-            Komanda.store[server] = {};
-            if (data.highlight) {
-              Komanda.store[server][to] = 2;
-            } else {
-              if (Komanda.store[server][to] != 2) Komanda.store[server][to] = 1;
-            }
-          }
-
-          if (Komanda.store[server][to] == 1) {
-            $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('new-messages');
-          } else {
-            $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('highlight');
-          }
-        }
-      }
-
+      self.sendMessage(nick, to, text, message);
       // Komanda.window.setBadgeLabel(Komanda.message_count++);
-
-      Komanda.vent.trigger('message', data);
     });
 
     self.socket.addListener('registered', function(message) {
@@ -244,108 +318,6 @@ define([
       });
     });
 
-    self.socket.addListener('names', function(channel, names) {
-      var channelTopic = "";
-
-      if (self.topics.hasOwnProperty(self.options.uuid)) {
-        if (self.topics[self.options.uuid].hasOwnProperty(channel)) {
-          var topic = self.topics[self.options.uuid][channel];
-          if (topic) channelTopic = topic;
-        }
-      }
-
-      var data = {
-        topic: channelTopic,
-        channel: channel,
-        names: names,
-        server: self.options.uuid,
-        name: self.options.name
-      };
-
-      if (channel) {
-        var c = new Channel({channel: channel});
-        c.set(data);
-        self.channels.add(c);
-
-        Komanda.vent.trigger('names', data);
-        Komanda.vent.trigger('channel/join', c, data);
-
-        var view = new ChannelView({
-          model: c
-        });
-
-        var selector = $('#sidebar div.session[data-id="'+self.options.uuid+'"]');
-        if (selector.find('.channel-list').length > 0) {
-          selector.find('.channel-list').replaceWith(self.channelsView.render().el);
-        } else {
-          selector.append(self.channelsView.render().el);
-        }
-
-        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"]');
-        
-        if (chan.length > 0) return;
-        $('.channel-holder').append(view.render().el);
-      }
-    });
-
-    self.socket.addListener('join', function(channel, nick, message) {
-      var data = {
-        channel: channel,
-        nick: nick,
-        message: message,
-        server: self.options.uuid,
-        name: self.options.name
-      };
-
-      var chan = self.findChannel(channel);
-
-      if (chan) {
-        if (!self.me(nick)) {
-          var names = chan.get('names');
-          names[nick] = "";
-
-          var d = chan.attributes;
-          d.names = names;
-          chan.set(d);
-          self.updateNames(chan);
-        }
-      }
-
-      self.channelsView.render();
-
-      self.addMessage(channel, nick + " has joined the room. ["+message.prefix+"]");
-
-      Komanda.vent.trigger('join', data);
-    });
-
-    self.socket.addListener('topic', function(channel, topic, nick, message) {
-
-      var data = {
-        channel: channel,
-        nick: nick,
-        topic: topic,
-        message: message,
-        server: self.options.uuid,
-        name: self.options.name
-      };
-
-      if (!self.topics.hasOwnProperty(self.options.uuid)) {
-        self.topics[self.options.uuid] = {};
-      }
-
-      self.topics[data.server][channel] = data;
-
-      var chan = self.findChannel(channel);
-
-      if (chan) {
-        var d = chan.attributes;
-        chan.set(d);
-
-        self.addMessage(channel, "Topic: " + topic);
-        Komanda.vent.trigger('topic', data);
-      }
-
-    });
 
     self.socket.addListener('error', function(message) {
 
@@ -367,7 +339,8 @@ define([
         "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477", 
         "478", "481", "482", "483", "484", "485", "491", "501", "502", "511"
       ];
-      if (_.contains(codes, message.rawCommand)) {
+      if (_.contains(codes, message.rawCommand) || 
+          message.rawCommand === "NOTICE" || message.commandType === "error") {
         self.addMessage("*status", message.args.join(' '));
       }
       // Komanda.vent.trigger('raw', {
@@ -574,6 +547,56 @@ define([
       objDiv.scrollTop = objDiv.scrollHeight;
     }
 
+  };
+
+  Client.prototype.sendMessage = function(nick, to, text, message){
+    var self = this;
+
+    var data = {
+      nick: nick,
+      to: to,
+      text: text,
+      message: message,
+      timestamp: moment().format('MM/DD/YY hh:mm:ss')
+    };
+
+    if (text.match(self.nick)) {
+      data.highlight = true;
+    }
+
+    var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
+
+    if (channel.length > 0) {
+      var html = Message(data);
+      channel.append(html);
+      var objDiv = channel.get(0);
+      objDiv.scrollTop = objDiv.scrollHeight;
+
+      if (Komanda.current.channel !== to) {
+        var server = self.options.uuid;
+
+        if (Komanda.store.hasOwnProperty(server)) {
+          if (data.highlight) {
+            Komanda.store[server][to] = 2;
+          } else {
+            if (Komanda.store[server][to] != 2) Komanda.store[server][to] = 1;
+          }
+        } else {
+          Komanda.store[server] = {};
+          if (data.highlight) {
+            Komanda.store[server][to] = 2;
+          } else {
+            if (Komanda.store[server][to] != 2) Komanda.store[server][to] = 1;
+          }
+        }
+
+        if (Komanda.store[server][to] == 1) {
+          $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('new-messages');
+        } else {
+          $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('highlight');
+        }
+      }
+    }
   };
 
   return Client;

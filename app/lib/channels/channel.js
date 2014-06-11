@@ -15,11 +15,13 @@ define([
       server: "",
       uuid: uuid.v4(),
       selected: false,
-      status: false
+      status: false,
+      pm: false
     },
 
     initialize: function() {
       this._modelBinder = new Backbone.ModelBinder();
+      this.messages_id = '#messages-'+this.get('server')+'-'+(this.get('status') ? "status" : this.get('channel').replace(/\#+/, "komanda-"));
     },
 
     onClose: function() {
