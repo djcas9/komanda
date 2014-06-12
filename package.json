@@ -5,7 +5,7 @@
   "window": {
     "show": false,
     "title": "Komanda",
-    "icon": "images/icon.png",
+    "icon": "images/komanda.png",
     "toolbar": false,
     "frame": false,
     "width": 1100,
@@ -45,6 +45,6 @@
   },
   "dependencies": {
     "grunt": "^0.4.5",
-    "irc": "^0.3.7"
+    "irc": "git+https://github.com/mephux/node-irc.git#komanda"
   }
 }

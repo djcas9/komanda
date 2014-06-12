@@ -104,43 +104,83 @@ define([
   }
 
   var setupTabCompletion = function (input, suggestions, usevalue) {
-
     var root = new Trie();
+    var cache = false;
+    var index = 0;
+
+    var items = [];
+    var value = "";
 
     input.keydown(function (e) {
 
       if (e.which === 9) {
-        var pos = input.getCaretPosition();
+        // var pos = input.getCaretPosition();
 
-        var items = e.target.value.split(' ');
-        var value = items[(items.length - 1)];
+        if (!cache) {
+          items = e.target.value.split(' ');
+          value = items[(items.length - 1)];
 
+          if (items.length > 1) {
+            items.pop();
+          }
+
+          cache = true;
+        }
 
         var trie = root.find(value);
 
         if (trie) {
-          items[(items.length - 1)] = trie.uniquePrefix();
-          e.target.value = items.join(' ');
+          // items[(items.length - 1)] = trie.uniquePrefix();
           var choices = trie.choices();
 
+          console.log(choices);
+
           if (choices.length > 1) {
+
+            if (index >= choices.length) index = 0;
+
+            if (items.length == 1 && items[0] === value) {
+              var v = choices[index];
+              if (v.match(/\//)) {
+                e.target.value = v + " ";
+              } else {
+                e.target.value = v + ": ";
+              };
+              index++;
+            } else {
+              e.target.value = items.join(" ") + " " + choices[index];
+              index++;
+            }
+
           } else {
-            e.target.value += ": "
+            if (items.length == 1 && items[0] === value) {
+              var v = choices[index];
+              if (v.match(/\//)) {
+                e.target.value = v + " ";
+              } else {
+                e.target.value = v + ": ";
+              };
+              cache = false;
+              index = 0
+            }
           };
         } else {
+          cache = false;
+          index = 0
         }
         e.preventDefault();
       } else if (e.which === 13) {
         // do nothing
-      } else if (e.originalEvent.keyIdentifier === "U+0022") {
-        e.target.value += "\"";  
-        $(e.target).caret(e.target.value.length - 1);
-      } else if (e.originalEvent.keyIdentifier === "U+0027") {
-        e.target.value += "\'";  
-        $(e.target).caret(e.target.value.length - 1);
+        cache = false;
+        index = 0;
       } else {
+        cache = false;
+        index = 0;
       };
     }).blur(function (e) {
+      cache = false;
+      index = 0;
+
       if (usevalue && (typeof usevalue === "function")) {
         usevalue(e.target.value);
       };

@@ -1,12 +1,12 @@
 <div class="topic {{#if status}}full{{/if}} {{#if pm}}full{{/if}}">
   {{#if status}}
-  <span class='title' title="{{topic.topic}}">
+  <span class='title' title="Server Status Information">
     Server Status Information
   </span>
   {{else}}
   {{#if pm}}
-  <span class='title' title="{{topic.topic}}">
-    Private Message (PM) From {{nick}}
+  <span class='title' title="PM: {{channel}}">
+    Private Message (PM) with {{channel}}
   </span>
   {{else}}
   {{channel}}
@@ -17,7 +17,7 @@
   {{/if}}
 </div>
 
-<div id="{{messages-id this}}" class="messages {{#if status}}full{{/if}} {{#if pm}}full{{/if}}"></div>
+<div id="{{messages-id this}}" class="scrollbar messages {{#if status}}full{{/if}} {{#if pm}}full{{/if}}"></div>
 
 
 {{#if status}}

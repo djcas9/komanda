@@ -33,12 +33,13 @@ define([
     });
 
     var c = new Channel({
-      channel: "*status",
+      channel: "Status",
       topic: false,
       names: false,
       name: "Server Status",
       server: self.options.uuid,
-      status: true
+      status: true,
+      pm: false
     });
 
     self.channels.add(c);
@@ -49,7 +50,7 @@ define([
 
     Komanda.current = {
       server: self.options.uuid,
-      channel: "*status"
+      channel: "Status"
     };
 
     $('.channel-holder').append(view.render().el);
@@ -68,9 +69,10 @@ define([
     var options = _.extend({}, this.options);
     options.channels = [];
     self.socket = new this.irc.Client(this.options.server, this.options.nick, options);
+
     self.bind();
 
-    self.socket.connect(10, function() {
+    self.socket.connect(options.retryCount || 50, function() {
       if (callback && typeof callback === "function") callback(self);
       Komanda.vent.trigger('connect', {
         server: self.options.uuid,
@@ -94,6 +96,55 @@ define([
 
     if (self.binded) return;
     self.binded = true;
+
+    self.reconnectFunction = function() {
+      console.log('w');
+      if (!window.navigator.onLine) {
+        if (self.socket) {
+          $('.channel .messages').html();
+          self.socket.conn.end();
+        }
+        clearInterval(self.reconnectCheck);
+      }
+    };
+
+    self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+
+    self.socket.addListener('connection:end', function() {
+      console.log('END');
+    });
+
+    self.socket.addListener('connection:abort', function(max, count) {
+      console.log('ABORT RECONNECT');
+    });
+
+    self.socket.addListener('connection:timeout', function() {
+    });
+
+    self.socket.addListener('connection:error', function(error) {
+      console.log(error);
+    });
+
+    self.socket.addListener('connection:close', function() {
+      $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').addClass('offline');
+      console.log('CLOSE?');
+    });
+
+    self.socket.addListener('connection:reconnect', function(retry) {
+      console.log('TRY TO CONNECT:', retry);
+    });
+
+    self.socket.addListener('connection:disconnect', function(retry) {
+      $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').addClass('offline');
+      console.log('disconnect');
+    });
+
+    self.socket.addListener('connection:connect', function() {
+      console.log('CONNECT!!!');
+      clearInterval(self.reconnectCheck);
+      self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+      $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').removeClass('offline');
+    });
 
     self.socket.addListener('names', function(channel, names) {
       var channelTopic = "";
@@ -271,36 +322,24 @@ define([
       }
     });
 
+    Komanda.vent.on(self.options.uuid + ":pm", function(nick) {
+      self.buildPM(nick);
+    });
+
     self.socket.addListener('pm', function(nick, text, message) {
-       var chan = self.findChannel(nick);
+      console.log(nick, text, message);
 
-       if (!chan) {
-          chan = new Channel({
-            channel: nick,
-            server: self.options.uuid,
-            names: false,
-            name: nick,
-            pm: true,
-            status: false
-          });
-
-          var view = new ChannelView({
-            model: chan
-          });
-
-          self.channels.add(chan);
-
-        var chan = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+nick+'"]');
-        $('.channel-holder').append(view.render().el);
-       }
-
-       self.sendMessage(nick, nick, text, message);
+      self.buildPM(nick, function(status) {
+        if (status) self.addMessage("Status", text);
+        self.sendMessage(name, nick, text, message);
+      });
     });
 
     self.socket.addListener('message', function(nick, to, text, message) {
       self.sendMessage(nick, to, text, message);
       // Komanda.window.setBadgeLabel(Komanda.message_count++);
     });
+
 
     self.socket.addListener('registered', function(message) {
       Komanda.vent.trigger('registered', {
@@ -320,6 +359,7 @@ define([
 
 
     self.socket.addListener('error', function(message) {
+      console.error(message);
 
       Komanda.vent.trigger('error', {
         error: message,
@@ -341,7 +381,7 @@ define([
       ];
       if (_.contains(codes, message.rawCommand) || 
           message.rawCommand === "NOTICE" || message.commandType === "error") {
-        self.addMessage("*status", message.args.join(' '));
+        self.addMessage("Status", message.args.join(' '));
       }
       // Komanda.vent.trigger('raw', {
         // message: message,
@@ -596,6 +636,37 @@ define([
           $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('highlight');
         }
       }
+    }
+  };
+
+  Client.prototype.buildPM = function(nick, callback) {
+    var self = this;
+
+    if (!nick) nick = "Status";
+  
+    var chan = self.findChannel(nick);
+
+    if (!chan) {
+      chan = new Channel({
+        channel: nick,
+        server: self.options.uuid,
+        names: false,
+        name: nick,
+        pm: true,
+        status: false
+      });
+
+      var view = new ChannelView({
+        model: chan
+      });
+
+      self.channels.add(chan);
+      $('.channel-holder').append(view.render().el);
+    }
+
+    if (callback && typeof callback === "function") {
+      if (nick === "Status") return callback(true);
+      return callback(false);
     }
   };
 

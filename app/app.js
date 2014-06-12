@@ -14,6 +14,7 @@ define(function(require) {
     window.Komanda.store = {};
   }
 
+
   window.requireJS = window.require;
 
   return window.Komanda;

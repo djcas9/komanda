@@ -11,13 +11,13 @@
       {{nick}}:
     </span>
     {{else}}
-    <span class="nickname">
+    <span class="nickname {{#unless nick}}system-message{{/unless}}">
       -->
     </span>
     {{/if}}
 
 
-    <span class="text">
+    <span class="text {{#unless nick}}system-message{{/unless}}">
       {{autolink text}}
     </span>
 

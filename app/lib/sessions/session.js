@@ -19,6 +19,8 @@ define([
       autoRejoin: true,
       autoConnect: false,
       channels: [],
+      retryCount: 20,
+      retryDelay: 5000,
       secure: false,
       selfSigned: false,
       certExpired: false,

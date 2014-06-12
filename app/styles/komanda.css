@@ -112,6 +112,60 @@ table {
 
 /* @group Scroll Bar */
 
+.scrollbar,
+.scrollbar-hide {
+	-webkit-overflow-scrolling: touch !important;
+	overflow-y: overlay !important;
+	overflow-x: hidden !important;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-hide::-webkit-scrollbar{
+	opacity: 0 !important;
+	display: none !important;
+  width: 5px;	
+}
+
+.scrollbar-hide:hover::-webkit-scrollbar{
+	opacity: 1 !important;
+	display: block !important;
+  width: 5px;	
+}
+
+.scrollbar::-webkit-scrollbar-track,
+.scrollbar-hide::-webkit-scrollbar-track {
+  background-color: #30333c;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb,
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  background-color: #83888c;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover,
+.scrollbar-hide::-webkit-scrollbar-thumb:hover {
+  background-color: #93989c;
+}
+
+.scrollbar::-webkit-resizer,
+.scrollbar::-webkit-scrollbar-corner,
+.scrollbar::-webkit-scrollbar-button,
+.scrollbar::-webkit-scrollbar-track-piece,
+
+.scrollbar-hide::-webkit-resizer,
+.scrollbar-hide::-webkit-scrollbar-corner,
+.scrollbar-hide::-webkit-scrollbar-button,
+.scrollbar-hide::-webkit-scrollbar-track-piece {
+  display: none;
+}
+
 /* @end */
 
 /* @group Main */
@@ -458,6 +512,14 @@ border-radius: 100px 100px 100px 100px;
 	background-color: #00f11e;
 }
 
+#sidebar .session .channel-list ul.channels li.offline {
+	background-color: #9d1700 !important;
+}
+
+#sidebar .session .channel-list ul.channels li.offline div.status{
+	background-color: #ff2a1d !important;	
+}
+
 #sidebar .session .channel-list ul.channels li.selected div.status{
 	background-color: #b8d1e5;	
 }
@@ -499,7 +561,7 @@ border-radius: 100px 100px 100px 100px;
 	left: 0;
 }
 
-.channel[data-name="*status"]{
+.channel[data-name="Status"]{
 	display: block;
 }
 
@@ -512,8 +574,15 @@ border-radius: 100px 100px 100px 100px;
 	width: 180px;
 	background-color: #333c44;
 	border-left: 1px solid #000;
-	overflow-x:hidden;
-	overflow-y:scroll;
+}
+
+.channel .names .user-list{
+	display: block;
+	position: absolute;
+	top: 45px;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
 .channel .names div.user{
@@ -666,6 +735,11 @@ div.message .body .text{
 	line-height: 17px;
 }
 
+div.message .body .nickname.system-message,
+div.message .body .text.system-message{
+	color: #717171;	
+}
+
 div.message .body .text a{
 	color: #96b5c4;
 }
@@ -678,7 +752,7 @@ div.message .body .text img{
 	max-width: 200px;
 	max-height: 200px;
 	margin-top: 10px;
-	margin-left: 10px;
+	margin-left: 120px;
 }
 
 /* @end */

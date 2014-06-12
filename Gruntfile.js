@@ -179,7 +179,7 @@ module.exports = function(grunt) {
         win: false,
         linux32: false,
         linux64: false,
-        mac_icns: "app/styles/images/logo.icns"
+        mac_icns: "app/styles/images/komanda.icns"
       },
       // src: ['./**/*'],
       src: [
