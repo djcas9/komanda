@@ -179,7 +179,7 @@ module.exports = function(grunt) {
         win: false,
         linux32: false,
         linux64: false,
-        mac_icns: "app/styles/images/komanda.icns"
+        mac_icns: "app/styles/images/logo/komanda.icns"
       },
       // src: ['./**/*'],
       src: [
@@ -215,6 +215,7 @@ module.exports = function(grunt) {
 
     fs.copySync("build/komanda-source/app/styles/images", "build/komanda-source/images")
     fs.copySync("build/komanda-source/app/styles/fonts", "build/komanda-source/fonts");
+    fs.copySync("node_modules/irc/", "build/komanda-source/node_modules/irc/");
 
     rimraf.sync("build/komanda-source/app", function(error) {
       console.log(error);
