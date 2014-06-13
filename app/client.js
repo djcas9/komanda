@@ -630,10 +630,12 @@ define([
       data.highlight = true;
     }
 
+    var channel;
+
     if (flip) {
-      var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+nick+'"] div.messages');
+      channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+nick+'"] div.messages');
     } else {
-      var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
+      channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
     }
 
     var html = Message(data);
