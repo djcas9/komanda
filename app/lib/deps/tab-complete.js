@@ -20,6 +20,8 @@ define([
    * Add a list of words to the trie.
    */
   Trie.prototype.words = function (words) {
+    this.children = {};
+
     __.each(words, function (w) { this.word(w); }, this);
     return this;
   }
@@ -139,27 +141,31 @@ define([
 
             if (index >= choices.length) index = 0;
 
-            if (items.length == 1 && items[0] === value) {
+            if (items.length === 1 && items[0] === value) {
               var v = choices[index];
-              if (v.match(/\//)) {
+              if (v.match(/\//) || v.match(/\#/)) {
                 e.target.value = v + " ";
               } else {
                 e.target.value = v + ": ";
               };
               index++;
             } else {
-              e.target.value = items.join(" ") + " " + choices[index];
+              e.target.value = items.join(" ") + " " + choices[index] + " ";
               index++;
             }
 
           } else {
-            if (items.length == 1 && items[0] === value) {
+            if (items.length === 1 && items[0] === value) {
               var v = choices[index];
-              if (v.match(/\//)) {
+              if (v.match(/\//) || v.match(/\#/)) {
                 e.target.value = v + " ";
               } else {
                 e.target.value = v + ": ";
               };
+              cache = false;
+              index = 0
+            } else {
+              e.target.value = items.join(" ") + " " + choices[index] + " ";
               cache = false;
               index = 0
             }

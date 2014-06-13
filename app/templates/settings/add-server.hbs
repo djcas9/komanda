@@ -1,0 +1,31 @@
+<div class="komanda-box">
+
+  <div class='komanda-box-title'>
+      Add A New Server
+  </div>
+
+  <div class="komanda-box-content">
+
+    <p class='komanda-box-text'>
+    {{{message}}}
+    </p>
+
+  </div>
+
+  <div class="komanda-box-footer">
+
+    <div class='form-actions'>
+
+      <button class='button {{button.type}} limp-action'>{{button.title}}</button>
+
+      {{#if ignore_cancel}}
+      {{else}}
+      <button class='button' onClick='$.limpClose()'>Cancel</button>
+      {{/if}}
+
+    </div>
+
+  </div>
+
+</div>
+

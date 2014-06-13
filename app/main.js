@@ -48,7 +48,7 @@ requirejs(["config"], function(require) {
       Komanda.settings.add(session);
 
       session.set({
-        channels: ["#snorby"]
+        channels: ["#wordup"]
       });
 
       session.save(null);

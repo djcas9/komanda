@@ -17,6 +17,13 @@ define([
     },
 
     initialize: function() {
+      var self = this;
+      self.completerSetup = false;
+      self.completer = null;
+
+      Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":update:words", function(words, channels) {
+        self.updateWords(words, channels);
+      });
     },
 
     onClose: function() {
@@ -37,13 +44,23 @@ define([
 
     setupAutoComplete: function() {
       var self = this;
-      var keys = _.keys(self.model.get('names'));
+      if (!self.completerSetup) {
+        self.completerSetup = true;
+        self.completer = tab($(this.el).find('input'), $('#main-search-suggestions'));
+        self.updateWords();
+      };
+    },
 
+    updateWords: function(words, channels) {
+      var self = this;
+
+      console.log(channels);
+
+      var keys = words ? _.keys(words) : _.keys(self.model.get('names'));
       keys.push(Komanda.commands)
+      if (channels) keys.push(channels);
       var keysCommands = _.flatten(keys);
-
-      var completer = tab($(this.el).find('input'), $('#main-search-suggestions'));
-      completer.words(keysCommands);
+      self.completer.words(keysCommands);
     },
 
     openLink: function(e) {
@@ -55,9 +72,14 @@ define([
     onRender: function() {
       var self = this;
       var $this = $(this.el);
+
+      console.log('update');
+
       $this.attr('data-server-id', this.model.get('server'));
       $this.attr('data-name', this.model.get('channel'));
+
       self.setupAutoComplete();
+      self.updateWords();
     },
 
     sendMessage: function(e) {

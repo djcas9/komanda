@@ -29,14 +29,14 @@ define([
       sasl: false,
       stripColors: false,
       channelPrefixes: "&#",
-      messageSplit: 512,
-      uuid: uuid.v4()
+      messageSplit: 512
     },
 
     validate: function (attrs) {
     },
 
     initialize: function () {
+      this.uuid = uuid.v4();
     },
 
     onClose: function() {

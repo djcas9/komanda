@@ -20,12 +20,12 @@ define([
     },
 
     initialize: function() {
-      this._modelBinder = new Backbone.ModelBinder();
+      // this._modelBinder = new Backbone.ModelBinder();
       this.messages_id = '#messages-'+this.get('server')+'-'+(this.get('status') ? "status" : this.get('channel').replace(/\#+/, "komanda-"));
     },
 
     onClose: function() {
-      this._modelBinder.unbind();
+      // this._modelBinder.unbind();
     },
 
     select: function() {
