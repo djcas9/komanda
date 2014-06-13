@@ -10,10 +10,10 @@ requirejs(["config"], function(require) {
     "lib/layout/content",
     "lib/layout/sidebar",
     "connect",
-    'lib/settings',
+    'lib/sessions/sessions',
     'lib/sessions/session'
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView, 
-    SidebarView, Connect, Settings, Session) {
+    SidebarView, Connect, Sessions, Session) {
 
       Komanda.commands = [
         "/help",
@@ -29,8 +29,8 @@ requirejs(["config"], function(require) {
         "/unignore"
       ];
 
-    Komanda.settings = new Settings();
-    Komanda.settings.fetch();
+    Komanda.sessions = new Sessions();
+    Komanda.sessions.fetch();
 
     Komanda.message_count = 0;
 
@@ -39,13 +39,13 @@ requirejs(["config"], function(require) {
       channel: null
     };
 
-    if (Komanda.settings.models.length <= 0) {
+    if (Komanda.sessions.models.length <= 0) {
       // create default session
-      var session = Komanda.settings.create({
+      var session = Komanda.sessions.create({
         id: 1
       });
 
-      Komanda.settings.add(session);
+      Komanda.sessions.add(session);
 
       session.set({
         channels: ["#wordup"]
@@ -60,6 +60,7 @@ requirejs(["config"], function(require) {
       Komanda.gui = requireNode('nw.gui');
       Komanda.window = Komanda.gui.Window.get();
       Komanda.window.show();
+
 
       Komanda.vent.on('komanda:debug', function() {
         Komanda.window.showDevTools();
@@ -89,13 +90,17 @@ requirejs(["config"], function(require) {
         Komanda.window.maximize();
       });
 
-      _.each(Komanda.settings.models, function(m) {
+      _.each(Komanda.sessions.models, function(m) {
         var connect = new Connect(m); 
-        connect.start(function(client) {
-          _.each(m.get('channels'), function(c) {
-            Komanda.vent.trigger(m.get('uuid') + ":join", c);
+
+        if (m.get('connectOnStart')) {
+          connect.start(function(client) {
+            _.each(m.get('channels'), function(c) {
+              Komanda.vent.trigger(m.get('uuid') + ":join", c);
+            });
           });
-        });
+        }
+
       });
     });
 

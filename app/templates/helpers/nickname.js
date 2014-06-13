@@ -4,11 +4,11 @@ define('templates/helpers/nickname', [
 ], function(Handlebars, _) {
 
   Handlebars.registerHelper("nickname", function(server) {
-    var server = Komanda.settings.get(server);
-    if (server) {
-      return server.get('nick');
+    var s = Komanda.sessions.get(server);
+    if (s) {
+      return s.get('nick');
     } else {
-      return "N/A"
+      return "N/A";
     }
   });
 

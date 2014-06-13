@@ -13,7 +13,8 @@ define([
     events: {
       "keypress input": "sendMessage",
       "click div.message a": "openLink",
-      "click div.user": "pm"
+      "click div.user": "pm",
+      "click div.show-more": "showMore"
     },
 
     initialize: function() {
@@ -31,6 +32,15 @@ define([
         self.scroll.destroy();
         self.scroll = null;
       }
+    },
+
+    showMore: function(e) {
+      e.preventDefault();
+      var current = $(e.currentTarget);
+      var ele =  current.attr('data-ele');
+      var show = current.attr('data-show');
+
+      $(show, ele).toggle();
     },
 
     pm: function(e) {
@@ -53,9 +63,6 @@ define([
 
     updateWords: function(words, channels) {
       var self = this;
-
-      console.log(channels);
-
       var keys = words ? _.keys(words) : _.keys(self.model.get('names'));
       keys.push(Komanda.commands)
       if (channels) keys.push(channels);
@@ -72,8 +79,6 @@ define([
     onRender: function() {
       var self = this;
       var $this = $(this.el);
-
-      console.log('update');
 
       $this.attr('data-server-id', this.model.get('server'));
       $this.attr('data-name', this.model.get('channel'));

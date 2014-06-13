@@ -10,6 +10,9 @@ requirejs.config({
     tabcomplete: "lib/deps/tab-complete",
     limp: "lib/deps/limp",
 
+    // Embed
+    gistembed: "lib/deps/embed/gist-embed",
+
     "underscore": "../vendor/bower/lodash/dist/lodash.underscore",
     "moment": "../vendor/bower/momentjs/moment",
     "backbone": "../vendor/bower/backbone/backbone",
@@ -47,6 +50,9 @@ requirejs.config({
       "deps": ["jquery"]
     },
     "limp": {
+      "deps": ["jquery"]
+    },
+    "gistembed": {
       "deps": ["jquery"]
     },
     "caret": {

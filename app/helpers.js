@@ -11,8 +11,8 @@ define([
         if (args && args.hasOwnProperty('width')) {
           if (args.width) {
             Helpers.limp.options.style.width = args.width;
-          };
-        };
+          }
+        }
 
         var options = $.extend({}, Helpers.limp.options, args);
         options.template = template;
@@ -28,7 +28,7 @@ define([
         adjustmentSize: 0,
         loading: true,
         alwaysCenter: true,
-        animation: "",
+        animation: "pop",
         shadow: "0 0px 20px rgba(0,0,0,0.5)",
         round: 3,
         distance: 10,
@@ -72,11 +72,10 @@ define([
 
           try {
             var $html = template(data);
-            console.log($html);
             if ($html.length > 0) { return $html; }
             return false;
           } catch(e) {
-            console.error(e)
+            console.error(e);
             return false;
           }
 

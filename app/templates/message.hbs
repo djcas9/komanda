@@ -17,8 +17,9 @@
     {{/if}}
 
 
-    <span class="text {{#unless nick}}system-message{{/unless}}">
-      {{autolink text}}
+    <span id="{{server}}-{{uuid}}" class="text {{#unless nick}}system-message{{/unless}}">
+      {{autolink text server uuid}}
+      <div class="embed-items"></div>
     </span>
 
   </div>

@@ -1,14 +1,78 @@
 <div class="komanda-box">
 
   <div class='komanda-box-title'>
-      Add A New Server
+    Add New IRC Server
   </div>
 
   <div class="komanda-box-content">
 
-    <p class='komanda-box-text'>
-    {{{message}}}
-    </p>
+    <div class="form-box">
+      <label for="name">Server Title</label>
+      <input id="server-name" type="text" name="name" placeholder="Freenode" required>
+    </div>
+
+    <div class="form-box">
+      <label for="name">Server Address</label>
+      <input id="server-address" type="text" name="server" placeholder="irc.freenode.net" required>
+      :
+      <input style="width:60px" id="server-address" type="text" name="server" placeholder="6667" required>
+    </div>
+
+
+    <div class="form-box">
+      <label for="name">Nick</label>
+      <input id="server-nick" type="text" name="nick" placeholder="Komanda" required>
+    </div>
+
+    <div class="form-box">
+      <label for="name">Real Name</label>
+      <input id="server-real-name" type="text" name="realName" placeholder="Willy Bob" required>
+    </div>
+
+    <div class="form-box">
+      <label for="name">Server Auth</label>
+      <input style="width:145px" id="server-auth-user-name" type="text" placeholder="User" name="userName" placeholder="" required>
+      <input style="width:145px" id="server-auth-password" type="password" name="password" placeholder="Password" required>
+    </div>
+
+    <div class="form-box">
+      <label for="name">Channels</label>
+      <input id="server-channels" type="text" name="channels" placeholder="#channel1, #channel2, #channel3">
+    </div>
+
+    <br>
+
+    <div class="form-box inline">
+      <label for="name">Connect On Start</label>
+      <input id="server-flood-protection" type="checkbox" name="connectOnStart">
+    </div>
+
+    <div class="form-box inline">
+      <label for="name">Enable SSL</label>
+      <input id="server-ssl" type="checkbox" name="secure">
+    </div>
+
+    <div class="form-box inline">
+      <label for="name">Allow Self-Signed Cert?</label>
+      <input id="server-ssl" type="checkbox" name="secure">
+    </div>
+
+    <div class="form-box inline">
+      <label for="name">Allow Expired Cert?</label>
+      <input id="server-ssl" type="checkbox" name="secure">
+    </div>
+
+    <div class="form-box inline">
+      <label for="name">Enable SASL</label>
+      <input id="server-sasl" type="checkbox" name="sasl">
+    </div>
+
+    <div class="form-box inline">
+      <label for="name">Enable Flood Protection</label>
+      <input id="server-flood-protection" type="checkbox" name="floodProtection">
+    </div>
+
+
 
   </div>
 
@@ -16,7 +80,7 @@
 
     <div class='form-actions'>
 
-      <button class='button {{button.type}} limp-action'>{{button.title}}</button>
+      <button class='button {{button.type}} limp-action'>Save Server</button>
 
       {{#if ignore_cancel}}
       {{else}}

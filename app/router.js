@@ -17,10 +17,10 @@ define(function(require, exports, module) {
       var SessionsView = require("lib/sessions/sessions-view");
       var Session = require("lib/sessions/session");
 
-      Komanda.settings.fetch();
+      Komanda.sessions.fetch();
 
       var view = new SessionsView({
-        collection: Komanda.settings,
+        collection: Komanda.sessions,
         model: new Session()
       });
 
