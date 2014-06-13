@@ -2,7 +2,7 @@
 
 # Komanda
 
-Komanda is a IRC client built with node-webkit, javascript, html and css. The project goal is to build the best client for developers that use IRC.
+Komanda is a IRC client built with node-webkit, javascript, html and css for people who write code. The project goal is to build the best client for developers that use IRC for their projects, follow others or getting help on a new language or framework.
 
 The Plan:
 
