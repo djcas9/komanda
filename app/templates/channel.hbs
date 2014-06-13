@@ -1,7 +1,9 @@
 <div class="topic {{#if status}}full{{/if}} {{#if pm}}full{{/if}}">
   {{#if status}}
-  <span class='title' title="Server Status Information">
-    Server Status Information
+  <span class='title' title="">
+    {{#get-server server}}
+    {{name}}: {{server}}:{{port}}
+    {{/get-server}}
   </span>
   {{else}}
   {{#if pm}}

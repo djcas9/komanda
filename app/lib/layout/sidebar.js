@@ -22,7 +22,10 @@ define([
 
     addServer: function(e) {
       e.preventDefault();
-      var box = Helpers.limp.box(AddServerView, {}, {});
+      var box = Helpers.limp.box(AddServerView, {}, {
+        afterOpen: function() {
+        }
+      });
       box.open();
     },
 

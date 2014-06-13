@@ -44,6 +44,33 @@ table {
 	border-spacing: 0;
 }
 
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}
+
 /* @end */
 
 /* @group fonts */
@@ -732,6 +759,7 @@ div.message .body{
 	position: relative;
 	display: inline-block;
 	word-wrap:break-word;
+	padding-right: 10px;
 }
 
 div.message .body .timestamp{
@@ -754,10 +782,11 @@ div.message .body .nickname.highlight{
 }
 
 div.message .body .text{
-	position: relative;
+	word-break: break-word;
 	word-wrap:break-word;
 	color: #e8e8e8;
-	line-height: 17px;
+	line-height: 18px;
+	padding-right: 10px;
 }
 
 div.message .body .nickname.system-message,
@@ -771,6 +800,50 @@ div.message .body .text a{
 
 div.message .body .text a:hover{
 	color: #abcddf;	
+}
+
+div.message .body .text .embed-items{
+	display: inline-block;
+	position: relative;
+}
+
+div.message .body .text .embed-items .show-more{
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	
+	border-radius: 5px;
+	border: 1px solid rgba(0,0,0,0.51);
+	box-shadow: 0px 1px 0px rgba( 255,255,255,0.05 ), inset 0px 1px 0px rgba( 255,255,255,0.12);
+	background: #2f2f2f;
+	background: -moz-linear-gradient(top, rgba( 255,255,255,0.06) 0%, rgba( 255,255,255,0 ) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba( 255,255,255,0.06)), color-stop(100%,rgba( 255,255,255,0)));
+	background: -webkit-linear-gradient(top, rgba( 255,255,255,0.06) 0%, rgba( 255,255,255,0.0) 100%);
+	background: -o-linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	background: -ms-linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	background: linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#434343', endColorstr='#2d2e34',GradientType=0 );
+	color: #fff;
+	padding: 5px 15px;
+	font-size: 0.9em;
+	margin-top: 10px;
+}
+
+div.message .body .text .embed-items .show-more i{
+	margin-right: 5px;
+}
+
+div.message .body .text .embed-items .gist,
+div.message .body .text .embed-items .jsfiddle-holder{
+	display: none;
+	margin-top: 10px;
 }
 
 div.message .body .text img{
@@ -938,8 +1011,8 @@ span.komanda-box-title-other{
 
 .komanda-box-title{
 	display: inline-block;
-	height: 55px;
-	line-height: 55px;
+	height: 50px;
+	line-height: 50px;
 	color: #fff;
 	font-weight: normal;
 	text-decoration: none;
@@ -962,7 +1035,7 @@ span.komanda-box-title-other{
    -webkit-border-top-right-radius: 3px;
     -webkit-border-top-left-radius: 3px;
 	background-color: #151a1f;
-	font-size: 1.6em;
+	font-size: 1.4em;
 }
 
 .komanda-box-title i{
@@ -1029,17 +1102,21 @@ span.komanda-box-title-other{
 }
 
 .limp-box-close i{
-	opacity: 0.5;
-	font-size: 0.6em;
+	opacity: 0.3;
+	font-size: 0.55em;
 	display: block;
 	position: absolute;
-	top: 7px;
 	right: 0;
 	bottom: 0;
-	left: 4.5px;
 	width: 10px;
 	height: 10px;
 	color: #fff;
+	top: 7px;
+	left: 6px;
+}
+
+.limp-box-close:hover i{
+	opacity: 1;
 }
 
 .komanda-box-content{
@@ -1079,6 +1156,51 @@ span.komanda-box-title-other{
     -webkit-border-bottom-right-radius: 3px;
     -webkit-border-bottom-left-radius: 3px;
 	position: relative;
+}
+
+/* @end */
+
+/* @group Forms */
+
+div.form-box{
+	display: block;
+	position: relative;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+div.form-box.inline{
+	display: inline-block;
+}
+
+div.form-box label{
+	width: 160px;
+	display: inline-block;
+	position: relative;
+	text-align: right;
+	margin-right: 10px;
+	color: #a3a3a3;
+}
+
+/*div.form-box.inline label{
+	text-align: left;
+	float: right;
+	margin-left: 20px;
+}*/
+
+div.form-box input[type='text'],
+div.form-box input[type='password']{
+	width: 300px;
+	resize: none;
+	outline: none;
+	background-color: #21252a;
+	border: 1px solid #4d5967;
+	clear: both;
+	position: relative;
+	padding: 7px;
+	margin: 4px 3px;
+	font-size: 0.9em;
+	color: #fff;
 }
 
 /* @end */

@@ -23,6 +23,10 @@ define([
       var server = this.model.get('server');
       var channel = this.model.get('channel');
 
+      if (this.model.get('status') && !Komanda.sessions.get(server).get('connected')) {
+        $this.addClass('offline');
+      }
+
       $this.attr('data-server-id', server);
       $this.attr('data-name', channel);
 

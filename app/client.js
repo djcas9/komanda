@@ -7,8 +7,9 @@ define([
   'lib/channels/channels-view',
   "hbs!templates/message",
   "hbs!templates/names",
-  "moment"
-], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, NamesView, moment) {
+  "moment",
+  "uuid"
+], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, NamesView, moment, uuid) {
 
   var Client = function(session) {
     var self = this;
@@ -108,6 +109,14 @@ define([
       }
     };
 
+    Komanda.vent.on('connect', function() {
+      console.log('CONNECT');
+      self.session.set('connected', true);
+      clearInterval(self.reconnectCheck);
+      self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+      $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').removeClass('offline');
+    });
+
     self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
 
     self.socket.addListener('connection:end', function() {
@@ -134,11 +143,13 @@ define([
     });
 
     self.socket.addListener('connection:disconnect', function(retry) {
+      self.session.set('connected', false);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').addClass('offline');
       console.log('disconnect');
     });
 
     self.socket.addListener('connection:connect', function() {
+      self.session.set('connected', true);
       clearInterval(self.reconnectCheck);
       self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').removeClass('offline');
@@ -247,16 +258,27 @@ define([
     });
 
     Komanda.vent.on(self.options.uuid + ":part", function(channel) {
-      self.socket.part(channel, "Bye!", function() {
-        var chan = self.findChannel(channel);
-        if (chan) chan.removeChannel(channel, self.options.uuid);
-        Komanda.vent.trigger('channel/part', self.options.uuid, channel);
-      }); 
+      var chan = self.findChannel(channel);
+
+      if (chan) {
+        if (chan.get('pm')) {
+          self.removeAndCleanChannel(chan, self.options.uuid);
+          Komanda.vent.trigger('channel/part', self.options.uuid, channel);
+        } else {
+          self.socket.part(channel, "Bye!", function() {
+
+            self.removeAndCleanChannel(chan, self.options.uuid);
+            Komanda.vent.trigger('channel/part', self.options.uuid, channel);
+          }); 
+        }
+      }
+
     });
 
     Komanda.vent.on(self.options.uuid + ":join", function(channel) {
       self.socket.join(channel, function() {
         Komanda.vent.trigger('channel/join', self.options.uuid, channel);
+        $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"]').click();
       }); 
     });
 
@@ -266,6 +288,8 @@ define([
           nick: self.nick,
           to: data.target || "",
           text: data.message,
+          server: self.options.uuid,
+          uuid: uuid.v4(),
           timestamp: moment().format('MM/DD/YY hh:mm:ss')
         };
 
@@ -273,12 +297,17 @@ define([
 
         if (channel.length > 0) {
           var html = Message(dd);
-          channel.append(html);
-          var objDiv = channel.get(0);
-          objDiv.scrollTop = objDiv.scrollHeight;
+          _.defer(function() {
+            channel.append(html);
+          });
         }
 
         self.socket.say(dd.to, dd.text);
+
+        setTimeout(function() {
+          var objDiv = channel.get(0);
+          objDiv.scrollTop = objDiv.scrollHeight;
+        }, 10);
       };
 
       if (data.message && data.message.match(/^\//)) {
@@ -288,14 +317,14 @@ define([
 
       switch(command[0]) {
         case '/me':
-          self.socket.action(data.target, command[1]);
+          command.shift();
+          self.socket.action(data.target, command.join(" "));
         break;
         case '/part':
           self.socket.part(data.target, "Bye!", function() {
           var chan = self.findChannel(data.target);
           if (chan) {
-            chan.removeChannel(data.target, self.options.uuid);
-            self.channels.remove(chan);
+            self.removeAndCleanChannel(chan, self.options.uuid);
           }
           Komanda.vent.trigger('channel/part', self.options.uuid, data.target);
         }); 
@@ -316,18 +345,25 @@ define([
     });
 
     Komanda.vent.on(self.options.uuid + ":pm", function(nick) {
-      self.buildPM(nick);
+      self.buildPM(nick, function() {
+        $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="'+nick+'"]').click();
+      });
     });
 
     self.socket.addListener('pm', function(nick, text, message) {
       self.buildPM(nick, function(status) {
         if (status) self.addMessage("Status", text);
-        self.sendMessage(name, nick, text, message);
       });
     });
 
     self.socket.addListener('message', function(nick, to, text, message) {
-      self.sendMessage(nick, to, text, message);
+      if ( to.match(/^[#&]/) ) {
+        self.sendMessage(nick, to, text, message);
+      } else {
+        // PM
+        console.log('GOT PM');
+        self.sendMessage(nick, to, text, message, true);
+      }
       // Komanda.window.setBadgeLabel(Komanda.message_count++);
     });
 
@@ -398,7 +434,7 @@ define([
           self.updateNames(chan);
 
           self.addMessage(chan.get('channel'), oldnick + " is now known as " + newnick);
-        };
+        }
 
 
       });
@@ -448,7 +484,7 @@ define([
         if (channel.get('names').hasOwnProperty(nick)) {
           self.removeUser(channel.get('channel'), nick);
           self.addMessage(channel.get('channel'), nick + " has left IRC. " + (reason ? "["+reason+"]" : "") + "");
-        };
+        }
       });
 
       Komanda.vent.trigger('quit', data);
@@ -512,8 +548,7 @@ define([
       if (chan) {
 
         if (self.me(nick)) {
-          chan.removeChannel(channel, self.options.uuid);
-          self.channels.remove(chan);
+          self.removeAndCleanChannel(chan, self.options.uuid);
         } else {
 
           var names = _.omit(chan.get('names'), nick);
@@ -578,7 +613,7 @@ define([
 
   };
 
-  Client.prototype.sendMessage = function(nick, to, text, message){
+  Client.prototype.sendMessage = function(nick, to, text, message, flip){
     var self = this;
 
     var data = {
@@ -586,6 +621,8 @@ define([
       to: to,
       text: text,
       message: message,
+      server: self.options.uuid,
+      uuid: uuid.v4(),
       timestamp: moment().format('MM/DD/YY hh:mm:ss')
     };
 
@@ -593,13 +630,18 @@ define([
       data.highlight = true;
     }
 
-    var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
+    if (flip) {
+      var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+nick+'"] div.messages');
+    } else {
+      var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
+    }
+
+    var html = Message(data);
 
     if (channel.length > 0) {
-      var html = Message(data);
-      channel.append(html);
-      var objDiv = channel.get(0);
-      objDiv.scrollTop = objDiv.scrollHeight;
+      _.defer(function() {
+        channel.append(html);
+      });
 
       if (Komanda.current.channel !== to) {
         var server = self.options.uuid;
@@ -625,7 +667,18 @@ define([
           $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('highlight');
         }
       }
+
+      setTimeout(function() {
+        var objDiv = channel.get(0);
+        objDiv.scrollTop = objDiv.scrollHeight;
+      }, 10);
     }
+  };
+
+  Client.prototype.removeAndCleanChannel = function(channel) {
+    var self = this;
+    channel.removeChannel(channel.get('channel'), channel.get('server'));
+    self.channels.remove(channel);
   };
 
   Client.prototype.buildPM = function(nick, callback) {

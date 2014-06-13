@@ -8,6 +8,7 @@ define([
     _modelBinder: undefined,
 
     defaults: {
+      connectOnStart: false,
       name: "Freenode",
       server: "irc.freenode.net",
       nick: "komanda",
@@ -27,9 +28,10 @@ define([
       floodProtection: false,
       floodProtectionDelay: 1000,
       sasl: false,
-      stripColors: false,
+      stripColors: true,
       channelPrefixes: "&#",
-      messageSplit: 512
+      messageSplit: 512,
+      connected: false
     },
 
     validate: function (attrs) {
@@ -37,9 +39,11 @@ define([
 
     initialize: function () {
       this.uuid = uuid.v4();
+      this._modelBinder = new Backbone.ModelBinder();
     },
 
     onClose: function() {
+      this._modelBinder.unbind();
     }
 
   });
