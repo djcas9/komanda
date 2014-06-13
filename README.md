@@ -27,10 +27,12 @@ Komanda is not ready for primetime yet but will be very soon.
 # GUI
 
 ![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-1.png)
+![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-2.png)
+![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-3.png)
 
 # TODO
 
-* add todo item
+* add todo items
 
 # Build
   * `npm install`
