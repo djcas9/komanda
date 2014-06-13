@@ -14,7 +14,7 @@ Komanda is a IRC client built with node-webkit, javascript, html and css for peo
 
 # WTF are script codes?
 
-Not a developer? no worries, It's stil a great client!
+Not a developer? No worries, It's stil a great client!
 
 * Themable
 * Clean & Simple
