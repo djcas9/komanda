@@ -49,7 +49,7 @@ requirejs(["config"], function(require) {
 
       session.set({
         connectOnStart: true,
-        channels: ["#wordup"]
+        channels: ["#komanda"]
       });
 
       session.save(null);
