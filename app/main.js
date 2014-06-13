@@ -48,11 +48,36 @@ requirejs(["config"], function(require) {
       Komanda.sessions.add(session);
 
       session.set({
+        connectOnStart: true,
         channels: ["#wordup"]
       });
 
       session.save(null);
 
+      // var session2 = Komanda.sessions.create({
+        // id: 2
+      // });
+
+      // Komanda.sessions.add(session2);
+
+      // session2.set({
+        // connectOnStart: false,
+        // name: "Snorby IRC Server",
+        // server: "snorby.org",
+        // nick: "mephux",
+        // port: 6667,
+        // userName: "mephux",
+        // sasl: true,
+        // pass: "start0492",
+        // password: "start0492",
+        // debug: false,
+        // selfSigned: true,
+        // certExpired: true,
+        // showErrors: false,
+        // secure: true
+      // });
+
+      // session2.save(null);
 
     }
 
