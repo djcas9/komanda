@@ -176,7 +176,7 @@ module.exports = function(grunt) {
         app_version: '0.1.0',
         build_dir: './build',
         mac: true,
-        win: false,
+        win: true,
         linux32: false,
         linux64: false,
         mac_icns: "app/styles/images/logo/komanda.icns"
