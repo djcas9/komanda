@@ -4,7 +4,7 @@ define([
   "uuid"
 ], function(Komanda, Backbone, uuid) {
 
-  var channel = Backbone.NestedModel.extend({
+  var channel = Backbone.Model.extend({
     idAttribute: 'channel',
 
     defaults: {
@@ -20,12 +20,10 @@ define([
     },
 
     initialize: function() {
-      // this._modelBinder = new Backbone.ModelBinder();
       this.messages_id = '#messages-'+this.get('server')+'-'+(this.get('status') ? "status" : this.get('channel').replace(/\#+/, "komanda-"));
     },
 
     onClose: function() {
-      // this._modelBinder.unbind();
     },
 
     select: function() {

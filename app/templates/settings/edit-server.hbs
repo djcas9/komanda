@@ -17,7 +17,16 @@
 
     <div class='form-actions'>
 
-      <button class='button {{button.type}} limp-action save-new-session'>Save Server</button>
+      <button class='button limp-action edit-session'>Edit Server</button>
+
+      {{#if session.connectionOpen}}
+      <button class='button right warning disconnect-session'>Disconnect</button>
+      {{else}}
+      <button class='button right connect-session'>Connect</button>
+      {{/if}}
+
+      <button class='button right warning destroy-session'>Delete Server</button>
+
 
       {{#if ignore_cancel}}
       {{else}}

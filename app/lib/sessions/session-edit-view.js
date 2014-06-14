@@ -18,13 +18,11 @@ define([
 
     initialize: function() {
       var self = this;
-
       this._modelBinder = new Backbone.ModelBinder();
     },
 
     onClose: function() {
       this._modelBinder.unbind();
-      this.model.stopTracking();
     },
 
     events: {
@@ -47,7 +45,7 @@ define([
       var self = this;
 
       self.model.set('uuid', uuid.v4());
-      self.model.set('connected', false);
+      self.model.set('connectionOpen', false);
 
       self.model.trigger('changed');
 
@@ -76,11 +74,16 @@ define([
 
       if (confirm('Are you sure you want to delete this source?')) {
         var uuid = this.model.get('uuid');
-        var m = Komanda.sessions.get(uuid);
-        m.destroy();
-        Komanda.sessions.remove(m);
-        $('.channel-holder .channel[data-server-id="'+uuid+'"]').remove();
-        $.limpClose();
+        console.log(uuid);
+
+        Komanda.vent.trigger(uuid + ':disconnect', function() {
+
+          var m = Komanda.sessions.get(uuid);
+          m.destroy();
+          Komanda.sessions.remove(m);
+          $('.channel-holder .channel[data-server-id="'+uuid+'"]').remove();
+          $.limpClose();
+        });
       };
     },
 

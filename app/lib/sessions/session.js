@@ -1,11 +1,10 @@
 define([
-  'backbone-plugins',
+  'backbone',
   'uuid'
 ], function(Backbone, uuid) {
 
-  var Session = Backbone.NestedModel.extend({
+  var Session = Backbone.Model.extend({
     idAttribute: 'uuid',
-    _modelBinder: undefined,
 
     defaults: {
       connectOnStart: false,
@@ -17,10 +16,10 @@ define([
       port: 6667,
       debug: false,
       showErrors: false,
-      autoRejoin: true,
+      autoRejoin: false,
       autoConnect: false,
       channels: [
-        "#komanda", "#node-webkit"
+        "#komanda"
       ],
       retryCount: 20,
       retryDelay: 5000,
@@ -33,23 +32,18 @@ define([
       stripColors: true,
       channelPrefixes: "&#",
       messageSplit: 512,
-      connected: false
+      connectionOpen: false
     },
 
     validate: function (attrs) {
     },
 
     initialize: function () {
-      this.on('change:connected', function(e) {
-        console.log('WTF', e);
-      }, this);
       if (!this.uuid) this.uuid = uuid.v4();
-      this.connected = false;
-      this._modelBinder = new Backbone.ModelBinder();
-    },
 
-    onClose: function() {
-      this._modelBinder.unbind();
+      this.bind('change:connectionOpen', function(e, c) {
+        console.log('WTF', e, c, arguments.callee);
+      }, this);
     }
 
   });

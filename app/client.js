@@ -19,6 +19,7 @@ define([
     self.nick = session.attributes.nick;
     self.socket = null;
     self.session = session;
+
     self.topics = {};
 
     self.binded = false;
@@ -55,7 +56,6 @@ define([
       channel: "Status"
     };
 
-    console.log('BEFORE RENDER');
     $('.channel-holder').append(view.render().el);
     var selector = $('#sidebar div.session[data-id="'+self.options.uuid+'"]');
     if (selector.find('.channel-list').length > 0) {
@@ -78,7 +78,7 @@ define([
     self.socket.connect(options.retryCount || 50, function() {
       if (callback && typeof callback === "function") callback(self);
 
-      self.session.set('connected', true);
+      self.session.set('connectionOpen', true);
 
       Komanda.vent.trigger('connect', {
         server: self.options.uuid,
@@ -87,9 +87,16 @@ define([
     });
   };
 
-  Client.prototype.disconnect = function() {
+  Client.prototype.disconnect = function(callback) {
     var self = this;
+
     self.socket.disconnect("Bye", function() {
+      self.session.set('connectionOpen', false);
+      self.socket.conn.end();
+      clearInterval(self.reconnectCheck);
+
+      if (callback && typeof callback === "function") callback();
+
       Komanda.vent.trigger('disconnect', {
         server: self.options.uuid,
         name: self.options.name
@@ -106,21 +113,27 @@ define([
     self.reconnectFunction = function() {
       if (!window.navigator.onLine) {
         if (self.socket) {
-          $('.channel .messages').html();
+          $('.channel[data-server-id="'+self.options.uuid+'"] .messages').html();
           self.socket.conn.end();
         }
         clearInterval(self.reconnectCheck);
       }
     };
 
+    self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+
+    Komanda.vent.on(self.options.uuid + ':disconnect', function(callback) {
+      console.log('DISCONNECT');
+      self.disconnect(callback); 
+    });
+
     Komanda.vent.on('connect', function() {
-      self.session.set('connected', true);
+      console.log('IN CONNECT EVWENT');
+      self.session.set('connectionOpen', true);
       clearInterval(self.reconnectCheck);
       self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').removeClass('offline');
     });
-
-    self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
 
     self.socket.addListener('connection:end', function() {
     });
@@ -146,13 +159,12 @@ define([
     });
 
     self.socket.addListener('connection:disconnect', function(retry) {
-      self.session.set('connected', false);
+      self.session.set('connectionOpen', false);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').addClass('offline');
-      console.log('disconnect');
     });
 
     self.socket.addListener('connection:connect', function() {
-      self.session.set('connected', true);
+      self.session.set('connectionOpen', true);
       clearInterval(self.reconnectCheck);
       self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').removeClass('offline');

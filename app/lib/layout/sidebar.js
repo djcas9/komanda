@@ -4,11 +4,12 @@ define([
   "hbs!templates/layout/sidebar",
   "helpers",
   'hbs!templates/settings/add-server',
+  'hbs!templates/settings/edit-server',
   'hbs!templates/settings/index',
   'hbs!templates/settings/about',
   "lib/sessions/session",
   "lib/sessions/session-edit-view"
-], function(_, Marionette, template, Helpers, AddServerView, SettingsIndexView, AboutView, Session, SessionEditView) {
+], function(_, Marionette, template, Helpers, AddServerView, EditServerView, SettingsIndexView, AboutView, Session, SessionEditView) {
 
   return Marionette.ItemView.extend({
     el: "#sidebar",
@@ -16,9 +17,9 @@ define([
 
     events: {
       "click #master-control .add-server": "addServer",
-      "click div.server i.edit-session": "editServer",
       "click #master-control .settings": "settings",
-      "click #master-control .about": "about"
+      "click #master-control .about": "about",
+      "click i.edit-session-data": "editServer"
     },
 
     initialize: function() {
@@ -30,18 +31,25 @@ define([
 
       var uuid = $(e.currentTarget).attr('data-uuid');
 
-      Komanda.sessions.fetch();
       var session = Komanda.sessions.get(uuid);
 
       var view = new SessionEditView({
         model: session
       });
 
-      var box = Helpers.limp.box(AddServerView, {
+      var region = new Marionette.Region({
+        el: '.komanda-box-content'
+      });
+
+      var box = Helpers.limp.box(EditServerView, {
         edit: true,
-        session: session.attributes
+        session: session
       }, {
         afterOpen: function(limp, html) {
+          Komanda.sessions.fetch();
+
+          region.show(view);
+
           html.on('click', 'button.destroy-session', function(e) {
             e.preventDefault();
             view.destroySession();
@@ -61,11 +69,6 @@ define([
             };
           });
 
-          var region = new Marionette.Region({
-            el: '.komanda-box-content'
-          });
-
-          region.show(view);
         },
         onAction: function() {
           view.editSession();

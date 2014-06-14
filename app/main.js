@@ -77,7 +77,7 @@ requirejs(["config"], function(require) {
 
       _.each(Komanda.sessions.models, function(m) {
         m.set({
-          connected: false
+          connectionOpen: false
         });
 
         var connect = new Connect(m); 
@@ -92,7 +92,7 @@ requirejs(["config"], function(require) {
           });
         } else {
           m.set({
-            connected: false
+            connectionOpen: false
           });
         }
 
