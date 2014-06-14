@@ -27,7 +27,7 @@ define('templates/helpers/autolink', [
           if (gist !== null && gist.length === 3) {
             var gistUser = gist[1];
             var gistID = gist[2];
-            // code.push(gistID);
+            code.push(gistID);
           }
 
         } else if (/jsfiddle\.net\/(.+)\/(.+)$/i.test(url)) { 
@@ -36,9 +36,9 @@ define('templates/helpers/autolink', [
           if (/\/$/.test(url)) {
             embedURL = embedURL + "embedded";
           } else {
-            embeded = embeded + "/embedded";
+            embedURL = embedURL + "/embedded";
           }
-          // jsfiddle.push('<iframe nwdisable nwfaketop style="width: 600px; height: 400px" src="'+embedURL+'"></iframe>');
+          jsfiddle.push('<iframe nwdisable nwfaketop style="width: 600px; height: 400px" src="'+embedURL+'"></iframe>');
         } else {
           // ...
         }
