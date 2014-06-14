@@ -276,7 +276,9 @@
         self.options.afterClose(self, self.$limp);
       }
 
-      self.options.afterDestroy(self, self.$limp);
+      if (self.options.hasOwnProperty('afterDestroy')) {
+        self.options.afterDestroy(self, self.$limp);
+      };
 
     },
 
