@@ -40,7 +40,11 @@ define([
     },
 
     initialize: function () {
+      this.on('change:connected', function(e) {
+        console.log('WTF', e);
+      }, this);
       if (!this.uuid) this.uuid = uuid.v4();
+      this.connected = false;
       this._modelBinder = new Backbone.ModelBinder();
     },
 

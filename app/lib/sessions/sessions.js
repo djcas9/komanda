@@ -9,10 +9,6 @@ define([
     store : 'sessions',
     model: session,
 
-    initialize: function() {
-      // ... 
-    },
-
     onRender: function() {
     }
 

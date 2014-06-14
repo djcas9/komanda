@@ -1,4 +1,5 @@
 define([
+  "underscore",
   "marionette", 
   "hbs!templates/layout/sidebar",
   "helpers",
@@ -7,7 +8,7 @@ define([
   'hbs!templates/settings/about',
   "lib/sessions/session",
   "lib/sessions/session-edit-view"
-], function(Marionette, template, Helpers, AddServerView, SettingsIndexView, AboutView, Session, SessionEditView) {
+], function(_, Marionette, template, Helpers, AddServerView, SettingsIndexView, AboutView, Session, SessionEditView) {
 
   return Marionette.ItemView.extend({
     el: "#sidebar",
@@ -15,11 +16,65 @@ define([
 
     events: {
       "click #master-control .add-server": "addServer",
+      "click div.server i.edit-session": "editServer",
       "click #master-control .settings": "settings",
       "click #master-control .about": "about"
     },
 
     initialize: function() {
+    },
+
+    editServer: function(e) {
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      var uuid = $(e.currentTarget).attr('data-uuid');
+
+      Komanda.sessions.fetch();
+      var session = Komanda.sessions.get(uuid);
+
+      var view = new SessionEditView({
+        model: session
+      });
+
+      var box = Helpers.limp.box(AddServerView, {
+        edit: true,
+        session: session.attributes
+      }, {
+        afterOpen: function(limp, html) {
+          html.on('click', 'button.destroy-session', function(e) {
+            e.preventDefault();
+            view.destroySession();
+          });
+
+          html.on('click', 'button.connect-session', function(e) {
+            e.preventDefault();
+            if (Komanda.connections.hasOwnProperty(uuid)) {
+              var connect = Komanda.connections[uuid];
+              connect.start(function(client) {
+                _.each(session.get('channels'), function(c) {
+                  Komanda.vent.trigger(uuid + ":join", c);
+                });
+              });
+
+              $.limpClose();
+            };
+          });
+
+          var region = new Marionette.Region({
+            el: '.komanda-box-content'
+          });
+
+          region.show(view);
+        },
+        onAction: function() {
+          view.editSession();
+        },
+        onClose: function() {
+          view.close();
+        }
+      });
+      box.open();
     },
 
     addServer: function(e) {
@@ -31,9 +86,10 @@ define([
         model: session
       });
 
-      var box = Helpers.limp.box(AddServerView, {}, {
+      var box = Helpers.limp.box(AddServerView, {
+        edit: false
+      }, {
         afterOpen: function(limp, html) {
-          console.log(limp, html);
           var region = new Marionette.Region({
             el: '.komanda-box-content'
           });
@@ -42,6 +98,9 @@ define([
         },
         onAction: function() {
           view.saveSession();
+        },
+        onClose: function() {
+          view.close();
         }
       });
       box.open();

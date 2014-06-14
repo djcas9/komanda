@@ -36,10 +36,18 @@ define([
       var self = this;
     },
 
+    editSession: function(e) {
+      var self = this;
+      self.model.save(null);
+      self.model.trigger('changed');
+      $.limpClose();
+    },
+
     saveSession: function(e) {
       var self = this;
 
       self.model.set('uuid', uuid.v4());
+      self.model.set('connected', false);
 
       self.model.trigger('changed');
 
@@ -47,8 +55,6 @@ define([
       Komanda.sessions.add(self.model);
 
       self.model.save(null);
-
-      console.log('fail?');
 
       var connect = new Connect(self.model);
       Komanda.connections[self.model.get('uuid')] = connect; 
@@ -65,12 +71,16 @@ define([
 
     },
 
-    deleteSession: function() {
+    destroySession: function() {
       var self = this;
 
       if (confirm('Are you sure you want to delete this source?')) {
-        self.model.destroy();
-        Sqrrl.router.navigate('#/sources');
+        var uuid = this.model.get('uuid');
+        var m = Komanda.sessions.get(uuid);
+        m.destroy();
+        Komanda.sessions.remove(m);
+        $('.channel-holder .channel[data-server-id="'+uuid+'"]').remove();
+        $.limpClose();
       };
     },
 

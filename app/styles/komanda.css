@@ -404,13 +404,31 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 	font-size: 0.9em;
 }
 
+#sidebar .session .server .server-inside{
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 30px;
+	bottom: 0;
+	left: 10px;
+	
+	  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 #sidebar .session .server{
 	cursor: pointer !important;
+	padding-right: 30px;
 }
 
 #sidebar .session .server i,
 div.header-box i{
 	margin-right: 10px;
+}
+
+#sidebar .session .server i{
+	z-index: 99999;
 }
 
 #sidebar .session .server-metadata,
@@ -1005,10 +1023,6 @@ span.komanda-box-title-other{
 	font-style: normal;
 }
 
-.komanda-box .form-actions{
-	float: left;
-}
-
 .komanda-box-title{
 -webkit-touch-callout: none;
 -webkit-user-select: none;
@@ -1165,6 +1179,11 @@ user-select: none;
 	position: relative;
 }
 
+.komanda-box-footer .form-actions{
+	position: relative;
+	display: block;
+}
+
 /* @end */
 
 /* @group Forms */
@@ -1208,6 +1227,66 @@ div.form-box input[type='password']{
 	margin: 4px 3px;
 	font-size: 0.9em;
 	color: #fff;
+}
+
+/* @end */
+
+/* @group Buttons */
+
+.button{
+	outline: none;
+width: 425px;
+color: #aeb2b7;
+font-size: 13px;
+background: #1d1e21;
+border: none;
+-webkit-box-shadow: 0px 1px 0px rgba( 255,255,255,0.05 ), inset 1px 1px 2px rgba( 0,0,0,0.3 );
+padding: 8px 10px;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-o-border-radius: 5px;
+-webkit-transition: background 0.3s ease;
+-moz-transition: background 0.3s ease;
+-o-transition: background 0.3s ease;
+transition: background 0.3s ease;
+margin: 15px 5px 0 0;
+display: inline-block;
+	
+	
+	font-size: 13px;
+	color: #2e2e2e;
+	font-weight: bold;
+	padding: 5px;
+	background-image: -moz-linear-gradient( top, #d5d6d9 0%, #afb0b7);
+	background-image: -webkit-gradient( linear, left top, left bottom, from(#d5d6d9), to(#afb0b7));
+	-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	-moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	-o-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	text-shadow: 0px 1px 0px rgba(255,255,255,0.5), 0px 1px 0px rgba(255,255,255,1);
+	max-width: 120px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.button.warning{
+background-color: #ff2600;
+background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(255, 38, 0)), to(rgb(217, 30, 14)));
+background-image: -webkit-linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+background-image: -moz-linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+background-image: -o-linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+background-image: -ms-linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+background-image: linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#ff2600', EndColorStr='#d91e0e');
+
+
+
+	text-shadow: rgba(0,0,0,0.5) 0 1px 0;
+	color: #fff;
+}
+
+.button.right{
+	float: right;
 }
 
 /* @end */

@@ -14,8 +14,6 @@ define([
   var Client = function(session) {
     var self = this;
 
-    console.log('IN CLIENT');
-
     self.irc = window.requireNode('irc');
     self.options = session.attributes;
     self.nick = session.attributes.nick;
@@ -79,6 +77,9 @@ define([
 
     self.socket.connect(options.retryCount || 50, function() {
       if (callback && typeof callback === "function") callback(self);
+
+      self.session.set('connected', true);
+
       Komanda.vent.trigger('connect', {
         server: self.options.uuid,
         name: self.options.name
@@ -113,7 +114,6 @@ define([
     };
 
     Komanda.vent.on('connect', function() {
-      console.log('CONNECT');
       self.session.set('connected', true);
       clearInterval(self.reconnectCheck);
       self.reconnectCheck = setInterval(self.reconnectFunction, 2000);

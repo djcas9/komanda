@@ -9,14 +9,25 @@ define([
     template: template,
 
     events: {
-      "click .server": "toggleSession"
+      "click .server .server-inside": "toggleSession"
+    },
+
+    modelEvents: {
+      'change': 'updateName'
     },
 
     initialize: function() {
     },
 
+    updateName: function() {
+      var item = $(this.el);
+      item.find('span.server-name').html(this.model.get('name'));
+    },
+
     toggleSession: function(e) {
       e.preventDefault();
+      e.stopImmediatePropagation();
+
       var parent = $(e.currentTarget).parents('.session')
       parent.find('.channel-list').toggle();
       parent.find('.server-metadata').toggle();
