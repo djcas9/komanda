@@ -69,18 +69,25 @@ define([
     destroySession: function() {
       var self = this;
 
-      if (confirm('Are you sure you want to delete this source?')) {
+      if (confirm('Are you sure you want to delete this server?')) {
         var uuid = this.model.get('uuid');
 
-        Komanda.vent.trigger(uuid + ':disconnect', function() {
-
+        var remove = function() {
           var m = Komanda.sessions.get(uuid);
           m.destroy();
           Komanda.sessions.remove(m);
 
           $('.channel-holder .channel[data-server-id="'+uuid+'"]').remove();
           $.limpClose();
-        });
+        };
+
+        if (this.model.get('connectionOpen')) {
+          Komanda.vent.trigger(uuid + ':disconnect', function() {
+            remove();
+          });
+        } else {
+          remove();
+        }
       };
     },
 

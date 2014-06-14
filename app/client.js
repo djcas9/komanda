@@ -217,6 +217,7 @@ define([
         if (chan.length > 0) return;
         $('.channel-holder').append(view.render().el);
         self.addMessage(channel, "Topic: " + channelTopic.topic);
+        $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"]').click();
       }
     });
 

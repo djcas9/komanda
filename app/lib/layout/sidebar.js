@@ -63,16 +63,13 @@ define([
 
             Komanda.vent.trigger(uuid + ':disconnect');
 
-            console.log(uuid);
-
             $('.channel[data-server-id="'+uuid+'"] .messages').html();
             $('li.channel-item[data-server-id="'+uuid+'"]').each(function() {
               var i = $(this);
               if (i.attr('data-name') !== "Status") i.remove();
             });
+
             $('li.channel-item[data-server-id="'+uuid+'"][data-name="Status"]').click();
-
-
 
             $.limpClose();
           });
@@ -81,8 +78,6 @@ define([
             e.preventDefault();
             if (Komanda.connections.hasOwnProperty(uuid)) {
               var connect = Komanda.connections[uuid];
-
-              console.log(connect.client);
 
               if (connect.hasClient) {
                 console.log('SIMPLE CONNECT');
