@@ -63,10 +63,18 @@ define([
 
     updateWords: function(words, channels) {
       var self = this;
+
       var keys = words ? _.keys(words) : _.keys(self.model.get('names'));
       keys.push(Komanda.commands)
+
       if (channels) keys.push(channels);
       var keysCommands = _.flatten(keys);
+
+      if (!self.completer) {
+        self.completerSetup = false;
+        self.setupAutoComplete();
+      }
+
       self.completer.words(keysCommands);
     },
 

@@ -266,7 +266,6 @@ define([
           Komanda.vent.trigger('channel/part', self.options.uuid, channel);
         } else {
           self.socket.part(channel, "Bye!", function() {
-
             self.removeAndCleanChannel(chan, self.options.uuid);
             Komanda.vent.trigger('channel/part', self.options.uuid, channel);
           }); 
@@ -396,7 +395,8 @@ define([
     self.socket.addListener('raw', function(message) {
       var codes = [
         "001", "002", "003", "004", "005", "006", "007",
-        "375", "372", "377", "378", "376", "221",
+        "375", "372", "377", "378", "376", "221", "322",
+        "705",
         // errors
         "401", "402", "403", "404", "405", "406", "407", "408", "409", "411", "412", "413",
         "414", "415", "416", "421", "422", "423", "424", "431", "432", "433", "436", "437", 
@@ -406,7 +406,11 @@ define([
       ];
       if (_.contains(codes, message.rawCommand) || 
           message.rawCommand === "NOTICE" || message.commandType === "error") {
-        self.addMessage("Status", message.args.join(' '));
+        if (self.me(message.args[0])) message.args.shift();
+      self.addMessage("Status", message.args.join(' '));
+      } else {
+
+        console.log(message);
       }
       // Komanda.vent.trigger('raw', {
         // message: message,

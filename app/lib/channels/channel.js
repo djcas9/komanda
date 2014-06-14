@@ -34,7 +34,17 @@ define([
 
     removeChannel: function(channel, server) {
       var self = this; 
-      $('li.channel-item[data-server-id="'+server+'"][data-name="'+channel+'"]').remove();
+      var chan = $('li.channel-item[data-server-id="'+server+'"][data-name="'+channel+'"]');
+
+      if (chan.prev('li.channel-item').length > 0) {
+        chan.prev('li.channel-item').click();
+      } else if (chan.next('li.channel-item').length > 0) {
+        chan.next('li.channel-item').click();
+      } else {
+        chan.parents('.session').find('li.channel-item:first').click();
+      }
+
+      chan.remove();
       $('.channel-holder div.channel[data-server-id="'+server+'"][data-name="'+channel+'"]').remove();
     }
 
