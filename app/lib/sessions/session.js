@@ -37,10 +37,6 @@ define([
 
     initialize: function () {
       if (!this.uuid) this.uuid = uuid.v4();
-
-      this.bind('change:connectionOpen', function(e, c) {
-        console.log('WTF', e, c, arguments.callee);
-      }, this);
     }
 
   });

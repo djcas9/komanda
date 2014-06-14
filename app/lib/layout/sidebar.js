@@ -35,11 +35,11 @@ define([
       var region = null;
 
       var connected = session.get('connectionOpen');
-      console.log(connected);
 
       var box = Helpers.limp.box(EditServerView, {
         session: session,
-        connected: connected
+        connected: connected,
+        name: session.get('server')
       }, {
         onOpen: function() {
           view = new SessionEditView({
@@ -58,15 +58,42 @@ define([
             view.destroySession();
           });
 
+          html.on('click', 'button.disconnect-session', function(e) {
+            e.preventDefault();
+
+            Komanda.vent.trigger(uuid + ':disconnect');
+
+            console.log(uuid);
+
+            $('.channel[data-server-id="'+uuid+'"] .messages').html();
+            $('li.channel-item[data-server-id="'+uuid+'"]').each(function() {
+              var i = $(this);
+              if (i.attr('data-name') !== "Status") i.remove();
+            });
+            $('li.channel-item[data-server-id="'+uuid+'"][data-name="Status"]').click();
+
+
+
+            $.limpClose();
+          });
+
           html.on('click', 'button.connect-session', function(e) {
             e.preventDefault();
             if (Komanda.connections.hasOwnProperty(uuid)) {
               var connect = Komanda.connections[uuid];
-              connect.start(function(client) {
-                _.each(session.get('channels'), function(c) {
-                  Komanda.vent.trigger(uuid + ":join", c);
+
+              console.log(connect.client);
+
+              if (connect.hasClient) {
+                console.log('SIMPLE CONNECT');
+                connect.client.socket.connect(20); 
+              } else {
+                connect.start(function(client) {
+                  _.each(session.get('channels'), function(c) {
+                    Komanda.vent.trigger(uuid + ":join", c);
+                  });
                 });
-              });
+              };
 
               $.limpClose();
             };

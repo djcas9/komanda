@@ -135,8 +135,6 @@ define([
           // items[(items.length - 1)] = trie.uniquePrefix();
           var choices = trie.choices();
 
-          console.log(choices);
-
           if (choices.length > 1) {
 
             if (index >= choices.length) index = 0;

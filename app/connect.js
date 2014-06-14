@@ -7,6 +7,7 @@ define([
   var Connect = function(session, options) {
     this.session = session;
     this.options = options;
+    this.hasClient = false;
 
     this.client = new Client(session); 
   };

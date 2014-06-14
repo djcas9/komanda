@@ -5,7 +5,7 @@
   "window": {
     "show": false,
     "title": "Komanda",
-    "icon": "images/komanda.png",
+    "icon": "app://../images/logo/komanda.png",
     "toolbar": false,
     "frame": false,
     "width": 1100,

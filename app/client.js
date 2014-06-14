@@ -79,6 +79,9 @@ define([
       if (callback && typeof callback === "function") callback(self);
 
       self.session.set('connectionOpen', true);
+      if (Komanda.connections.hasOwnProperty(self.options.uuid)) {
+        Komanda.connections[self.options.uuid].hasClient = true;
+      };
 
       Komanda.vent.trigger('connect', {
         server: self.options.uuid,
@@ -92,8 +95,11 @@ define([
 
     self.socket.disconnect("Bye", function() {
       self.session.set('connectionOpen', false);
+
       self.socket.conn.end();
+
       clearInterval(self.reconnectCheck);
+      self.reconnectFunction = null;
 
       if (callback && typeof callback === "function") callback();
 
@@ -164,6 +170,7 @@ define([
     });
 
     self.socket.addListener('connection:connect', function() {
+      console.log('TEST');
       self.session.set('connectionOpen', true);
       clearInterval(self.reconnectCheck);
       self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
@@ -376,8 +383,18 @@ define([
       } else {
         // PM
         self.sendMessage(nick, to, text, message, true);
+
+        if (window.Notification) {
+          var n = new Notification("Private Message From " + nick, {
+            tag: 'Komanda',
+            body: "<" + nick + "> " + text
+          });
+
+          n.onClick = function() {
+            alert('word');
+          };
+        }
       }
-      // Komanda.window.setBadgeLabel(Komanda.message_count++);
     });
 
 
@@ -660,6 +677,16 @@ define([
     if (channel.length > 0) {
       _.defer(function() {
         channel.append(html);
+
+        if (data.highlight) {
+          if (window.Notification) {
+            var n = new Notification("Highlight: " + to, {
+              tag: 'Komanda',
+              body: "<" + nick + "> " + text
+            });
+          }
+        }
+
       });
 
       if (Komanda.current.channel !== to) {

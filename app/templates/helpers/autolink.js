@@ -24,7 +24,7 @@ define('templates/helpers/autolink', [
 
           var gist = url.match(/gist.github.com\/(\w+)\/(.+)$/i);
 
-          if (gist.length === 3) {
+          if (gist !== null && gist.length === 3) {
             var gistUser = gist[1];
             var gistID = gist[2];
             // code.push(gistID);

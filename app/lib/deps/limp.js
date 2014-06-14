@@ -276,7 +276,6 @@
         self.options.afterClose(self, self.$limp);
       }
 
-      console.log(self, self.options);
       self.options.afterDestroy(self, self.$limp);
 
     },
