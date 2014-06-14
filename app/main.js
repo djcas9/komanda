@@ -15,6 +15,8 @@ requirejs(["config"], function(require) {
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView, 
     SidebarView, Connect, Sessions, Session) {
 
+      Komanda.connections = {};
+
       Komanda.commands = [
         "/help",
         "/nick",
@@ -38,24 +40,6 @@ requirejs(["config"], function(require) {
       server: null,
       channel: null
     };
-
-    if (Komanda.sessions.models.length <= 0) {
-      // create default session
-      var session = Komanda.sessions.create({
-        id: 1
-      });
-
-      Komanda.sessions.add(session);
-
-      session.set({
-        connectOnStart: true,
-        channels: ["#komanda"]
-      });
-
-      session.save(null);
-
-
-    }
 
     Komanda.vent.on('komanda:ready', function() {
       Komanda.gui = requireNode('nw.gui');
@@ -93,6 +77,8 @@ requirejs(["config"], function(require) {
 
       _.each(Komanda.sessions.models, function(m) {
         var connect = new Connect(m); 
+
+        Komanda.connections[m.get('uuid')] = connect;
 
         if (m.get('connectOnStart')) {
           connect.start(function(client) {

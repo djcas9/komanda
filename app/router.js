@@ -14,18 +14,22 @@ define(function(require, exports, module) {
       if (Komanda.test) return;
       Komanda.test = true;
 
-      var SessionsView = require("lib/sessions/sessions-view");
-      var Session = require("lib/sessions/session");
+      Komanda.renderSessions = function() {
+        var SessionsView = require("lib/sessions/sessions-view");
+        var Session = require("lib/sessions/session");
 
-      Komanda.sessions.fetch();
+        Komanda.sessions.fetch();
 
-      var view = new SessionsView({
-        collection: Komanda.sessions,
-        model: new Session()
-      });
+        var view = new SessionsView({
+          collection: Komanda.sessions,
+          model: new Session()
+        });
 
-      var region = new Backbone.Marionette.Region({ el: '#sidebar' });
-      region.show(view);
+        var region = new Backbone.Marionette.Region({ el: '#sidebar' });
+        region.show(view);
+      };
+
+      Komanda.renderSessions();
     },
 
     loadView: function(item) {

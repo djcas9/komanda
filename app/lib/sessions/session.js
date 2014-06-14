@@ -19,7 +19,9 @@ define([
       showErrors: false,
       autoRejoin: true,
       autoConnect: false,
-      channels: [],
+      channels: [
+        "#komanda", "#node-webkit"
+      ],
       retryCount: 20,
       retryDelay: 5000,
       secure: false,
@@ -38,7 +40,7 @@ define([
     },
 
     initialize: function () {
-      this.uuid = uuid.v4();
+      if (!this.uuid) this.uuid = uuid.v4();
       this._modelBinder = new Backbone.ModelBinder();
     },
 

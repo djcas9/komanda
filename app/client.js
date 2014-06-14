@@ -14,6 +14,8 @@ define([
   var Client = function(session) {
     var self = this;
 
+    console.log('IN CLIENT');
+
     self.irc = window.requireNode('irc');
     self.options = session.attributes;
     self.nick = session.attributes.nick;
@@ -55,6 +57,7 @@ define([
       channel: "Status"
     };
 
+    console.log('BEFORE RENDER');
     $('.channel-holder').append(view.render().el);
     var selector = $('#sidebar div.session[data-id="'+self.options.uuid+'"]');
     if (selector.find('.channel-list').length > 0) {
@@ -360,7 +363,6 @@ define([
         self.sendMessage(nick, to, text, message);
       } else {
         // PM
-        console.log('GOT PM');
         self.sendMessage(nick, to, text, message, true);
       }
       // Komanda.window.setBadgeLabel(Komanda.message_count++);
@@ -410,7 +412,6 @@ define([
       self.addMessage("Status", message.args.join(' '));
       } else {
 
-        console.log(message);
       }
       // Komanda.vent.trigger('raw', {
         // message: message,

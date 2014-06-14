@@ -1016,8 +1016,6 @@ span.komanda-box-title-other{
 -moz-user-select: none;
 -ms-user-select: none;
 user-select: none;
-
-	-webkit-app-region: drag;
 	
 	display: inline-block;
 	height: 50px;

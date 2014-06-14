@@ -4,8 +4,10 @@ define([
   "helpers",
   'hbs!templates/settings/add-server',
   'hbs!templates/settings/index',
-  'hbs!templates/settings/about'
-], function(Marionette, template, Helpers, AddServerView, SettingsIndexView, AboutView) {
+  'hbs!templates/settings/about',
+  "lib/sessions/session",
+  "lib/sessions/session-edit-view"
+], function(Marionette, template, Helpers, AddServerView, SettingsIndexView, AboutView, Session, SessionEditView) {
 
   return Marionette.ItemView.extend({
     el: "#sidebar",
@@ -22,8 +24,24 @@ define([
 
     addServer: function(e) {
       e.preventDefault();
+
+      var session = new Session();
+
+      var view = new SessionEditView({
+        model: session
+      });
+
       var box = Helpers.limp.box(AddServerView, {}, {
-        afterOpen: function() {
+        afterOpen: function(limp, html) {
+          console.log(limp, html);
+          var region = new Marionette.Region({
+            el: '.komanda-box-content'
+          });
+
+          region.show(view);
+        },
+        onAction: function() {
+          view.saveSession();
         }
       });
       box.open();

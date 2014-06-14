@@ -8,6 +8,7 @@ define([
     this.session = session;
     this.options = options;
 
+    console.log('IN CONNECT');
     this.client = new Client(session); 
   };
 
