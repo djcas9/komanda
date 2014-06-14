@@ -175,7 +175,7 @@ module.exports = function(grunt) {
         app_name: "Komanda",
         app_version: '0.1.0',
         build_dir: './build',
-        mac: true,
+        mac: false,
         win: true,
         linux32: false,
         linux64: false,
@@ -189,7 +189,7 @@ module.exports = function(grunt) {
     },
 
     shell: {
-      runnw: {
+      runmac: {
         options: {
           stdout: false,
           stderr: false,
@@ -198,13 +198,23 @@ module.exports = function(grunt) {
         command: "./build/cache/mac/0.9.2/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
       },
 
+      runwin: {
+        options: {
+          stdout: false,
+          stderr: false,
+          stdin: false
+        },
+        command: "build\\releases\\Komanda\\win\\Komanda\\Komanda.exe"
+
+      },
+
       create_dmg: {
         options: {
           stdout: true
         },
         command: './dist/mac/yoursway-create-dmg/create-dmg --volname "Komanda ' + _VERSION + '" --background ./dist/mac/background.png --window-size 480 540 --icon-size 128 --app-drop-link 240 370 --icon "Komanda" 240 110 ./build/releases/Komanda/mac/Komanda-' + _VERSION + '.dmg ./build/releases/Komanda/mac/'
       }
-    
+
     }
 
   });
@@ -245,7 +255,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-shell");
 
   grunt.registerTask('default', [
-    
+
   ]);
 
   grunt.registerTask("build", [
@@ -260,8 +270,14 @@ module.exports = function(grunt) {
     "nodewebkit"
   ]);
 
-  grunt.registerTask("run", [
+  grunt.registerTask("runmac", [
     "default",
-    "shell:runnw"
+    "shell:runmac"
+  ]);
+
+
+  grunt.registerTask("runwin", [
+    "default",
+    "shell:runwin"
   ]);
 };

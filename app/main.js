@@ -12,7 +12,7 @@ requirejs(["config"], function(require) {
     "connect",
     'lib/sessions/sessions',
     'lib/sessions/session'
-  ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView, 
+  ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
     SidebarView, Connect, Sessions, Session) {
 
       Komanda.commands = [
@@ -49,7 +49,12 @@ requirejs(["config"], function(require) {
 
       session.set({
         connectOnStart: true,
-        channels: ["#komanda"]
+        channels: ["#komanda"],
+        nick: "zafar",
+        userName: 'duffer',
+        realName: 'Shadab Zafar',
+        debug: true,
+        showErrors: true,
       });
 
       session.save(null);
@@ -63,9 +68,9 @@ requirejs(["config"], function(require) {
       Komanda.window.show();
 
 
-      Komanda.vent.on('komanda:debug', function() {
+      // Komanda.vent.on('komanda:debug', function() {
         Komanda.window.showDevTools();
-      });
+      // });
 
       Komanda.window.on('close', function() {
         this.hide();
@@ -75,7 +80,7 @@ requirejs(["config"], function(require) {
 
         this.close(true);
       });
-      
+
       $('.window-button.close').on('click', function(e) {
         e.preventDefault();
         Komanda.window.close();
@@ -92,7 +97,7 @@ requirejs(["config"], function(require) {
       });
 
       _.each(Komanda.sessions.models, function(m) {
-        var connect = new Connect(m); 
+        var connect = new Connect(m);
 
         if (m.get('connectOnStart')) {
           connect.start(function(client) {
