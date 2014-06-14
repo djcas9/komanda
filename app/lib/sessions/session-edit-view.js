@@ -45,9 +45,6 @@ define([
       var self = this;
 
       self.model.set('uuid', uuid.v4());
-      self.model.set('connectionOpen', false);
-
-      self.model.trigger('changed');
 
       Komanda.sessions.fetch();
       Komanda.sessions.add(self.model);
@@ -74,13 +71,13 @@ define([
 
       if (confirm('Are you sure you want to delete this source?')) {
         var uuid = this.model.get('uuid');
-        console.log(uuid);
 
         Komanda.vent.trigger(uuid + ':disconnect', function() {
 
           var m = Komanda.sessions.get(uuid);
           m.destroy();
           Komanda.sessions.remove(m);
+
           $('.channel-holder .channel[data-server-id="'+uuid+'"]').remove();
           $.limpClose();
         });

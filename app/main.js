@@ -76,10 +76,6 @@ requirejs(["config"], function(require) {
       });
 
       _.each(Komanda.sessions.models, function(m) {
-        m.set({
-          connectionOpen: false
-        });
-
         var connect = new Connect(m); 
 
         Komanda.connections[m.get('uuid')] = connect;
@@ -89,10 +85,6 @@ requirejs(["config"], function(require) {
             _.each(m.get('channels'), function(c) {
               Komanda.vent.trigger(m.get('uuid') + ":join", c);
             });
-          });
-        } else {
-          m.set({
-            connectionOpen: false
           });
         }
 

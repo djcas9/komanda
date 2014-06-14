@@ -35,9 +35,6 @@ define([
       connectionOpen: false
     },
 
-    validate: function (attrs) {
-    },
-
     initialize: function () {
       if (!this.uuid) this.uuid = uuid.v4();
 

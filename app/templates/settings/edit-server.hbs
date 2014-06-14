@@ -1,11 +1,7 @@
 <div class="komanda-box">
 
   <div class='komanda-box-title'>
-    {{#if edit}}
     Edit {{session.server}}
-    {{else}}
-    Add New IRC Server
-    {{/if}}
   </div>
 
   <div class="komanda-box-content">
@@ -19,7 +15,7 @@
 
       <button class='button limp-action edit-session'>Edit Server</button>
 
-      {{#if session.connectionOpen}}
+      {{#if connected}}
       <button class='button right warning disconnect-session'>Disconnect</button>
       {{else}}
       <button class='button right connect-session'>Connect</button>

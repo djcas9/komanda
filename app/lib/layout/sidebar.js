@@ -26,28 +26,31 @@ define([
     },
 
     editServer: function(e) {
-      e.stopPropagation();
-      e.stopImmediatePropagation();
+      e.preventDefault();
 
       var uuid = $(e.currentTarget).attr('data-uuid');
-
       var session = Komanda.sessions.get(uuid);
 
-      var view = new SessionEditView({
-        model: session
-      });
+      var view = null;
+      var region = null;
 
-      var region = new Marionette.Region({
-        el: '.komanda-box-content'
-      });
+      var connected = session.get('connectionOpen');
+      console.log(connected);
 
       var box = Helpers.limp.box(EditServerView, {
-        edit: true,
-        session: session
+        session: session,
+        connected: connected
       }, {
-        afterOpen: function(limp, html) {
-          Komanda.sessions.fetch();
+        onOpen: function() {
+          view = new SessionEditView({
+            model: session
+          });
 
+          region = new Marionette.Region({
+            el: '.komanda-box-content'
+          });
+        },
+        afterOpen: function(limp, html) {
           region.show(view);
 
           html.on('click', 'button.destroy-session', function(e) {
@@ -73,8 +76,9 @@ define([
         onAction: function() {
           view.editSession();
         },
-        onClose: function() {
+        afterDestroy: function() {
           view.close();
+          region.close();
         }
       });
       box.open();
@@ -85,25 +89,33 @@ define([
 
       var session = new Session();
 
-      var view = new SessionEditView({
-        model: session
-      });
+      var view = null;
+      var region = null;
+
 
       var box = Helpers.limp.box(AddServerView, {
         edit: false
       }, {
-        afterOpen: function(limp, html) {
-          var region = new Marionette.Region({
+        onOpen: function() {
+        
+          view = new SessionEditView({
+            model: session
+          });
+
+          region = new Marionette.Region({
             el: '.komanda-box-content'
           });
+        },
+        afterOpen: function(limp, html) {
 
           region.show(view);
         },
         onAction: function() {
           view.saveSession();
         },
-        onClose: function() {
+        afterDestroy: function() {
           view.close();
+          region.close();
         }
       });
       box.open();

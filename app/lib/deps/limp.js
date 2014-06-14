@@ -272,7 +272,11 @@
 
       self.$overlay.remove();
 
-      self.options.afterClose(self, self.$limp);
+      if (self.options.hasOwnProperty('afterClose')) {
+        self.options.afterClose(self, self.$limp);
+      }
+
+      console.log(self, self.options);
       self.options.afterDestroy(self, self.$limp);
 
     },
@@ -554,8 +558,6 @@
     onOpen: function(limp) {},
     afterOpen: function(limp, html) {},
     onClose: function(limp) {},
-    afterDestroy: function(limp) {},
-    afterClose: function(limp) {},
     onTemplate: function(template, limp) {}
   };
 

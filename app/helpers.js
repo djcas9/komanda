@@ -14,7 +14,10 @@ define([
           }
         }
 
+        Helpers.limp.options.afterDestory = args.afterDestory;
+
         var options = $.extend({}, Helpers.limp.options, args);
+
         options.template = template;
         options.templateData = data;
 
@@ -58,15 +61,6 @@ define([
         overlay: {
           background: '#151a1f',
           opacity: 0.9
-        },
-        onOpen: function() {
-        },
-        afterOpen: function() {
-          // $('.add-chosen').chosen();
-          // $(".add-chosen").trigger("liszt:updated");
-          // ...
-        },
-        afterDestroy: function() {
         },
         onTemplate: function(template, data, limp) {
 
