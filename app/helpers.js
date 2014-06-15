@@ -12,10 +12,11 @@ define([
         var path = settings.themes[key].css;
         var css = '<link id="theme" rel="stylesheet" href="'+path+'">';
         $('head').append(css);
+
         if (callback && typeof callback === "function") {
           setTimeout(function() {
             callback();
-          }, 100);
+          }, 200);
         }
       }
     },

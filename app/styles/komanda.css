@@ -482,6 +482,8 @@ user-select: none;
 }
 
 .channel button.zen-button{
+	outline: none;
+	border: none;
 	z-index: 99999;
 	cursor: pointer;
 	vertical-align: middle;
@@ -973,6 +975,12 @@ div.form-box{
 	position: relative;
 	margin-top: 3px;
 	margin-bottom: 3px;
+}
+
+div.form-box span.note{
+	color: #fff;
+	margin-left: 10px;
+	font-size: 0.8em;
 }
 
 div.form-box.inline{

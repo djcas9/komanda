@@ -12,12 +12,19 @@ define([
     },
 
     initialize: function() {
+      var self = this;
+      self.showStatusChange = Komanda.settings.notifications.status;
+
+      Komanda.vent.on('ignoreStatusChange', function() {
+        self.showStatusChange = false;
+      });
     },
 
     onClose: function() {
     },
 
     onRender: function() {
+      var self = this;
       var $this = $(this.el);
       var server = this.model.get('server');
       var channel = this.model.get('channel');
@@ -38,18 +45,21 @@ define([
         $this.addClass('selected');
       }
 
-      if (Komanda.store.hasOwnProperty(server)) {
-        if (Komanda.store[server].hasOwnProperty(channel)) {
-          if (Komanda.store[server][channel] == 1) {
-            $this.find('div.status').addClass('new-messages');
-          } else if (Komanda.store[server][channel] == 2) {
-            $this.find('div.status').addClass('highlight');
+      if (self.showStatusChange) {
+        if (Komanda.store.hasOwnProperty(server)) {
+          if (Komanda.store[server].hasOwnProperty(channel)) {
+            if (Komanda.store[server][channel] == 1) {
+              $this.find('div.status').addClass('new-messages');
+            } else if (Komanda.store[server][channel] == 2) {
+              $this.find('div.status').addClass('highlight');
+            }
           }
+        } else {
+          Komanda.store[server] = {};
+          Komanda.store[server][channel] = 0;
         }
-      } else {
-        Komanda.store[server] = {};
-        Komanda.store[server][channel] = 0;
       }
+
 
     }
   });

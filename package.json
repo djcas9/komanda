@@ -12,8 +12,7 @@
     "height": 618,
     "min_width": 800,
     "min_height": 500,
-    "resizable": true,
-    "position": "center"
+    "resizable": true
   },
   "devDependencies": {
     "bbb": "~0.2.0",

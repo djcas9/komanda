@@ -22,7 +22,8 @@ define([
       },
       notifications: {
         highlight: true,
-        pm: true
+        pm: true,
+        status: true
       },
       embed: {
         all: false,

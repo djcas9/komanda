@@ -3,10 +3,14 @@ define(function(require) {
   var Marionette = require("marionette");
   var Backbone = require("backbone");
   var Vent = require('vent');
+  var Setting = require('lib/settings');
 
   if (window.Komanda) return window.Komanda;
 
   window.Komanda = new Marionette.Application();
+
+  window.Komanda.settings = new Setting({id: 1});
+  window.Komanda.settings.fetch();
 
   window.Komanda.vent = Vent;
 
