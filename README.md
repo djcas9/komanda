@@ -30,7 +30,7 @@ Not a developer? No worries, It's stil a great client!
 
 # BETA
 
-Komanda is not ready for primetime yet but will be very soon.
+Komanda is currently in beta. Things may not be perfect but it's pretty solid on the IRC side of things.
 
 # GUI
 
