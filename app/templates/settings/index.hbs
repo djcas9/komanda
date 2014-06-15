@@ -4,18 +4,42 @@
     Komanda Settings
   </div>
 
-  <div class="komanda-box-content">
-    <ul class="komanda-box-menu">
-      <li>
+  <div class="komanda-box-content no-padding">
+    <ul class="komanda-box-menu" >
+
+      <li class='selected' data-show="#komanda-settings-general">
         General Settings
       </li>   
-      <li>
-        Interface
+
+      <li data-show="#komanda-settings-notifications">
+        Notifications
       </li>   
-      <li>
-        Servers
+
+      <li data-show="#komanda-settings-embed">
+        Embed Options
       </li>   
+
     </ul>
+
+
+    <div id="komanda-settings"></div>
+
+  </div>
+
+
+  <div class="komanda-box-footer">
+
+    <div class='form-actions'>
+
+      <button class='button {{button.type}} limp-action update-komanda-settings'> Update Settings</button>
+
+      {{#if ignore_cancel}}
+      {{else}}
+      <button class='button' onClick='$.limpClose()'>Cancel</button>
+      {{/if}}
+
+    </div>
+
   </div>
 
 </div>

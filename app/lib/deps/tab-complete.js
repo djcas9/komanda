@@ -184,6 +184,7 @@ define([
           e.target.value = value;
 
           if (Komanda.historyIndex <= 0) {
+            e.target.value = "";
             Komanda.historyIndex = 0;
           } else {
             Komanda.historyIndex--;

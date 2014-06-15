@@ -8,8 +8,11 @@ define([
   'hbs!templates/settings/index',
   'hbs!templates/settings/about',
   "lib/sessions/session",
-  "lib/sessions/session-edit-view"
-], function(_, Marionette, template, Helpers, AddServerView, EditServerView, SettingsIndexView, AboutView, Session, SessionEditView) {
+  "lib/sessions/session-edit-view",
+  "lib/settings",
+  "lib/settings-view"
+], function(_, Marionette, template, Helpers, AddServerView, EditServerView, 
+            SettingsIndexView, AboutView, Session, SessionEditView, Settings, SettingsEditView) {
 
   return Marionette.ItemView.extend({
     el: "#sidebar",
@@ -81,7 +84,21 @@ define([
 
               if (connect.hasClient) {
                 console.log('SIMPLE CONNECT');
-                connect.client.socket.connect(20); 
+
+                connect.client.socket.conn.requestedDisconnect = true;
+                connect.client.socket.conn.end();
+
+                connect.client.socket.connect(20, function() {
+                
+                  if (Komanda.connections.hasOwnProperty(uuid)) {
+                    Komanda.connections[uuid].hasClient = true;
+                  }
+
+                  Komanda.vent.trigger('connect', {
+                    server: uuid
+                  });
+                }); 
+
               } else {
                 connect.start(function(client) {
                   _.each(session.get('channels'), function(c) {
@@ -145,7 +162,41 @@ define([
 
     settings: function(e) {
       e.preventDefault();
-      var box = Helpers.limp.box(SettingsIndexView, {}, {});
+
+      var view = null;
+      var region = null;
+
+      var box = Helpers.limp.box(SettingsIndexView, {}, {
+        onOpen: function() {
+          view = new SettingsEditView({
+            model: Komanda.settings
+          });
+
+          region = new Marionette.Region({
+            el: '#komanda-settings'
+          });
+        },
+        afterOpen: function() {
+          region.show(view);
+
+          $('ul.komanda-box-menu li').on('click', function(e) {
+            e.preventDefault();
+            $('ul.komanda-box-menu li').removeClass('selected');
+            $(this).addClass('selected');
+            var show = $(this).attr('data-show');
+            $('.settings-section-holder').hide();
+            $(show).show();
+          });
+        },
+        onAction: function() {
+          Komanda.settings.save(null);
+          $.limpClose();
+        },
+        afterDestroy: function() {
+          view.close();
+          region.close();
+        }
+      });
       box.open();
     },
 

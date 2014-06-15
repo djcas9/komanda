@@ -154,7 +154,8 @@ module.exports = function(grunt) {
         files: [
           { src: "package.json", dest: "build/komanda-source/package.json" },
           { src: ["app/**"], dest: "build/komanda-source/" },
-          { src: "vendor/**", dest: "build/komanda-source/" }
+          { src: "vendor/**", dest: "build/komanda-source/" },
+          { src: "themes/**", dest: "build/komanda-source/" }
         ]
       }
     },

@@ -97,9 +97,7 @@ define([
       self.session.set('connectionOpen', false);
 
       self.socket.conn.end();
-
       clearInterval(self.reconnectCheck);
-      self.reconnectFunction = null;
 
       if (callback && typeof callback === "function") callback();
 
@@ -117,9 +115,12 @@ define([
     self.binded = true;
 
     self.reconnectFunction = function() {
+      console.log('w');
       if (!window.navigator.onLine) {
         if (self.socket) {
+          self.socket.conn.requestedDisconnect = false;
           $('.channel[data-server-id="'+self.options.uuid+'"] .messages').html();
+          console.log('END');
           self.socket.conn.end();
         }
         clearInterval(self.reconnectCheck);
@@ -133,10 +134,17 @@ define([
       self.disconnect(callback); 
     });
 
+    Komanda.vent.on('disconnect', function() {
+      self.session.set('connectionOpen', false);
+      self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+    });
+
     Komanda.vent.on('connect', function() {
       console.log('IN CONNECT EVWENT');
+
       self.session.set('connectionOpen', true);
       clearInterval(self.reconnectCheck);
+
       self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').removeClass('offline');
     });
@@ -165,14 +173,17 @@ define([
     });
 
     self.socket.addListener('connection:disconnect', function(retry) {
+      clearInterval(self.reconnectCheck);
+      self.reconnectCheck = null;
+
       self.session.set('connectionOpen', false);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').addClass('offline');
     });
 
     self.socket.addListener('connection:connect', function() {
-      console.log('TEST');
       self.session.set('connectionOpen', true);
       clearInterval(self.reconnectCheck);
+
       self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').removeClass('offline');
     });
@@ -274,7 +285,7 @@ define([
         var d = chan.attributes;
         chan.set(d);
 
-        $('.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] .topic span.title').html(topic)
+        $('.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] .topic span.title').html(topic);
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
         Komanda.vent.trigger('topic', data);
       }

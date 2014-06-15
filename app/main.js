@@ -12,14 +12,22 @@ requirejs(["config"], function(require) {
     "connect",
     'lib/sessions/sessions',
     'lib/sessions/session',
-    'history'
+    'history',
+    'lib/settings',
+    'helpers'
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView, 
-    SidebarView, Connect, Sessions, Session, History) {
+    SidebarView, Connect, Sessions, Session, History, Setting, Helpers) {
+
+      Komanda.settings = new Setting({id: 1});
+      Komanda.settings.fetch();
+      console.log(Komanda.settings);
+
 
       Komanda.connections = {};
 
-      Komanda.history = new History(100);
+      Komanda.history = new History(50);
       Komanda.historyIndex = 0;
+
 
       if (window.Notification) {
         Komanda.notification = window.Notification;
@@ -52,7 +60,11 @@ requirejs(["config"], function(require) {
     Komanda.vent.on('komanda:ready', function() {
       Komanda.gui = requireNode('nw.gui');
       Komanda.window = Komanda.gui.Window.get();
-      Komanda.window.show();
+
+      // load default theme
+      Helpers.loadTheme(Komanda.settings.attributes, function() {
+        Komanda.window.show();
+      });
 
 
       Komanda.vent.on('komanda:debug', function() {

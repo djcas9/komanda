@@ -82,9 +82,8 @@ define([
         };
 
         if (this.model.get('connectionOpen')) {
-          Komanda.vent.trigger(uuid + ':disconnect', function() {
-            remove();
-          });
+          console.log('in remove');
+          Komanda.vent.trigger(uuid + ':disconnect', remove);
         } else {
           remove();
         }

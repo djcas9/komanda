@@ -7,6 +7,7 @@ define([
   "mousetrap-pause",
   "backbone-mousetrap",
   "backbone-modelbinder",
+  "backbone-nested-model",
   "localStorage",
 ], function(_, Marionette, Backbone) {
 

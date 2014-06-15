@@ -4,6 +4,21 @@ define([
 ], function($, _, hbs) {
   
   var Helpers = {
+    loadTheme: function(settings, callback) {
+      var key = settings.themes.current; 
+
+      if (settings.themes.hasOwnProperty(key)) {
+        $('head link#theme').remove();
+        var path = settings.themes[key].css;
+        var css = '<link id="theme" rel="stylesheet" href="'+path+'">';
+        $('head').append(css);
+        if (callback && typeof callback === "function") {
+          setTimeout(function() {
+            callback();
+          }, 100);
+        }
+      }
+    },
     limp: {
       box: function(template, data, args) {
         var self = this;

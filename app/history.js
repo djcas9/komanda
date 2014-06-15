@@ -8,7 +8,7 @@ define([], function() {
   History.prototype.add = function(value) {
     var self = this;
     if (self.list.length >= self.length) self.list.pop();
-    self.list.unshift(value)
+    self.list.unshift(value);
   };
 
   History.prototype.get = function(i) {
