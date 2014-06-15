@@ -37,7 +37,7 @@ define([
     editSession: function(e) {
       var self = this;
       self.model.save(null);
-      self.model.trigger('changed');
+      Komanda.sessions.fetch();
       $.limpClose();
     },
 

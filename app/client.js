@@ -81,7 +81,7 @@ define([
       self.session.set('connectionOpen', true);
       if (Komanda.connections.hasOwnProperty(self.options.uuid)) {
         Komanda.connections[self.options.uuid].hasClient = true;
-      };
+      }
 
       Komanda.vent.trigger('connect', {
         server: self.options.uuid,
