@@ -115,12 +115,10 @@ define([
     self.binded = true;
 
     self.reconnectFunction = function() {
-      console.log('w');
       if (!window.navigator.onLine) {
         if (self.socket) {
           self.socket.conn.requestedDisconnect = false;
           $('.channel[data-server-id="'+self.options.uuid+'"] .messages').html();
-          console.log('END');
           self.socket.conn.end();
         }
         clearInterval(self.reconnectCheck);
@@ -130,7 +128,6 @@ define([
     self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
 
     Komanda.vent.on(self.options.uuid + ':disconnect', function(callback) {
-      console.log('DISCONNECT');
       self.disconnect(callback); 
     });
 
@@ -140,8 +137,6 @@ define([
     });
 
     Komanda.vent.on('connect', function() {
-      console.log('IN CONNECT EVWENT');
-
       self.session.set('connectionOpen', true);
       clearInterval(self.reconnectCheck);
 
@@ -153,23 +148,19 @@ define([
     });
 
     self.socket.addListener('connection:abort', function(max, count) {
-      console.log('ABORT RECONNECT');
     });
 
     self.socket.addListener('connection:timeout', function() {
     });
 
     self.socket.addListener('connection:error', function(error) {
-      console.log(error);
     });
 
     self.socket.addListener('connection:close', function() {
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').addClass('offline');
-      console.log('CLOSE?');
     });
 
     self.socket.addListener('connection:reconnect', function(retry) {
-      console.log('TRY TO CONNECT:', retry);
     });
 
     self.socket.addListener('connection:disconnect', function(retry) {

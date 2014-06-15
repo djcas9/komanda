@@ -9,15 +9,11 @@ define(function(require) {
 
   window.Komanda = new Marionette.Application();
 
-  window.Komanda.settings = new Setting({id: 1});
-  window.Komanda.settings.fetch();
-
   window.Komanda.vent = Vent;
 
   if (!window.Komanda.hasOwnProperty("store")) {
     window.Komanda.store = {};
   }
-
 
   window.requireJS = window.require;
 

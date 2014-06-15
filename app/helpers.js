@@ -4,6 +4,7 @@ define([
 ], function($, _, hbs) {
   
   var Helpers = {
+    version: "1.0.0.beta",
     loadTheme: function(settings, callback) {
       var key = settings.themes.current; 
 

@@ -1062,3 +1062,79 @@ body.zenmode .channel .topic{
 } 
 
 /* @end */
+
+/* @group About */
+
+.logo-holder,
+.logo-holder svg{
+	display: inline-block;
+	margin-bottom: 5px;
+}
+
+.komanda-information{
+display: block;
+position: absolute;
+top: 40px;
+left: 250px;
+width: 400px;
+	color: #dadada;
+}
+
+.komanda-information a{
+	color: #ff3a24;
+}
+
+.komanda-information span.komanda-information-name{
+	color: #fff;
+	font-size: 1.4em;
+	margin-bottom: 20px;
+	display: block;
+	position: relative;
+}
+
+/* @end */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

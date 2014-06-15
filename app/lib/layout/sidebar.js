@@ -83,7 +83,6 @@ define([
               var connect = Komanda.connections[uuid];
 
               if (connect.hasClient) {
-                console.log('SIMPLE CONNECT');
 
                 connect.client.socket.conn.requestedDisconnect = true;
                 connect.client.socket.conn.end();
@@ -187,6 +186,7 @@ define([
             $('.settings-section-holder').hide();
             $(show).show();
           });
+
         },
         onAction: function() {
           Komanda.settings.save(null);
@@ -202,7 +202,16 @@ define([
 
     about: function(e) {
       e.preventDefault();
-      var box = Helpers.limp.box(AboutView, {}, {});
+      var box = Helpers.limp.box(AboutView, {}, {
+        afterOpen: function() {
+          $('.komanda-box-content a').on('click', function(e) {
+            e.preventDefault();
+
+            var href = $(this).attr('href');
+            Komanda.gui.Shell.openExternal(href);
+          });
+        }
+      });
       box.open();
     }
 

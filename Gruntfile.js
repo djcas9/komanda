@@ -174,7 +174,7 @@ module.exports = function(grunt) {
       options: {
         // version: '0.8.5',
         app_name: "Komanda",
-        app_version: '0.1.0',
+        app_version: '1.0.0.beta',
         build_dir: './build',
         mac: true,
         win: true,

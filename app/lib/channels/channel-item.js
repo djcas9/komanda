@@ -13,7 +13,7 @@ define([
 
     initialize: function() {
       var self = this;
-      self.showStatusChange = Komanda.settings.notifications.status;
+      self.showStatusChange = Komanda.settings.get('notifications.status');
 
       Komanda.vent.on('ignoreStatusChange', function() {
         self.showStatusChange = false;

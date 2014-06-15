@@ -1,13 +1,13 @@
 {
   "name": "Komanda",
-  "version": "0.1.0",
+  "version": "1.0.0.beta",
   "main": "app://host/index.html",
   "window": {
+    "toolbar": false,
+    "frame": false,
     "show": false,
     "title": "Komanda",
     "icon": "app://../images/logo/komanda.png",
-    "toolbar": false,
-    "frame": false,
     "width": 1100,
     "height": 618,
     "min_width": 800,

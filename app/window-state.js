@@ -1,7 +1,6 @@
 define([
-  "helpers"
-], function(Helpers) {
-  'use strict'
+], function() {
+  'use strict';
   /**
    * Cross-platform window state preservation.
    * Yes this code is quite complicated, but this is the best I came up with for
@@ -87,8 +86,8 @@ define([
   function restoreWindowState() {
     // deltaHeight already saved, so just restore it and adjust window height
     if (deltaHeight !== 'disabled' && typeof winState.deltaHeight !== 'undefined') {
-      deltaHeight = winState.deltaHeight
-      winState.height = winState.height - deltaHeight
+      deltaHeight = winState.deltaHeight;
+      winState.height = winState.height - deltaHeight;
     }
 
     win.resizeTo(winState.width, winState.height);
