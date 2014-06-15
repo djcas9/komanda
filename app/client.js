@@ -373,9 +373,6 @@ define([
     });
 
     self.socket.addListener('pm', function(nick, text, message) {
-      self.buildPM(nick, function(status) {
-        if (status) self.addMessage("Status", text);
-      });
     });
 
     self.socket.addListener('message', function(nick, to, text, message) {
@@ -383,18 +380,26 @@ define([
         self.sendMessage(nick, to, text, message);
       } else {
         // PM
-        self.sendMessage(nick, to, text, message, true);
 
-        if (window.Notification) {
-          var n = new Notification("Private Message From " + nick, {
-            tag: 'Komanda',
-            body: "<" + nick + "> " + text
-          });
+        self.buildPM(nick, function(status) {
+          if (status) {
+            self.addMessage("Status", text);
+          } else {
+            self.sendMessage(nick, to, text, message, true);
 
-          n.onClick = function() {
-            alert('word');
-          };
-        }
+            if (window.Notification) {
+              var n = new Notification("Private Message From " + nick, {
+                tag: 'Komanda',
+                body: "<" + nick + "> " + text
+              });
+
+              n.onClick = function() {
+                alert('word');
+              };
+            }
+          } 
+        });
+
       }
     });
 

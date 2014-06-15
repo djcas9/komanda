@@ -14,7 +14,8 @@ define([
       "keypress input": "sendMessage",
       "click div.message a": "openLink",
       "click div.user": "pm",
-      "click div.show-more": "showMore"
+      "click div.show-more": "showMore",
+      "click button.zen-button": "zenmode"
     },
 
     initialize: function() {
@@ -32,6 +33,16 @@ define([
         self.scroll.destroy();
         self.scroll = null;
       }
+    },
+
+    zenmode: function(e) {
+      e.preventDefault();
+
+      if ($('body').hasClass('zenmode')) {
+        $('body').removeClass('zenmode');
+      } else {
+        $('body').addClass('zenmode');
+      };
     },
 
     showMore: function(e) {

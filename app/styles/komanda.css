@@ -619,6 +619,44 @@ border-radius: 100px 100px 100px 100px;
 	display: block;
 }
 
+.channel button.zen-button{
+	background: transparent;
+	outline: none;
+	z-index: 99999;
+	cursor: pointer;
+	vertical-align: middle;
+	display: inline-block;
+	position: absolute;
+	height: 20px;
+	line-height: 15px;
+	text-align: center;
+	margin-right: 6px;
+	
+	
+	outline: none;
+color: #aeb2b7;
+font-size: 13px;
+border: none;
+padding: 8px 10px;
+margin: 15px 5px 0 0;
+display: inline-block;
+	right: 180px;
+	color: #fff;
+	padding-right: 10px;
+	padding-left: 10px;
+	font-size: 0.6em;
+	top: -9px;
+}
+
+.channel .channel-names-holder{
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 180px;
+}
+
 .channel .names{
 	display: block;
 	position: absolute;
@@ -716,7 +754,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 	border-bottom: 1px solid #000;
 	line-height: 40px;
 	padding-left: 10px;
-	padding-right: 10px;
+	padding-right: 45px;
 	font-size: 0.9em;
 	
   -webkit-box-shadow: 0px 6px 8px -4px rgba(0,0,0,0.5);
@@ -1287,6 +1325,27 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=
 
 .button.right{
 	float: right;
+}
+
+/* @end */
+
+/* @group Zenmode */
+
+body.zenmode #content{
+	left:  0 !important;
+}
+
+body.zenmode .channel .channel-names-holder,
+body.zenmode #sidebar{
+	left: -200px !important;
+}
+
+body.zenmode #sidebar,
+body.zenmode .channel button.zen-button,
+body.zenmode .channel .input,
+body.zenmode .channel .messages, 
+body.zenmode .channel .topic{
+	right: 0 !important;
 }
 
 /* @end */

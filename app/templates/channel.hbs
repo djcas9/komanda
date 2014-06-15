@@ -19,14 +19,24 @@
   {{/if}}
 </div>
 
-<div id="{{messages-id this}}" class="scrollbar messages {{#if status}}full{{/if}} {{#if pm}}full{{/if}}"></div>
+{{#if status}}
+{{else}}
 
+<button class="zen-button">
+  <i class="iconic" data-glyph="fullscreen-enter"></i>
+</button>
+
+{{/if}}
+
+<div id="{{messages-id this}}" class="scrollbar messages {{#if status}}full{{/if}} {{#if pm}}full{{/if}}"></div>
 
 {{#if status}}
 {{else}}
 {{#if pm}}
 {{else}}
-{{> templates/partials/names this }}
+<div class="channel-names-holder">
+  {{> templates/partials/names this }}
+</div>
 {{/if}}
 {{/if}}
 
