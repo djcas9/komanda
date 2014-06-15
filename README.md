@@ -1,4 +1,4 @@
-<img height="150px" width="150px" src="https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/logo/komanda%20(PNG)/256x256.png"> 
+<img height="150px" width="150px" src="https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/logo/komanda.png"> 
 
 # Komanda
 
@@ -26,6 +26,7 @@ Komanda is not ready for primetime yet but will be very soon.
 
 # GUI
 
+![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-4.png)
 ![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-1.png)
 ![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-2.png)
 ![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-3.png)
