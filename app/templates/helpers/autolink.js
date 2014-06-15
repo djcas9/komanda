@@ -18,7 +18,9 @@ define('templates/helpers/autolink', [
 
         if (/\.(gif|png|jpe?g)$/i.test(url)) {
 
-          images.push('<a href="'+url+'" rel="nofollow" target="_BLANK"><img src="' + url + '"></a>');
+          if (Komanda.settings.get('embed.images')) {
+            images.push('<a href="'+url+'" rel="nofollow" target="_BLANK"><img src="' + url + '"></a>');
+          }
 
         } else if (/gist\.github\.com/i.test(url)) { 
 
@@ -27,7 +29,9 @@ define('templates/helpers/autolink', [
           if (gist !== null && gist.length === 3) {
             var gistUser = gist[1];
             var gistID = gist[2];
-            code.push(gistID);
+            if (Komanda.settings.get('embed.gist')) {
+              code.push(gistID);
+            }
           }
 
         } else if (/jsfiddle\.net\/(.+)\/(.+)$/i.test(url)) { 
@@ -38,7 +42,10 @@ define('templates/helpers/autolink', [
           } else {
             embedURL = embedURL + "/embedded";
           }
-          jsfiddle.push('<iframe nwdisable nwfaketop style="width: 600px; height: 400px" src="'+embedURL+'"></iframe>');
+
+          if (Komanda.settings.get('embed.jsfiddle')) {
+            jsfiddle.push('<iframe nwdisable nwfaketop style="width: 600px; height: 400px" src="'+embedURL+'"></iframe>');
+          }
         } else {
           // ...
         }

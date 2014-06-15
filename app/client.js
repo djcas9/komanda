@@ -399,7 +399,7 @@ define([
           } else {
             self.sendMessage(nick, to, text, message, true);
 
-            if (window.Notification) {
+            if (window.Notification && Komanda.settings.get('notifications.highlight')) {
               var n = new Notification("Private Message From " + nick, {
                 tag: 'Komanda',
                 body: "<" + nick + "> " + text
@@ -697,7 +697,7 @@ define([
         channel.append(html);
 
         if (data.highlight) {
-          if (window.Notification) {
+          if (window.Notification && Komanda.settings.get('notifications.pm')) {
             var n = new Notification("Highlight: " + to, {
               tag: 'Komanda',
               body: "<" + nick + "> " + text
