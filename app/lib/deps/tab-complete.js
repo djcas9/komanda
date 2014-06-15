@@ -48,6 +48,8 @@ define([
    * if any, with the given prefix.
    */
   Trie.prototype.find = function (prefix) {
+    if (!prefix) return this;
+
     if (prefix.length == 0) {
       return this;
     } else {
@@ -173,6 +175,35 @@ define([
           index = 0
         }
         e.preventDefault();
+        
+      } else if (e.which === 40) { 
+        // down
+        var value = Komanda.history.get(Komanda.historyIndex);
+
+        if (value) {
+          e.target.value = value;
+
+          if (Komanda.historyIndex <= 0) {
+            Komanda.historyIndex = 0;
+          } else {
+            Komanda.historyIndex--;
+          }
+        }
+
+      } else if (e.which === 38) { 
+        // up
+        var value = Komanda.history.get(Komanda.historyIndex);
+
+        if (value) {
+          e.target.value = value;
+          var max = Komanda.history.list.length - 1;
+          if (Komanda.historyIndex >= max) {
+            Komanda.historyIndex = max;
+          } else {
+            Komanda.historyIndex++;
+          }
+        } 
+      
       } else if (e.which === 13) {
         // do nothing
         cache = false;

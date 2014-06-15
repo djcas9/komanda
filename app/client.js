@@ -274,6 +274,7 @@ define([
         var d = chan.attributes;
         chan.set(d);
 
+        $('.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] .topic span.title').html(topic)
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
         Komanda.vent.trigger('topic', data);
       }

@@ -11,11 +11,15 @@ requirejs(["config"], function(require) {
     "lib/layout/sidebar",
     "connect",
     'lib/sessions/sessions',
-    'lib/sessions/session'
+    'lib/sessions/session',
+    'history'
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView, 
-    SidebarView, Connect, Sessions, Session) {
+    SidebarView, Connect, Sessions, Session, History) {
 
       Komanda.connections = {};
+
+      Komanda.history = new History(100);
+      Komanda.historyIndex = 0;
 
       if (window.Notification) {
         Komanda.notification = window.Notification;

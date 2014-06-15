@@ -110,12 +110,15 @@ define([
       var server = this.model.get('server');
       var message = $(e.currentTarget).val();
 
-
       if (e.charCode == 13) {
 
         if (message.length <= 0) return false;
 
         $(e.currentTarget).val("");
+
+        Komanda.history.add(message);
+        Komanda.historyIndex = 0;
+
         Komanda.vent.trigger(server + ':send', {
           target: this.model.get('channel'),
           message: message
