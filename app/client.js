@@ -140,6 +140,13 @@ define([
       self.session.set('connectionOpen', true);
       clearInterval(self.reconnectCheck);
 
+      if (self.session.get('nickPassword')) {
+        var password = self.session.get('nickPassword');
+        if (password.length !== 0) {
+          self.socket.send('nickserv', 'identify', password);
+        }
+      }
+
       self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
       $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"]').removeClass('offline');
     });
@@ -376,7 +383,6 @@ define([
     });
 
     self.socket.addListener('nickSet', function(nick) {
-      console.log('SET NICK', nick);
       self.nick = nick; 
     });
 

@@ -28,7 +28,17 @@ define([
     initialize: function() {
     },
 
+    limpOnClose: function() {
+      $(document).on('keypress', function(e) {
+        if (Komanda.current) {
+          $('.channel[data-server-id="'+Komanda.current.server+'"][data-name="'+Komanda.current.channel+'"] input').focus();
+        }
+      });
+    },
+
     editServer: function(e) {
+      var self = this;
+
       e.preventDefault();
 
       var uuid = $(e.currentTarget).attr('data-uuid');
@@ -45,6 +55,8 @@ define([
         name: session.get('server')
       }, {
         onOpen: function() {
+          $(document).off('keypress');
+
           view = new SessionEditView({
             model: session
           });
@@ -115,6 +127,7 @@ define([
           view.editSession();
         },
         afterDestroy: function() {
+          self.limpOnClose();
           view.close();
           region.close();
         }
@@ -123,6 +136,7 @@ define([
     },
 
     addServer: function(e) {
+      var self = this;
       e.preventDefault();
 
       var session = new Session();
@@ -135,7 +149,8 @@ define([
         edit: false
       }, {
         onOpen: function() {
-        
+          $(document).off('keypress');
+
           view = new SessionEditView({
             model: session
           });
@@ -152,6 +167,7 @@ define([
           view.saveSession();
         },
         afterDestroy: function() {
+          self.limpOnClose();
           view.close();
           region.close();
         }
@@ -160,6 +176,7 @@ define([
     },
 
     settings: function(e) {
+      var self = this;
       e.preventDefault();
 
       var view = null;
@@ -167,6 +184,8 @@ define([
 
       var box = Helpers.limp.box(SettingsIndexView, {}, {
         onOpen: function() {
+          $(document).off('keypress');
+
           view = new SettingsEditView({
             model: Komanda.settings
           });
@@ -193,6 +212,7 @@ define([
           $.limpClose();
         },
         afterDestroy: function() {
+          self.limpOnClose();
           view.close();
           region.close();
         }
@@ -201,8 +221,12 @@ define([
     },
 
     about: function(e) {
+      var self = this;
       e.preventDefault();
       var box = Helpers.limp.box(AboutView, {}, {
+        onOpen: function() {
+          $(document).off('keypress');
+        },
         afterOpen: function() {
           $('.komanda-box-content a').on('click', function(e) {
             e.preventDefault();
@@ -210,6 +234,9 @@ define([
             var href = $(this).attr('href');
             Komanda.gui.Shell.openExternal(href);
           });
+        },
+        afterDestroy: function() {
+          self.limpOnClose();
         }
       });
       box.open();

@@ -12,6 +12,7 @@ define([
       name: "Freenode",
       server: "irc.freenode.net",
       nick: "komanda",
+      nickPassword: "",
       userName: 'komanda',
       realName: 'The Komanda IRC Client',
       port: 6667,

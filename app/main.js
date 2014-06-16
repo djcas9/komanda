@@ -68,8 +68,6 @@ requirejs(["config"], function(require) {
       Komanda.window = Komanda.gui.Window.get();
 
       $(document).on('keypress', function(e) {
-        console.log(e);
-        console.log(Komanda.current);
         if (Komanda.current) {
           $('.channel[data-server-id="'+Komanda.current.server+'"][data-name="'+Komanda.current.channel+'"] input').focus();
         }
