@@ -113,8 +113,6 @@ define([
     },
 
     convert: function(data) {
-       console.log(data);
-
        if (data.hasOwnProperty('channels')) {
          if (typeof data.channels === "string") {
            data.channels = data.channels.split(',');

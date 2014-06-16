@@ -144,7 +144,6 @@ define([
         var password = self.session.get('nickPassword');
 
         if (password.length !== 0) {
-          console.log('SEND PASSWORD');
           self.socket.send('nickserv', 'identify', password);
         }
       }
@@ -287,6 +286,8 @@ define([
 
         $('.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] .topic span.title').html(topic);
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
+
+        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", (topic || "N/A"))
         Komanda.vent.trigger('topic', data);
       }
 

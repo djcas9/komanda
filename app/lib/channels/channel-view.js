@@ -27,9 +27,10 @@ define([
         self.updateWords(words, channels);
       });
 
-      Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":topic", function(data) {
+      Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":topic", function(topic) {
         console.log("TOPIC:::", topic);
         var match = topic.match(/http(s)?:\/\/(.*\.)?github.com\/(.\S+)(\/(.+))?(.git)?$/);
+
         if (match[2]) {
           Komanda.vent.trigger(match[0], {
             channel: self.model.get('channel'),
