@@ -142,7 +142,9 @@ define([
 
       if (self.session.get('nickPassword')) {
         var password = self.session.get('nickPassword');
+
         if (password.length !== 0) {
+          console.log('SEND PASSWORD');
           self.socket.send('nickserv', 'identify', password);
         }
       }
