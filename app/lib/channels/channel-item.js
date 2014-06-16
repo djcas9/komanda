@@ -29,11 +29,6 @@ define([
       var server = this.model.get('server');
       var channel = this.model.get('channel');
 
-
-      if (channel === "mephux") {
-        console.log(self, Komanda.store);
-      }
-
       var s = Komanda.sessions.get(server);
 
       if (s) {
@@ -52,6 +47,7 @@ define([
 
       if (self.showStatusChange) {
         if (Komanda.store.hasOwnProperty(server)) {
+
           if (Komanda.store[server].hasOwnProperty(channel)) {
             if (Komanda.store[server][channel] == 1) {
               $this.find('div.status').addClass('new-messages');
@@ -59,9 +55,13 @@ define([
               $this.find('div.status').addClass('highlight');
             }
           }
+
         } else {
-          Komanda.store[server] = {};
+          Komanda.store[server] = {
+            count: {}
+          };
           Komanda.store[server][channel] = 0;
+          Komanda.store[server].count[channel] = 0;
         }
       }
 

@@ -23,7 +23,8 @@ define([
       notifications: {
         highlight: true,
         pm: true,
-        status: true
+        status: true,
+        badge: true
       },
       embed: {
         all: false,

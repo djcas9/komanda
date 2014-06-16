@@ -34,7 +34,32 @@ define([
       Komanda.vent.trigger(server + ":part", channel);
     },
 
+    updateBadgeCount: function() {
+      if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
+        var masterCount = 0;
+
+        for (server in Komanda.store) {
+          var chans = Komanda.store[server].count
+          for (chan in chans) {
+            var count = chans[chan];
+            if (count) masterCount += count; 
+          }
+        }
+
+        if (masterCount) {
+          if (masterCount === 0) {
+            Komanda.window.setBadgeLabel("");
+          } else {
+            Komanda.window.setBadgeLabel("" + masterCount + "");
+          }
+        } else {
+          Komanda.window.setBadgeLabel("");
+        }
+      }
+    },
+
     openChannel: function(e) {
+      var self = this;
       e.preventDefault();
 
       $('.channel-holder .channel').hide();
@@ -48,11 +73,25 @@ define([
       }
 
       if (Komanda.store.hasOwnProperty(server)) {
-        Komanda.store[server][channel] = 0;
+        if (Komanda.store.hasOwnProperty(channel)) {
+          Komanda.store[server][channel] = 0;
+          Komanda.store[server].count = {}
+          Komanda.store[server].count[channel] = 0;
+        } else {
+          Komanda.store[server][channel] = 0;
+          Komanda.store[server].count = {};
+          Komanda.store[server].count[channel] = 0;
+        }
       } else {
-        Komanda.store[server] = {};
+        Komanda.store[server] = {
+          count: {}
+        };
         Komanda.store[server][channel] = 0;
+        Komanda.store[server].count[channel] = 0;
       }
+
+      Komanda.store[server].count[channel] = 0;
+      self.updateBadgeCount();
 
       item.find('div.status').removeClass('new-messages');
       item.find('div.status').removeClass('highlight');

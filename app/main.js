@@ -22,6 +22,10 @@ requirejs(["config"], function(require) {
       Komanda.settings = new Setting({id: 1});
       Komanda.settings.fetch();
 
+      if (!Komanda.settings.attributes.notifications.hasOwnProperty('badge')) {
+        Komanda.settings.set('notifications.badge', true);
+      }
+
       Komanda.badgeCounter = 0;
       Komanda.blur = false;
 
@@ -73,14 +77,10 @@ requirejs(["config"], function(require) {
 
       Komanda.window.on('blur', function() {
         Komanda.blur = true;
-        Komanda.badgeCounter = 0;
-        Komanda.window.setBadgeLabel("");
       });
 
       Komanda.window.on('focus', function() {
         Komanda.blur = false;
-        Komanda.badgeCounter = 0;
-        Komanda.window.setBadgeLabel("");
       });
 
       // Komanda.window.window.onblur = function() {

@@ -385,11 +385,6 @@ define([
 
     self.socket.addListener('message', function(nick, to, text, message) {
 
-      if (Komanda.blur) {
-        console.log("UPDATE BADGE");
-        Komanda.badgeCounter++;
-        Komanda.window.setBadgeLabel("" + Komanda.badgeCounter + "");
-      }
 
       if ( to.match(/^[#&]/) ) {
         self.sendMessage(nick, to, text, message);
@@ -414,8 +409,8 @@ define([
             }
           } 
         });
-
       }
+
     });
 
 
@@ -719,13 +714,30 @@ define([
           } else {
             if (Komanda.store[server][(flip ? nick : to)] != 2) Komanda.store[server][(flip ? nick : to)] = 1;
           }
+
+          if (Komanda.store[server].hasOwnProperty('count')) {
+            if (Komanda.store[server].count.hasOwnProperty((flip ? nick : to))) {
+              Komanda.store[server].count[(flip ? nick : to)]++;
+            } else {
+              Komanda.store[server].count[(flip ? nick : to)] = 1;
+            }
+          } else {
+            Komanda.store[server].count = {};
+            Komanda.store[server].count[(flip ? nick : to)] = 1;
+          }
+
         } else {
-          Komanda.store[server] = {};
+          Komanda.store[server] = {
+            count: {}
+          };
+
           if (data.highlight) {
             Komanda.store[server][(flip ? nick : to)] = 2;
           } else {
             if (Komanda.store[server][(flip ? nick : to)] != 2) Komanda.store[server][(flip ? nick : to)] = 1;
           }
+
+          Komanda.store[server].count[(flip ? nick : to)] = 1;
         }
 
         if (Komanda.store[server][(flip ? nick : to)] == 1) {
@@ -735,9 +747,34 @@ define([
         }
       }
 
+      Komanda.settings.fetch();
+
+      if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
+        var masterCount = 0;
+
+        for (server in Komanda.store) {
+          var chans = Komanda.store[server].count
+          for (chan in chans) {
+            var count = chans[chan];
+            if (count) masterCount += count; 
+          }
+        }
+
+        if (masterCount) {
+          if (masterCount === 0) {
+            Komanda.window.setBadgeLabel("");
+          } else {
+            Komanda.window.setBadgeLabel("" + masterCount + "");
+          }
+        } else {
+          Komanda.window.setBadgeLabel("");
+        }
+      } // if blur
+
       setTimeout(function() {
         var objDiv = channel.get(0);
         objDiv.scrollTop = objDiv.scrollHeight;
+
       }, 10);
     }
   };
