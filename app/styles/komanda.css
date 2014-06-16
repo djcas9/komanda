@@ -429,9 +429,12 @@ user-select: none;
 	height: 35px;
 	line-height: 35px;
 	padding-left: 10px;
-	padding-right: 10px;
+	padding-right: 20px;
 	display: block;
 	position: relative;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #sidebar .session .channel-list ul.channels li span.user-count{
