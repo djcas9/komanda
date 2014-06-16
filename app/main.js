@@ -118,8 +118,8 @@ requirejs(["config"], function(require) {
 
         if (m.get('connectOnStart')) {
           connect.start(function(client) {
-            _.each(m.get('channels').split(','), function(c) {
-              Komanda.vent.trigger(m.get('uuid') + ":join", c.trim());
+            _.each(m.get('channels'), function(c) {
+              Komanda.vent.trigger(m.get('uuid') + ":join", c);
             });
           });
         }
