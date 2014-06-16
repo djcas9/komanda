@@ -63,6 +63,14 @@ requirejs(["config"], function(require) {
       Komanda.gui = requireNode('nw.gui');
       Komanda.window = Komanda.gui.Window.get();
 
+      $(document).on('keypress', function(e) {
+        console.log(e);
+        console.log(Komanda.current);
+        if (Komanda.current) {
+          $('.channel[data-server-id="'+Komanda.current.server+'"][data-name="'+Komanda.current.channel+'"] input').focus();
+        }
+      });
+
       Komanda.window.on('blur', function() {
         Komanda.blur = true;
         Komanda.badgeCounter = 0;

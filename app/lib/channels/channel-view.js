@@ -110,6 +110,7 @@ define([
       e.preventDefault();
       var href = $(e.currentTarget).attr('href');
       Komanda.gui.Shell.openExternal(href);
+      $(this.el).find('input').focus();
     },
 
     onRender: function() {
@@ -123,7 +124,13 @@ define([
       self.updateWords();
     },
 
+    focus: function(e) {
+      console.log(e);
+      $(this.el).find('input').focus();
+    },
+
     sendMessage: function(e) {
+      e.stopPropagation();
       var server = this.model.get('server');
       var message = $(e.currentTarget).val();
 
