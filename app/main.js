@@ -16,7 +16,7 @@ requirejs(["config"], function(require) {
     'lib/settings',
     'helpers',
     "window-state"
-  ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView, 
+  ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
     SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState) {
 
       Komanda.settings = new Setting({id: 1});
@@ -84,14 +84,14 @@ requirejs(["config"], function(require) {
 
       _.each(Komanda.sessions.models, function(m) {
         m.set('connectionOpen', false);
-        var connect = new Connect(m); 
+        var connect = new Connect(m);
 
         Komanda.connections[m.get('uuid')] = connect;
 
         if (m.get('connectOnStart')) {
           connect.start(function(client) {
-            _.each(m.get('channels'), function(c) {
-              Komanda.vent.trigger(m.get('uuid') + ":join", c);
+            _.each(m.get('channels').split(','), function(c) {
+              Komanda.vent.trigger(m.get('uuid') + ":join", c.trim());
             });
           });
         }
