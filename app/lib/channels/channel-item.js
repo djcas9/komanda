@@ -29,6 +29,11 @@ define([
       var server = this.model.get('server');
       var channel = this.model.get('channel');
 
+
+      if (channel === "mephux") {
+        console.log(self, Komanda.store);
+      }
+
       var s = Komanda.sessions.get(server);
 
       if (s) {

@@ -710,28 +710,28 @@ define([
 
       });
 
-      if (Komanda.current.channel !== to) {
+      if (Komanda.current.channel !== (flip ? nick : to)) {
         var server = self.options.uuid;
 
         if (Komanda.store.hasOwnProperty(server)) {
           if (data.highlight) {
-            Komanda.store[server][to] = 2;
+            Komanda.store[server][(flip ? nick : to)] = 2;
           } else {
-            if (Komanda.store[server][to] != 2) Komanda.store[server][to] = 1;
+            if (Komanda.store[server][(flip ? nick : to)] != 2) Komanda.store[server][(flip ? nick : to)] = 1;
           }
         } else {
           Komanda.store[server] = {};
           if (data.highlight) {
-            Komanda.store[server][to] = 2;
+            Komanda.store[server][(flip ? nick : to)] = 2;
           } else {
-            if (Komanda.store[server][to] != 2) Komanda.store[server][to] = 1;
+            if (Komanda.store[server][(flip ? nick : to)] != 2) Komanda.store[server][(flip ? nick : to)] = 1;
           }
         }
 
-        if (Komanda.store[server][to] == 1) {
-          $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('new-messages');
+        if (Komanda.store[server][(flip ? nick : to)] == 1) {
+          $('li.channel-item[data-server-id="'+server+'"][data-name="'+(flip ? nick : to)+'"] div.status').addClass('new-messages');
         } else {
-          $('li.channel-item[data-server-id="'+server+'"][data-name="'+to+'"] div.status').addClass('highlight');
+          $('li.channel-item[data-server-id="'+server+'"][data-name="'+(flip ? nick : to)+'"] div.status').addClass('highlight');
         }
       }
 
