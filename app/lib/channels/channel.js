@@ -1,8 +1,9 @@
 define([
   "app",
+  "underscore",
   "backbone-plugins",
   "uuid"
-], function(Komanda, Backbone, uuid) {
+], function(Komanda, _, Backbone, uuid) {
 
   var channel = Backbone.Model.extend({
     idAttribute: 'channel',

@@ -5,6 +5,30 @@ define([
   
   var Helpers = {
     version: "1.0.0.beta",
+
+    expandURL: function(url) {
+      var expander = {
+        expand: function (url, callback) {
+          $.ajax({
+            dataType: 'jsonp',
+            url: 'http://api.longurl.org/v2/expand',
+            data: {
+              url: url,
+              format: 'json'
+            },
+            success: function(response) {
+              callback(response);
+            }
+          });
+        }
+      };
+
+      expander.expand(url, function(response) {
+        console.dir(response);
+        return response;
+      });
+    },
+
     loadTheme: function(settings, callback) {
       var key = settings.themes.current; 
 

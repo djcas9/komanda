@@ -26,13 +26,30 @@ define([
       Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":update:words", function(words, channels) {
         self.updateWords(words, channels);
       });
+
+      Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":topic", function(data) {
+        console.log("TOPIC:::", topic);
+        var match = topic.match(/http(s)?:\/\/(.*\.)?github.com\/(.\S+)(\/(.+))?(.git)?$/);
+        if (match[2]) {
+          Komanda.vent.trigger(match[0], {
+            channel: self.model.get('channel'),
+            server: self.model.get('server'),
+            data: match[1]
+          });
+        }
+
+        // https://api.github.com/repos/mephux/komanda/events
+        // check if topic has git repo
+      });
     },
 
     onClose: function() {
       if (self.scroll) {
         self.scroll.destroy();
         self.scroll = null;
-      }
+      };
+
+      Komanda.vent.off()
     },
 
     zenmode: function(e) {

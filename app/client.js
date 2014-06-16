@@ -375,10 +375,22 @@ define([
       });
     });
 
+    self.socket.addListener('nickSet', function(nick) {
+      console.log('SET NICK', nick);
+      self.nick = nick; 
+    });
+
     self.socket.addListener('pm', function(nick, text, message) {
     });
 
     self.socket.addListener('message', function(nick, to, text, message) {
+
+      if (Komanda.blur) {
+        console.log("UPDATE BADGE");
+        Komanda.badgeCounter++;
+        Komanda.window.setBadgeLabel("" + Komanda.badgeCounter + "");
+      }
+
       if ( to.match(/^[#&]/) ) {
         self.sendMessage(nick, to, text, message);
       } else {

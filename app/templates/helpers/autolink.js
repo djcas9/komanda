@@ -22,6 +22,25 @@ define('templates/helpers/autolink', [
             images.push('<a href="'+url+'" rel="nofollow" target="_BLANK"><img src="' + url + '"></a>');
           }
 
+        } else if (/http(s)?:\/\/(.*\.)?twitter.com\/(\w+)\/status\/(\d+)$/.test(url)) {
+          var match = url.match(/http(s)?:\/\/(.*\.)?twitter.com\/(\w+)\/status\/(\d+)$/i);
+          var name = match[2];
+          var id = match[3];
+          if (!id) return;
+
+          if (Komanda.settings.get('twitter')) {
+            $.ajax({
+              url: "https://api.twitter.com/1/statuses/oembed.json?id=" + id,
+              type: "get",
+              dataType: "json",
+              success: function(data) {
+                console.log(data);
+              },
+              error: function(a,b,c) {
+                console.error(a,b,c);
+              }
+            });
+          }
         } else if (/gist\.github\.com/i.test(url)) { 
 
           var gist = url.match(/gist.github.com\/(\w+)\/(.+)$/i);

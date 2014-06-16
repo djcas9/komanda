@@ -22,6 +22,9 @@ requirejs(["config"], function(require) {
       Komanda.settings = new Setting({id: 1});
       Komanda.settings.fetch();
 
+      Komanda.badgeCounter = 0;
+      Komanda.blur = false;
+
       Komanda.connections = {};
 
       Komanda.history = new History(50);
@@ -42,7 +45,8 @@ requirejs(["config"], function(require) {
         "/disconnect",
         "/ignore",
         "/ignore-list",
-        "/unignore"
+        "/unignore",
+        "/nickserv"
       ];
 
     Komanda.sessions = new Sessions();
@@ -58,6 +62,24 @@ requirejs(["config"], function(require) {
     Komanda.vent.on('komanda:ready', function() {
       Komanda.gui = requireNode('nw.gui');
       Komanda.window = Komanda.gui.Window.get();
+
+      Komanda.window.on('blur', function() {
+        Komanda.blur = true;
+        Komanda.badgeCounter = 0;
+        Komanda.window.setBadgeLabel("");
+      });
+
+      Komanda.window.on('focus', function() {
+        Komanda.blur = false;
+        Komanda.badgeCounter = 0;
+        Komanda.window.setBadgeLabel("");
+      });
+
+      // Komanda.window.window.onblur = function() {
+      // };
+
+      // Komanda.window.window.onfocus = function() {
+      // };
 
       Helpers.loadTheme(Komanda.settings.attributes, function() {
         WindowState();

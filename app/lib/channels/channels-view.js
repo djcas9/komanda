@@ -70,7 +70,7 @@ define([
       var objDiv = $(select).find('.messages').get(0);
       if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
 
-      $(select).find('input').focus();
+      $(select).find('input').val("").focus();
     },
 
     getEmptyView: function() {}
