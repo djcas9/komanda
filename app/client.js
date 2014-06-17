@@ -361,6 +361,9 @@ define([
         var $channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+data.target+'"] div.messages');
 
         switch(command[0]) {
+          case '/pm':
+            Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
+          break;
           case '/me':
             command.shift();
             self.socket.action(data.target, command.join(" "));
