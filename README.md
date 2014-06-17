@@ -47,7 +47,7 @@ Komanda is currently in beta. Things may not be perfect but it's pretty solid on
   * `npm install`
   * `grunt build`
 
-# LICENSE
+# MIT LICENSE
 
 The MIT License (MIT)
 

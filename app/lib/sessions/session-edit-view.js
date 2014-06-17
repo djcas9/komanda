@@ -52,14 +52,14 @@ define([
       self.model.save(null);
 
       var connect = new Connect(self.model);
-      Komanda.connections[self.model.get('uuid')] = connect; 
+      Komanda.connections[self.model.get('uuid')] = connect;
 
       $.limpClose();
 
       if (self.model.get('connectOnStart')) {
         connect.start(function(client) {
           _.each(self.model.get('channels'), function(c) {
-            Komanda.vent.trigger(self.model.get('uuid') + ":join", c);
+            Komanda.vent.trigger(self.model.get('uuid') + ":join", c.trim());
           });
         });
       }
