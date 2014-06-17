@@ -128,7 +128,7 @@ define([
     self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
 
     Komanda.vent.on(self.options.uuid + ':disconnect', function(callback) {
-      self.disconnect(callback); 
+      self.disconnect(callback);
     });
 
     Komanda.vent.on('disconnect', function() {
@@ -304,7 +304,7 @@ define([
           self.socket.part(channel, "Bye!", function() {
             self.removeAndCleanChannel(chan, self.options.uuid);
             Komanda.vent.trigger('channel/part', self.options.uuid, channel);
-          }); 
+          });
         }
       }
 
@@ -314,7 +314,7 @@ define([
       self.socket.join(channel, function() {
         Komanda.vent.trigger('channel/join', self.options.uuid, channel);
         $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"]').click();
-      }); 
+      });
     });
 
     Komanda.vent.on(self.options.uuid + ':send', function(data) {
@@ -348,7 +348,7 @@ define([
       if (data.message && data.message.match(/^\//)) {
         var command = data.message.split(' ');
         var $channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+data.target+'"] div.messages');
-        
+
 
       switch(command[0]) {
         case '/me':
@@ -362,7 +362,7 @@ define([
             self.removeAndCleanChannel(chan, self.options.uuid);
           }
           Komanda.vent.trigger('channel/part', self.options.uuid, data.target);
-        }); 
+        });
         break;
 
         case '/clear':
@@ -386,7 +386,7 @@ define([
     });
 
     self.socket.addListener('nickSet', function(nick) {
-      self.nick = nick; 
+      self.nick = nick;
     });
 
     self.socket.addListener('pm', function(nick, text, message) {
@@ -416,7 +416,7 @@ define([
                 alert('word');
               };
             }
-          } 
+          }
         });
       }
 
@@ -455,12 +455,12 @@ define([
         "705",
         // errors
         "401", "402", "403", "404", "405", "406", "407", "408", "409", "411", "412", "413",
-        "414", "415", "416", "421", "422", "423", "424", "431", "432", "433", "436", "437", 
-        "438", "439", "441", "442", "443", "444", "445", "446", "451", "461", "462", "463", 
-        "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477", 
+        "414", "415", "416", "421", "422", "423", "424", "431", "432", "433", "436", "437",
+        "438", "439", "441", "442", "443", "444", "445", "446", "451", "461", "462", "463",
+        "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477",
         "478", "481", "482", "483", "484", "485", "491", "501", "502", "511"
       ];
-      if (_.contains(codes, message.rawCommand) || 
+      if (_.contains(codes, message.rawCommand) ||
           message.rawCommand === "NOTICE" || message.commandType === "error") {
         if (self.me(message.args[0])) message.args.shift();
       self.addMessage("Status", message.args.join(' '));
@@ -576,7 +576,7 @@ define([
 
       setTimeout(function() {
         $('#content .channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel.get("channel")+'"] .names').replaceWith(html);
-        var chans = _.map(self.channels.models, function(c) { 
+        var chans = _.map(self.channels.models, function(c) {
           return c.get('channel');
         });
         Komanda.vent.trigger(self.options.uuid + ":" + channel.get('channel') + ":update:words", names, chans);
@@ -587,12 +587,12 @@ define([
   };
 
   Client.prototype.channelsForUser = function(user) {
-    var self = this; 
+    var self = this;
     var channels = [];
 
     _.each(self.channels.models, function(m) {
       if (_.contains(m.get('names')), user) {
-        channels.push(m);    
+        channels.push(m);
         self.removeUser(m.get('channel'), user);
       }
     });
@@ -761,11 +761,11 @@ define([
       if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
         var masterCount = 0;
 
-        for (server in Komanda.store) {
-          var chans = Komanda.store[server].count
-          for (chan in chans) {
+        for (var srv in Komanda.store) {
+          var chans = Komanda.store[srv].count;
+          for (var chan in chans) {
             var count = chans[chan];
-            if (count) masterCount += count; 
+            if (count) masterCount += count;
           }
         }
 
@@ -798,7 +798,7 @@ define([
     var self = this;
 
     if (!nick) nick = "Status";
-  
+
     var chan = self.findChannel(nick);
 
     if (!chan) {
