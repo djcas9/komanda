@@ -362,6 +362,8 @@ define([
 
         switch(command[0]) {
           case '/pm':
+          case '/msg':
+          case '/query':
             Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
           break;
           case '/me':
