@@ -200,13 +200,22 @@ module.exports = function(grunt) {
         command: "./node-webkit-builds/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
       },
 
+      runLinux64: {
+        options: {
+          stdout: false,
+          stderr: false,
+          stdin: false,
+        },
+        command: "./build/cache/linux64/0.9.2/nw ./build/komanda-source/"
+    },
+
       create_dmg: {
         options: {
           stdout: true
         },
         command: './dist/mac/yoursway-create-dmg/create-dmg --volname "Komanda ' + _VERSION + '" --background ./dist/mac/background.png --window-size 480 540 --icon-size 128 --app-drop-link 240 370 --icon "Komanda" 240 110 ./build/releases/Komanda/mac/Komanda-' + _VERSION + '.dmg ./build/releases/Komanda/mac/'
       }
-    
+
     }
 
   });
@@ -247,7 +256,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-shell");
 
   grunt.registerTask('default', [
-    
+
   ]);
 
   grunt.registerTask("build", [
@@ -265,5 +274,11 @@ module.exports = function(grunt) {
   grunt.registerTask("run", [
     "default",
     "shell:runnw"
+  ]);
+
+  grunt.registerTask("runLinux64", [
+    "default",
+    "copy",
+    "shell:runLinux64"
   ]);
 };
