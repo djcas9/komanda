@@ -6,10 +6,11 @@ define([
   'lib/channels/channel-view',
   'lib/channels/channels-view',
   "hbs!templates/message",
+  "hbs!templates/notice",
   "hbs!templates/names",
   "moment",
   "uuid"
-], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, NamesView, moment, uuid) {
+], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, Notice, NamesView, moment, uuid) {
 
   var Client = function(session) {
     var self = this;
@@ -128,7 +129,7 @@ define([
     self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
 
     Komanda.vent.on(self.options.uuid + ':disconnect', function(callback) {
-      self.disconnect(callback); 
+      self.disconnect(callback);
     });
 
     Komanda.vent.on('disconnect', function() {
@@ -287,7 +288,7 @@ define([
         $('.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] .topic span.title').html(topic);
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
 
-        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", (topic || "N/A"))
+        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", (topic || "N/A"));
         Komanda.vent.trigger('topic', data);
       }
 
@@ -304,7 +305,7 @@ define([
           self.socket.part(channel, "Bye!", function() {
             self.removeAndCleanChannel(chan, self.options.uuid);
             Komanda.vent.trigger('channel/part', self.options.uuid, channel);
-          }); 
+          });
         }
       }
 
@@ -314,11 +315,11 @@ define([
       self.socket.join(channel, function() {
         Komanda.vent.trigger('channel/join', self.options.uuid, channel);
         $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"]').click();
-      }); 
+      });
     });
 
     Komanda.vent.on(self.options.uuid + ':send', function(data) {
-      var render = function() {
+      var render = function(isNotice) {
         var dd = {
           nick: self.nick,
           to: data.target || "",
@@ -328,16 +329,26 @@ define([
           timestamp: moment().format('MM/DD/YY hh:mm:ss')
         };
 
+        if(isNotice) {
+          var cmd = dd.text.split(" ");
+          dd.text = cmd.slice(2).join(" ");
+          dd.to = cmd[1];
+          dd.sender = true;
+          dd.toChannel = !!data.target.match(/^[#&]/);
+        }
+
         var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+dd.to+'"] div.messages');
 
         if (channel.length > 0) {
-          var html = Message(dd);
+          var html = (isNotice) ? Notice(dd) : Message(dd);
           _.defer(function() {
             channel.append(html);
           });
         }
 
-        self.socket.say(dd.to, dd.text);
+        if(!isNotice) {
+          self.socket.say(dd.to, dd.text);
+        }
 
         setTimeout(function() {
           var objDiv = channel.get(0);
@@ -348,31 +359,35 @@ define([
       if (data.message && data.message.match(/^\//)) {
         var command = data.message.split(' ');
         var $channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+data.target+'"] div.messages');
-        
 
-      switch(command[0]) {
-        case '/me':
-          command.shift();
-          self.socket.action(data.target, command.join(" "));
-        break;
-        case '/part':
-          self.socket.part(data.target, "Bye!", function() {
-          var chan = self.findChannel(data.target);
-          if (chan) {
-            self.removeAndCleanChannel(chan, self.options.uuid);
-          }
-          Komanda.vent.trigger('channel/part', self.options.uuid, data.target);
-        }); 
-        break;
+        switch(command[0]) {
+          case '/me':
+            command.shift();
+            self.socket.action(data.target, command.join(" "));
+            break;
+          case '/part':
+            self.socket.part(data.target, "Bye!", function() {
+              var chan = self.findChannel(data.target);
+              if (chan) {
+                self.removeAndCleanChannel(chan, self.options.uuid);
+              }
+              Komanda.vent.trigger('channel/part', self.options.uuid, data.target);
+            });
+            break;
 
-        case '/clear':
-          $channel.html("");
-        break;
+          case '/clear':
+            $channel.html("");
+            break;
 
-        default:
-          command[0] = command[0].replace('\/', '');
-        self.socket.send.apply(self.socket, command);
-      }
+          case '/notice':
+            self.socket.notice(command[1], command.slice(2).join(" "));
+            render(true);
+            break;
+
+          default:
+            command[0] = command[0].replace('\/', '');
+            self.socket.send.apply(self.socket, command);
+        }
 
       } else {
         render();
@@ -386,14 +401,45 @@ define([
     });
 
     self.socket.addListener('nickSet', function(nick) {
-      self.nick = nick; 
+      self.nick = nick;
     });
 
     self.socket.addListener('pm', function(nick, text, message) {
     });
 
-    self.socket.addListener('message', function(nick, to, text, message) {
+    self.socket.addListener('notice', function(nick, to, text, message) {
+      if ( to.match(/^[#&]/) ) {
+        self.sendMessage(nick, to, text, message, undefined, true);
+      } else {
+        // PM
 
+        if(!nick) {
+          // this is a server status message
+          self.addMessage("Status", message.args.join(' '));
+        } else {
+          self.buildPM(nick, function(status) {
+            if (status) {
+              self.addMessage("Status", text);
+            } else {
+              self.sendMessage(nick, to, text, message, true, true);
+
+              if (window.Notification && Komanda.settings.get('notifications.highlight')) {
+                var n = new Notification("Notice From " + nick, {
+                  tag: 'Komanda',
+                  body: "->" + nick + "<- " + text
+                });
+
+                n.onClick = function() {
+                  alert('word');
+                };
+              }
+            }
+          });
+        }
+      }
+    });
+
+    self.socket.addListener('message', function(nick, to, text, message) {
 
       if ( to.match(/^[#&]/) ) {
         self.sendMessage(nick, to, text, message);
@@ -416,7 +462,7 @@ define([
                 alert('word');
               };
             }
-          } 
+          }
         });
       }
 
@@ -455,15 +501,14 @@ define([
         "705",
         // errors
         "401", "402", "403", "404", "405", "406", "407", "408", "409", "411", "412", "413",
-        "414", "415", "416", "421", "422", "423", "424", "431", "432", "433", "436", "437", 
-        "438", "439", "441", "442", "443", "444", "445", "446", "451", "461", "462", "463", 
-        "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477", 
+        "414", "415", "416", "421", "422", "423", "424", "431", "432", "433", "436", "437",
+        "438", "439", "441", "442", "443", "444", "445", "446", "451", "461", "462", "463",
+        "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477",
         "478", "481", "482", "483", "484", "485", "491", "501", "502", "511"
       ];
-      if (_.contains(codes, message.rawCommand) || 
-          message.rawCommand === "NOTICE" || message.commandType === "error") {
+      if (_.contains(codes, message.rawCommand) || message.commandType === "error") {
         if (self.me(message.args[0])) message.args.shift();
-      self.addMessage("Status", message.args.join(' '));
+        self.addMessage("Status", message.args.join(' '));
       } else {
 
       }
@@ -576,7 +621,7 @@ define([
 
       setTimeout(function() {
         $('#content .channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel.get("channel")+'"] .names').replaceWith(html);
-        var chans = _.map(self.channels.models, function(c) { 
+        var chans = _.map(self.channels.models, function(c) {
           return c.get('channel');
         });
         Komanda.vent.trigger(self.options.uuid + ":" + channel.get('channel') + ":update:words", names, chans);
@@ -587,12 +632,12 @@ define([
   };
 
   Client.prototype.channelsForUser = function(user) {
-    var self = this; 
+    var self = this;
     var channels = [];
 
     _.each(self.channels.models, function(m) {
       if (_.contains(m.get('names')), user) {
-        channels.push(m);    
+        channels.push(m);
         self.removeUser(m.get('channel'), user);
       }
     });
@@ -672,7 +717,7 @@ define([
 
   };
 
-  Client.prototype.sendMessage = function(nick, to, text, message, flip){
+  Client.prototype.sendMessage = function(nick, to, text, message, flip, isNotice) {
     var self = this;
 
     var data = {
@@ -682,7 +727,8 @@ define([
       message: message,
       server: self.options.uuid,
       uuid: uuid.v4(),
-      timestamp: moment().format('MM/DD/YY hh:mm:ss')
+      timestamp: moment().format('MM/DD/YY hh:mm:ss'),
+      flip: flip
     };
 
     if (text.match(self.nick) && !self.me(nick)) {
@@ -697,7 +743,14 @@ define([
       channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
     }
 
-    var html = Message(data);
+    var html;
+    if(isNotice) {
+      data.sender = self.me(nick);
+      data.toChannel = !!to.match(/^[#&]/);
+      html = Notice(data);
+    } else {
+      html = Message(data);
+    }
 
     if (channel.length > 0) {
       _.defer(function() {
@@ -761,11 +814,11 @@ define([
       if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
         var masterCount = 0;
 
-        for (server in Komanda.store) {
-          var chans = Komanda.store[server].count
-          for (chan in chans) {
+        for (var srv in Komanda.store) {
+          var chans = Komanda.store[srv].count;
+          for (var chan in chans) {
             var count = chans[chan];
-            if (count) masterCount += count; 
+            if (count) masterCount += count;
           }
         }
 
@@ -798,7 +851,7 @@ define([
     var self = this;
 
     if (!nick) nick = "Status";
-  
+
     var chan = self.findChannel(nick);
 
     if (!chan) {
