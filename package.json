@@ -3,9 +3,9 @@
   "version": "1.0.0-beta",
   "main": "app://host/index.html",
   "window": {
-    "toolbar": true,
-    "frame": true,
-    "show": true,
+    "toolbar": false,
+    "frame": false,
+    "show": false,
     "title": "Komanda",
     "icon": "app://../images/logo/komanda.png",
     "width": 1100,
