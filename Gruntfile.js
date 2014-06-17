@@ -206,7 +206,7 @@ module.exports = function(grunt) {
           stderr: false,
           stdin: false,
         },
-        command: "./node-webkit-builds/linux-x64/nw ./build/komanda-source/"
+        command: "./build/cache/linux64/0.9.2/nw ./build/komanda-source/"
     },
 
       create_dmg: {
