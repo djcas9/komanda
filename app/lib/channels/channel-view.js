@@ -29,15 +29,15 @@ define([
 
       Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":topic", function(topic) {
         console.log("TOPIC:::", topic);
-        var match = topic.match(/http(s)?:\/\/(.*\.)?github.com\/(.\S+)(\/(.+))?(.git)?$/);
+        // var match = topic.match(/http(s)?:\/\/(.*\.)?github.com\/(.\S+)(\/(.+))?(.git)?$/);
 
-        if (match[2]) {
-          Komanda.vent.trigger(match[0], {
-            channel: self.model.get('channel'),
-            server: self.model.get('server'),
-            data: match[1]
-          });
-        }
+        // if (match[2]) {
+          // Komanda.vent.trigger(match[0], {
+            // channel: self.model.get('channel'),
+            // server: self.model.get('server'),
+            // data: match[1]
+          // });
+        // }
 
         // https://api.github.com/repos/mephux/komanda/events
         // check if topic has git repo
