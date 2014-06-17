@@ -287,7 +287,7 @@ define([
         $('.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] .topic span.title').html(topic);
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
 
-        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", (topic || "N/A"))
+        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", (topic || "N/A"));
         Komanda.vent.trigger('topic', data);
       }
 
@@ -761,9 +761,9 @@ define([
       if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
         var masterCount = 0;
 
-        for (server in Komanda.store) {
-          var chans = Komanda.store[server].count
-          for (chan in chans) {
+        for (var srv in Komanda.store) {
+          var chans = Komanda.store[srv].count;
+          for (var chan in chans) {
             var count = chans[chan];
             if (count) masterCount += count; 
           }
