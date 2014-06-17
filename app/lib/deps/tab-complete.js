@@ -33,12 +33,12 @@ define([
 
     var c = word.charAt(0);
     if (!(c in this.children)) {
-      this.children[c] = new Trie(this.prefix + c);
+      this.children[c.toLowerCase()] = new Trie(this.prefix + c);
     }
     if (word.length > 1) {
-      this.children[c].word(word.substring(1));
+      this.children[c.toLowerCase()].word(word.substring(1));
     } else {
-      this.children[c].isEnd = true;
+      this.children[c.toLowerCase()].isEnd = true;
     }
     return this;
   };
@@ -131,6 +131,10 @@ define([
           cache = true;
         }
 
+        if(!__.isUndefined(value)) {
+          value = value.toLowerCase();
+        }
+
         var trie = root.find(value);
 
         if (trie) {
@@ -175,8 +179,8 @@ define([
           index = 0
         }
         e.preventDefault();
-        
-      } else if (e.which === 40) { 
+
+      } else if (e.which === 40) {
         // down
         var value = Komanda.history.get(Komanda.historyIndex);
 
@@ -191,7 +195,7 @@ define([
           }
         }
 
-      } else if (e.which === 38) { 
+      } else if (e.which === 38) {
         // up
         var value = Komanda.history.get(Komanda.historyIndex);
 
@@ -203,8 +207,8 @@ define([
           } else {
             Komanda.historyIndex++;
           }
-        } 
-      
+        }
+
       } else if (e.which === 13) {
         // do nothing
         cache = false;
