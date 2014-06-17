@@ -50,7 +50,10 @@ requirejs(["config"], function(require) {
         "/ignore",
         "/ignore-list",
         "/unignore",
-        "/nickserv"
+        "/nickserv",
+        "/pm",
+        "/query",
+        "/msg"
       ];
 
     Komanda.sessions = new Sessions();

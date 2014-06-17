@@ -19,6 +19,14 @@ define([
     initialize: function() {
     },
 
+    bind: function() {
+      $("ul.channels").sortable({
+        axis: "y",
+        handle: "li.channel-item"
+      });
+      $("ul.channels").disableSelection();
+    },
+
     partChannel: function(e) {
       e.preventDefault();
       e.stopPropagation();

@@ -64,6 +64,7 @@ define([
     } else {
       selector.append(self.channelsView.render().el);
     }
+
     return this;
   };
 
