@@ -352,7 +352,7 @@ define([
 
         setTimeout(function() {
           var objDiv = channel.get(0);
-          objDiv.scrollTop = objDiv.scrollHeight;
+          if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
         }, 10);
       };
 
@@ -364,6 +364,7 @@ define([
           case '/me':
             command.shift();
             self.socket.action(data.target, command.join(" "));
+            self.addMessage(data.target, command.join(" "), true);
             break;
           case '/part':
             self.socket.part(data.target, "Bye!", function() {
@@ -697,17 +698,29 @@ define([
   };
 
 
-  Client.prototype.addMessage = function(channel, message) {
+  Client.prototype.addMessage = function(channel, message, isNotice) {
     var self = this;
     var server = self.options.uuid;
 
     var chan = $('div.channel[data-server-id="'+server+'"][data-name="'+channel+'"] div.messages');
 
     if (chan.length > 0) {
-      var html = Message({
-        text: message,
-        timestamp: moment().format('MM/DD/YY hh:mm:ss')
-      });
+
+      var html = "";
+
+      if (isNotice) {
+        html = Notice({
+          nick: self.nick,
+          to: channel,
+          text: message,
+          timestamp: moment().format('MM/DD/YY hh:mm:ss')
+        });
+      } else {
+        html = Message({
+          text: message,
+          timestamp: moment().format('MM/DD/YY hh:mm:ss')
+        });
+      }
 
       chan.append(html);
 
