@@ -1,15 +1,41 @@
 define(["marionette", "hbs!templates/layout/content"], function(Marionette, template) {
 
-  return Marionette.ItemView.extend({
-    el: "#content",
-    template: template,
-
-    keyboardEvents: {
+  var keyboardEvents;
+  if(process.platform === 'darwin') {
+    keyboardEvents = {
       'command+up': 'channelUp',
       'command+down': 'channelDown',
       // debug
       'command+d': 'debug',
-      'command+r': 'reload'
+      'command+r': 'reload',
+      'command+w': 'channelClose'
+    };
+  } else {
+    keyboardEvents = {
+      'ctrl+up': 'channelUp',
+      'ctrl+down': 'channelDown',
+      // debug
+      'ctrl+d': 'debug',
+      'ctrl+r': 'reload',
+      'ctrl+w': 'channelClose'
+    };
+  }
+
+  return Marionette.ItemView.extend({
+    el: "#content",
+    template: template,
+
+    keyboardEvents: keyboardEvents,
+
+    channelClose: function(e) {
+      e.preventDefault();
+
+      var current = $('li.channel-item.selected');
+      if (current.length <= 0) return false;
+
+      current.removeClass('selected');
+
+      current.find('.part-channel').click();
     },
 
     channelMove: function(direction) {
