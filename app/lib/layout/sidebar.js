@@ -36,6 +36,9 @@ define([
       });
     },
 
+    onShow: function() {
+    },
+
     editServer: function(e) {
       var self = this;
 

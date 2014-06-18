@@ -5,6 +5,7 @@ requirejs.config({
     "vendor": "../vendor",
     "almond": "../vendor/bower/almond/almond",
     "jquery": "../vendor/bower/jquery/dist/jquery",
+    "jquery-ui": "../vendor/bower/jquery-ui/ui/jquery-ui",
     autolink: "lib/deps/autolink",
     caret: "lib/deps/caret",
     tabcomplete: "lib/deps/tab-complete",
@@ -48,6 +49,10 @@ requirejs.config({
     },
     "autolink": {
       "deps": ["jquery"]
+    },
+    "jquery-ui": {
+      "deps": ["jquery"],
+      exports: "$"
     },
     "limp": {
       "deps": ["jquery"]

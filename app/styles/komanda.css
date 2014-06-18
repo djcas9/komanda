@@ -329,6 +329,12 @@ border-radius: 100px 100px 100px 100px;
 	overflow: hidden;
 }
 
+#sidebar .session.ui-sortable-helper{
+	border-top: 1px solid rgba(0,0,0,0.5);
+	border-bottom: 1px solid rgba(0,0,0,0.4);
+
+}
+
 #sidebar .session .server,
 div.header-box{
 -webkit-touch-callout: none;

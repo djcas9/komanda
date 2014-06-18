@@ -1,5 +1,5 @@
 define([
-  "marionette", 
+  "marionette",
   "hbs!templates/channel",
   "underscore",
   "tabcomplete",
@@ -143,6 +143,11 @@ define([
 
         Komanda.history.add(message);
         Komanda.historyIndex = 0;
+
+        if(message.split(" ")[0] === '/devtools') {
+          Komanda.vent.trigger('komanda:debug');
+          return;
+        }
 
         Komanda.vent.trigger(server + ':send', {
           target: this.model.get('channel'),

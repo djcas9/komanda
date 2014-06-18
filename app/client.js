@@ -6,10 +6,11 @@ define([
   'lib/channels/channel-view',
   'lib/channels/channels-view',
   "hbs!templates/message",
+  "hbs!templates/notice",
   "hbs!templates/names",
   "moment",
   "uuid"
-], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, NamesView, moment, uuid) {
+], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, Notice, NamesView, moment, uuid) {
 
   var Client = function(session) {
     var self = this;
@@ -63,6 +64,7 @@ define([
     } else {
       selector.append(self.channelsView.render().el);
     }
+
     return this;
   };
 
@@ -287,7 +289,7 @@ define([
         $('.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] .topic span.title').html(topic);
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
 
-        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", (topic || "N/A"))
+        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", (topic || "N/A"));
         Komanda.vent.trigger('topic', data);
       }
 
@@ -318,7 +320,7 @@ define([
     });
 
     Komanda.vent.on(self.options.uuid + ':send', function(data) {
-      var render = function() {
+      var render = function(isNotice) {
         var dd = {
           nick: self.nick,
           to: data.target || "",
@@ -328,20 +330,30 @@ define([
           timestamp: moment().format('MM/DD/YY hh:mm:ss')
         };
 
+        if(isNotice) {
+          var cmd = dd.text.split(" ");
+          dd.text = cmd.slice(2).join(" ");
+          dd.to = cmd[1];
+          dd.sender = true;
+          dd.toChannel = !!data.target.match(/^[#&]/);
+        }
+
         var channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+dd.to+'"] div.messages');
 
         if (channel.length > 0) {
-          var html = Message(dd);
+          var html = (isNotice) ? Notice(dd) : Message(dd);
           _.defer(function() {
             channel.append(html);
           });
         }
 
-        self.socket.say(dd.to, dd.text);
+        if(!isNotice) {
+          self.socket.say(dd.to, dd.text);
+        }
 
         setTimeout(function() {
           var objDiv = channel.get(0);
-          objDiv.scrollTop = objDiv.scrollHeight;
+          if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
         }, 10);
       };
 
@@ -349,30 +361,40 @@ define([
         var command = data.message.split(' ');
         var $channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+data.target+'"] div.messages');
 
+        switch(command[0]) {
+          case '/pm':
+          case '/msg':
+          case '/query':
+            Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
+          break;
+          case '/me':
+            command.shift();
+            self.socket.action(data.target, command.join(" "));
+            self.addMessage(data.target, command.join(" "), true);
+            break;
+          case '/part':
+            self.socket.part(data.target, "Bye!", function() {
+              var chan = self.findChannel(data.target);
+              if (chan) {
+                self.removeAndCleanChannel(chan, self.options.uuid);
+              }
+              Komanda.vent.trigger('channel/part', self.options.uuid, data.target);
+            });
+            break;
 
-      switch(command[0]) {
-        case '/me':
-          command.shift();
-          self.socket.action(data.target, command.join(" "));
-        break;
-        case '/part':
-          self.socket.part(data.target, "Bye!", function() {
-          var chan = self.findChannel(data.target);
-          if (chan) {
-            self.removeAndCleanChannel(chan, self.options.uuid);
-          }
-          Komanda.vent.trigger('channel/part', self.options.uuid, data.target);
-        });
-        break;
+          case '/clear':
+            $channel.html("");
+            break;
 
-        case '/clear':
-          $channel.html("");
-        break;
+          case '/notice':
+            self.socket.notice(command[1], command.slice(2).join(" "));
+            render(true);
+            break;
 
-        default:
-          command[0] = command[0].replace('\/', '');
-        self.socket.send.apply(self.socket, command);
-      }
+          default:
+            command[0] = command[0].replace('\/', '');
+            self.socket.send.apply(self.socket, command);
+        }
 
       } else {
         render();
@@ -392,8 +414,39 @@ define([
     self.socket.addListener('pm', function(nick, text, message) {
     });
 
-    self.socket.addListener('message', function(nick, to, text, message) {
+    self.socket.addListener('notice', function(nick, to, text, message) {
+      if ( to.match(/^[#&]/) ) {
+        self.sendMessage(nick, to, text, message, undefined, true);
+      } else {
+        // PM
 
+        if(!nick) {
+          // this is a server status message
+          self.addMessage("Status", message.args.join(' '));
+        } else {
+          self.buildPM(nick, function(status) {
+            if (status) {
+              self.addMessage("Status", text);
+            } else {
+              self.sendMessage(nick, to, text, message, true, true);
+
+              if (window.Notification && Komanda.settings.get('notifications.highlight')) {
+                var n = new Notification("Notice From " + nick, {
+                  tag: 'Komanda',
+                  body: "->" + nick + "<- " + text
+                });
+
+                n.onClick = function() {
+                  alert('word');
+                };
+              }
+            }
+          });
+        }
+      }
+    });
+
+    self.socket.addListener('message', function(nick, to, text, message) {
 
       if ( to.match(/^[#&]/) ) {
         self.sendMessage(nick, to, text, message);
@@ -460,10 +513,9 @@ define([
         "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477",
         "478", "481", "482", "483", "484", "485", "491", "501", "502", "511"
       ];
-      if (_.contains(codes, message.rawCommand) ||
-          message.rawCommand === "NOTICE" || message.commandType === "error") {
+      if (_.contains(codes, message.rawCommand) || message.commandType === "error") {
         if (self.me(message.args[0])) message.args.shift();
-      self.addMessage("Status", message.args.join(' '));
+        self.addMessage("Status", message.args.join(' '));
       } else {
 
       }
@@ -652,17 +704,29 @@ define([
   };
 
 
-  Client.prototype.addMessage = function(channel, message) {
+  Client.prototype.addMessage = function(channel, message, isNotice) {
     var self = this;
     var server = self.options.uuid;
 
     var chan = $('div.channel[data-server-id="'+server+'"][data-name="'+channel+'"] div.messages');
 
     if (chan.length > 0) {
-      var html = Message({
-        text: message,
-        timestamp: moment().format('MM/DD/YY hh:mm:ss')
-      });
+
+      var html = "";
+
+      if (isNotice) {
+        html = Notice({
+          nick: self.nick,
+          to: channel,
+          text: message,
+          timestamp: moment().format('MM/DD/YY hh:mm:ss')
+        });
+      } else {
+        html = Message({
+          text: message,
+          timestamp: moment().format('MM/DD/YY hh:mm:ss')
+        });
+      }
 
       chan.append(html);
 
@@ -672,7 +736,7 @@ define([
 
   };
 
-  Client.prototype.sendMessage = function(nick, to, text, message, flip){
+  Client.prototype.sendMessage = function(nick, to, text, message, flip, isNotice) {
     var self = this;
 
     var data = {
@@ -682,7 +746,8 @@ define([
       message: message,
       server: self.options.uuid,
       uuid: uuid.v4(),
-      timestamp: moment().format('MM/DD/YY hh:mm:ss')
+      timestamp: moment().format('MM/DD/YY hh:mm:ss'),
+      flip: flip
     };
 
     if (text.match(self.nick) && !self.me(nick)) {
@@ -697,7 +762,14 @@ define([
       channel = $('div.channel[data-server-id="'+self.options.uuid+'"][data-name="'+to+'"] div.messages');
     }
 
-    var html = Message(data);
+    var html;
+    if(isNotice) {
+      data.sender = self.me(nick);
+      data.toChannel = !!to.match(/^[#&]/);
+      html = Notice(data);
+    } else {
+      html = Message(data);
+    }
 
     if (channel.length > 0) {
       _.defer(function() {

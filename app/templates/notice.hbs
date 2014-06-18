@@ -1,0 +1,35 @@
+<div class="message {{#if highlight}}highlight{{/if}}">
+
+  <div class="body">
+
+    <span class="timestamp">
+      {{timestamp}}
+    </span>
+
+    {{#if nick}}
+    <span class="nickname {{#if highlight}}highlight{{/if}}" style="color:{{random-color nick }}">
+      {{#if sender}}
+        ->{{to}}<-
+      {{else}}
+        {{#if toChannel}}
+          -{{nick}}/{{to}}-
+        {{else}}
+          -{{nick}}-
+        {{/if}}
+      {{/if}}
+    </span>
+    {{else}}
+    <span class="nickname {{#unless nick}}system-message{{/unless}}">
+      -->
+    </span>
+    {{/if}}
+
+
+    <span id="{{server}}-{{uuid}}" class="text {{#unless nick}}system-message{{/unless}}">
+      {{autolink text server uuid}}
+      <div class="embed-items"></div>
+    </span>
+
+  </div>
+
+</div>
