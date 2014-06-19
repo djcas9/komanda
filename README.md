@@ -6,11 +6,7 @@ Komanda is a IRC client built with node-webkit, javascript, html and css for peo
 
 # Download (prebuilt binaries)
 
- * [macosx](https://github.com/mephux/komanda/releases/download/1.0.0.beta/Komanda-macosx.zip)
- * [windows](https://github.com/mephux/komanda/releases/download/1.0.0.beta/Komanda-windows.zip)
- * [linux-32](https://github.com/mephux/komanda/releases/download/1.0.0.beta/Komanda-linux-32.zip)
- * [linux-64](https://github.com/mephux/komanda/releases/download/1.0.0.beta/Komanda-linux-64.zip)
- 
+ * comming soon - you will have to build from source for now.
 
 # The Plan (in progress)
 
