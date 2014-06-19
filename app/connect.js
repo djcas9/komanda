@@ -15,6 +15,8 @@ define([
   Connect.prototype.start = function(callback) {
     var self = this; 
 
+
+    this.hasClient = true;
     self.client.connect(function() {
       if (callback && typeof callback === "function") return callback(self.session.uuid);
     });

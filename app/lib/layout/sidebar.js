@@ -94,6 +94,9 @@ define([
 
           html.on('click', 'button.connect-session', function(e) {
             e.preventDefault();
+
+            view.editSession();
+
             if (Komanda.connections.hasOwnProperty(uuid)) {
               var connect = Komanda.connections[uuid];
 
@@ -212,6 +215,7 @@ define([
         },
         onAction: function() {
           Komanda.settings.save(null);
+          Komanda.vent.trigger('komanda:update:badge')
           $.limpClose();
         },
         afterDestroy: function() {

@@ -6,6 +6,10 @@ define([
   var Helpers = {
     version: "1.0.0.beta",
 
+    updateBadgeCount: function() {
+      Komanda.vent.trigger('komanda:update:badge');
+    },
+
     expandURL: function(url) {
       var expander = {
         expand: function (url, callback) {

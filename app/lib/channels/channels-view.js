@@ -39,31 +39,8 @@ define([
         server = item.parents('.session').attr('data-id');
       }
 
+      Komanda.store[server].count[channel] = 0;
       Komanda.vent.trigger(server + ":part", channel);
-    },
-
-    updateBadgeCount: function() {
-      if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
-        var masterCount = 0;
-
-        for (server in Komanda.store) {
-          var chans = Komanda.store[server].count
-          for (chan in chans) {
-            var count = chans[chan];
-            if (count) masterCount += count; 
-          }
-        }
-
-        if (masterCount) {
-          if (masterCount === 0) {
-            Komanda.window.setBadgeLabel("");
-          } else {
-            Komanda.window.setBadgeLabel("" + masterCount + "");
-          }
-        } else {
-          Komanda.window.setBadgeLabel("");
-        }
-      }
     },
 
     openChannel: function(e) {
@@ -83,12 +60,23 @@ define([
       if (Komanda.store.hasOwnProperty(server)) {
         if (Komanda.store.hasOwnProperty(channel)) {
           Komanda.store[server][channel] = 0;
-          Komanda.store[server].count = {}
-          Komanda.store[server].count[channel] = 0;
+
+          if (Komanda.store[server].hasOwnProperty('count')) {
+            Komanda.store[server].count[channel] = 0;
+          } else {
+            Komanda.store[server].count = {}
+            Komanda.store[server].count[channel] = 0;
+          }
+
         } else {
           Komanda.store[server][channel] = 0;
-          Komanda.store[server].count = {};
-          Komanda.store[server].count[channel] = 0;
+
+          if (Komanda.store[server].hasOwnProperty('count')) {
+            Komanda.store[server].count[channel] = 0;
+          } else {
+            Komanda.store[server].count = {}
+            Komanda.store[server].count[channel] = 0;
+          }
         }
       } else {
         Komanda.store[server] = {
@@ -99,7 +87,7 @@ define([
       }
 
       Komanda.store[server].count[channel] = 0;
-      self.updateBadgeCount();
+      Komanda.vent.trigger('komanda:update:badge');
 
       item.find('div.status').removeClass('new-messages');
       item.find('div.status').removeClass('highlight');

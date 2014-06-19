@@ -139,14 +139,18 @@ define([
 
         if (trie) {
           // items[(items.length - 1)] = trie.uniquePrefix();
+
+          console.log(items, value);
+
           var choices = trie.choices();
 
           if (choices.length > 1) {
 
             if (index >= choices.length) index = 0;
 
-            if (items.length === 1 && items[0] === value) {
+            if (items.length === 1 && items[0].toLowerCase() === value) {
               var v = choices[index];
+
               if (v.match(/\//) || v.match(/\#/)) {
                 e.target.value = v + " ";
               } else {
@@ -159,7 +163,7 @@ define([
             }
 
           } else {
-            if (items.length === 1 && items[0] === value) {
+            if (items.length === 1 && items[0].toLowerCase() === value) {
               var v = choices[index];
               if (v.match(/\//) || v.match(/\#/)) {
                 e.target.value = v + " ";
@@ -182,10 +186,10 @@ define([
 
       } else if (e.which === 40) {
         // down
-        var value = Komanda.history.get(Komanda.historyIndex);
+        var historyDown = Komanda.history.get(Komanda.historyIndex);
 
         if (value) {
-          e.target.value = value;
+          e.target.value = historyDown;
 
           if (Komanda.historyIndex <= 0) {
             e.target.value = "";
@@ -197,10 +201,10 @@ define([
 
       } else if (e.which === 38) {
         // up
-        var value = Komanda.history.get(Komanda.historyIndex);
+        var historyUp = Komanda.history.get(Komanda.historyIndex);
 
         if (value) {
-          e.target.value = value;
+          e.target.value = historyUp;
           var max = Komanda.history.list.length - 1;
           if (Komanda.historyIndex >= max) {
             Komanda.historyIndex = max;
