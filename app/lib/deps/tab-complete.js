@@ -407,7 +407,6 @@ define([
         }
 
         var historyDown = Komanda.history.get(Komanda.historyIndex);
-        console.log(Komanda.historyIndex);
 
         if (historyDown) {
           e.target.value = historyDown;
@@ -425,8 +424,6 @@ define([
         };
 
         var historyUp = Komanda.history.get(Komanda.historyIndex);
-
-        console.log(Komanda.historyIndex);
 
         if (historyUp) {
           e.target.value = historyUp;
