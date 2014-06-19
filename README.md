@@ -41,7 +41,12 @@ Komanda is currently in beta. Things may not be perfect but it's pretty solid on
 
 # Build
   * `npm install`
-  * `grunt build`
+  * `grunt build` # windows, linux, macosx
+
+# dev
+
+ * `npm install`
+ * `grunt run`
 
 # MIT LICENSE
 
