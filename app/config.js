@@ -7,7 +7,6 @@ requirejs.config({
     "jquery": "../vendor/bower/jquery/dist/jquery",
     "jquery-ui": "../vendor/bower/jquery-ui/ui/jquery-ui",
     autolink: "lib/deps/autolink",
-    caret: "lib/deps/caret",
     tabcomplete: "lib/deps/tab-complete",
     limp: "lib/deps/limp",
 
@@ -58,9 +57,6 @@ requirejs.config({
       "deps": ["jquery"]
     },
     "gistembed": {
-      "deps": ["jquery"]
-    },
-    "caret": {
       "deps": ["jquery"]
     },
     'Mousetrap': {
