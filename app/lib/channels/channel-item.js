@@ -1,7 +1,8 @@
 define([
   "marionette", 
   "hbs!templates/channel-item",
-], function(Marionette, template) {
+  "helpers"
+], function(Marionette, template, helpers) {
 
   return Marionette.ItemView.extend({
     tagName: 'li',
@@ -45,24 +46,24 @@ define([
         $this.addClass('selected');
       }
 
-      if (self.showStatusChange) {
-        if (Komanda.store.hasOwnProperty(server)) {
+      if (Komanda.store.hasOwnProperty(server)) {
 
-          if (Komanda.store[server].hasOwnProperty(channel)) {
-            if (Komanda.store[server][channel] == 1) {
-              $this.find('div.status').addClass('new-messages');
-            } else if (Komanda.store[server][channel] == 2) {
-              $this.find('div.status').addClass('highlight');
-            }
+        if (Komanda.store[server].hasOwnProperty(channel)) {
+          if (Komanda.store[server][channel] == 1) {
+            $this.find('div.status').addClass('new-messages');
+          } else if (Komanda.store[server][channel] == 2) {
+            $this.find('div.status').addClass('highlight');
           }
-
-        } else {
-          Komanda.store[server] = {
-            count: {}
-          };
-          Komanda.store[server][channel] = 0;
-          Komanda.store[server].count[channel] = 0;
         }
+
+      } else {
+        Komanda.store[server] = {
+          count: {}
+        };
+        Komanda.store[server][channel] = 0;
+        Komanda.store[server].count[channel] = 0;
+
+        Komanda.vent.trigger('komanda:update:badge');
       }
 
 

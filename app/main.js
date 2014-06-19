@@ -53,7 +53,8 @@ requirejs(["config"], function(require) {
         "/nickserv",
         "/pm",
         "/query",
-        "/msg"
+        "/msg",
+        '/whois'
       ];
 
     Komanda.sessions = new Sessions();
@@ -65,6 +66,36 @@ requirejs(["config"], function(require) {
       server: null,
       channel: null
     };
+
+    Komanda.vent.on('komanda:update:badge', function(args) {
+      if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
+        var masterCount = 0;
+
+        for (var srv in Komanda.store) {
+          var chans = Komanda.store[srv].count;
+          for (var chan in chans) {
+            var count = chans[chan];
+            if (count) masterCount += count;
+          }
+        }
+
+        if (masterCount) {
+          if (masterCount === 0) {
+            Komanda.window.setBadgeLabel("");
+          } else {
+            Komanda.window.setBadgeLabel("" + masterCount + "");
+          }
+        } else {
+          Komanda.window.setBadgeLabel("");
+        }
+      } else {
+        _.each(Komanda.store, function(s) {
+          s.count = {};
+        });
+
+        Komanda.window.setBadgeLabel("");
+      }
+    });
 
     Komanda.vent.on('komanda:ready', function() {
       Komanda.gui = requireNode('nw.gui');
@@ -82,6 +113,10 @@ requirejs(["config"], function(require) {
 
       Komanda.window.on('focus', function() {
         Komanda.blur = false;
+        if (Komanda.store.hasOwnProperty(Komanda.current.server)) {
+          Komanda.store[Komanda.current.server].count[Komanda.current.channel] = 0;
+        }
+        Komanda.vent.trigger('komanda:update:badge');
       });
 
       // Komanda.window.window.onblur = function() {

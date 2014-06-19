@@ -68,6 +68,19 @@ define([
     return this;
   };
 
+  Client.prototype.isConnected = function() {
+    var self = this;
+    if (self.socket) {
+      if (self.socket.conn.readable && self.socket.conn.writable) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  };
+
   Client.prototype.connect = function(callback) {
     var self = this;
 
@@ -122,12 +135,27 @@ define([
           self.socket.conn.requestedDisconnect = false;
           $('.channel[data-server-id="'+self.options.uuid+'"] .messages').html();
           self.socket.conn.end();
+          self.socket.connect();
         }
         clearInterval(self.reconnectCheck);
       }
     };
 
     self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+
+    self.offlineCheckFunction = function() {
+      if (self.socket) {
+        if (self.socket.conn.readable && self.socket.conn.writable) {
+          self.session.set('connectionOpen', true);
+        } else {
+          self.session.set('connectionOpen', false);
+        }
+      } else {
+        self.session.set('connectionOpen', false);
+      }
+    };
+
+    self.offlineCheck = setInterval(self.offlineCheckFunction, 4000);
 
     Komanda.vent.on(self.options.uuid + ':disconnect', function(callback) {
       self.disconnect(callback);
@@ -164,6 +192,13 @@ define([
     });
 
     self.socket.addListener('connection:error', function(error) {
+      var message = "Komanda Error: " + (error.hasOwnProperty('message') ? error.message : "Unknown Error");
+
+      if (error.code === "ENOTFOUND") {
+        message = "Komanda Error: You are not connected to the internet.";
+      }
+
+      self.addMessage('Status', message, true);
     });
 
     self.socket.addListener('connection:close', function() {
@@ -303,10 +338,17 @@ define([
           self.removeAndCleanChannel(chan, self.options.uuid);
           Komanda.vent.trigger('channel/part', self.options.uuid, channel);
         } else {
-          self.socket.part(channel, "Bye!", function() {
+
+          if (self.isConnected()) {
+            self.socket.part(channel, "Bye!", function() {
+              self.removeAndCleanChannel(chan, self.options.uuid);
+              Komanda.vent.trigger('channel/part', self.options.uuid, channel);
+            });
+          } else {
             self.removeAndCleanChannel(chan, self.options.uuid);
             Komanda.vent.trigger('channel/part', self.options.uuid, channel);
-          });
+          }
+
         }
       }
 
@@ -367,11 +409,22 @@ define([
           case '/query':
             Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
           break;
+          case '/op':
+            break;
+          case '/voice':
+            break;
+          case '/kick':
+            break;
+          case '/ban':
+            break;
           case '/me':
             command.shift();
             self.socket.action(data.target, command.join(" "));
             self.addMessage(data.target, command.join(" "), true);
             break;
+          case '/whois':
+            self.socket.whois(command[1]);
+          break;
           case '/part':
             self.socket.part(data.target, "Bye!", function() {
               var chan = self.findChannel(data.target);
@@ -407,8 +460,23 @@ define([
       });
     });
 
+    self.socket.addListener('whois', function(data) {
+      self.addMessage(Komanda.current.channel, "*** WHOIS FOR USER: " + data.nick, true);
+      self.addMessage(Komanda.current.channel, "Nick:        " + data.nick, true);
+      self.addMessage(Komanda.current.channel, "User Name:   " + data.user, true);
+      self.addMessage(Komanda.current.channel, "Real Name:   " + data.realname, true);
+      self.addMessage(Komanda.current.channel, "Host:        " + data.host, true);
+      if (data.channels) {
+        self.addMessage(Komanda.current.channel, "Channels:    " + data.channels.join(', '), true);
+      }
+      self.addMessage(Komanda.current.channel, "Server:      " + data.server, true);
+      self.addMessage(Komanda.current.channel, "Server Info: " + data.serverinfo, true);
+    });
+
     self.socket.addListener('nickSet', function(nick) {
       self.nick = nick;
+      self.session.set('nick', self.nick);
+      $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"] span.current-nick').html(self.nick);
     });
 
     self.socket.addListener('pm', function(nick, text, message) {
@@ -529,6 +597,9 @@ define([
     self.socket.addListener('nick', function(oldnick, newnick, channels, message) {
       if (self.me(oldnick)) {
         self.nick = newnick;
+        self.session.set('nick', self.nick);
+
+        $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="Status"] span.current-nick').html(self.nick);
       }
 
       _.each(self.channels.models, function(chan) {
@@ -786,25 +857,16 @@ define([
 
       });
 
+
       if (Komanda.current.channel !== (flip ? nick : to)) {
         var server = self.options.uuid;
 
         if (Komanda.store.hasOwnProperty(server)) {
+
           if (data.highlight) {
             Komanda.store[server][(flip ? nick : to)] = 2;
           } else {
             if (Komanda.store[server][(flip ? nick : to)] != 2) Komanda.store[server][(flip ? nick : to)] = 1;
-          }
-
-          if (Komanda.store[server].hasOwnProperty('count')) {
-            if (Komanda.store[server].count.hasOwnProperty((flip ? nick : to))) {
-              Komanda.store[server].count[(flip ? nick : to)]++;
-            } else {
-              Komanda.store[server].count[(flip ? nick : to)] = 1;
-            }
-          } else {
-            Komanda.store[server].count = {};
-            Komanda.store[server].count[(flip ? nick : to)] = 1;
           }
 
         } else {
@@ -817,8 +879,6 @@ define([
           } else {
             if (Komanda.store[server][(flip ? nick : to)] != 2) Komanda.store[server][(flip ? nick : to)] = 1;
           }
-
-          Komanda.store[server].count[(flip ? nick : to)] = 1;
         }
 
         if (Komanda.store[server][(flip ? nick : to)] == 1) {
@@ -828,29 +888,18 @@ define([
         }
       }
 
+      // badge logic
+      if (Komanda.current.channel !== (flip ? nick : to)) {
+        self.updateBadgeCount((flip ? nick : to));
+      } else {
+        if (Komanda.blur) self.updateBadgeCount((flip ? nick : to));
+      }
+
       Komanda.settings.fetch();
 
-      if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
-        var masterCount = 0;
-
-        for (var srv in Komanda.store) {
-          var chans = Komanda.store[srv].count;
-          for (var chan in chans) {
-            var count = chans[chan];
-            if (count) masterCount += count;
-          }
-        }
-
-        if (masterCount) {
-          if (masterCount === 0) {
-            Komanda.window.setBadgeLabel("");
-          } else {
-            Komanda.window.setBadgeLabel("" + masterCount + "");
-          }
-        } else {
-          Komanda.window.setBadgeLabel("");
-        }
-      } // if blur
+      Komanda.vent.trigger('komanda:update:badge', {
+        server: self.options.uuid
+      });
 
       setTimeout(function() {
         var objDiv = channel.get(0);
@@ -895,6 +944,35 @@ define([
       if (nick === "Status") return callback(true);
       return callback(false);
     }
+  };
+
+  Client.prototype.updateBadgeCount = function(key) {
+    var self = this;
+    var server = self.options.uuid;
+
+    if (Komanda.store.hasOwnProperty(server)) {
+
+      if (Komanda.store[server].hasOwnProperty('count')) {
+        if (Komanda.store[server].count.hasOwnProperty(key)) {
+          Komanda.store[server].count[key]++;
+        } else {
+          Komanda.store[server].count[key] = 1;
+        }
+      } else {
+        Komanda.store[server].count = {};
+        Komanda.store[server].count[key] = 1;
+      }
+
+    } else {
+      Komanda.store[server] = {
+        count: {}
+      };
+
+      Komanda.store[server].count[key] = 1;
+    }
+
+    // $('li.channel-item[data-server-id="'+server+'"][data-name="'+key+'"] span.notification-count').html(Komanda.store[server].count[key]);
+    return;
   };
 
   return Client;

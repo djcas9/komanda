@@ -41,6 +41,16 @@ define('templates/helpers/autolink', [
               }
             });
           }
+          
+        } else if (/codepen.io\/\w+\/pen\/\w+/i.test(url)) {
+
+          var codepen = url.match(/codepen.io\/(\w+)\/pen\/(\w+)/i);
+
+          var user = codepen[0];
+          var slug = codepen[1];
+
+          // <p data-height="224" data-theme-id="0" data-slug-hash="KgvyC" data-default-tab="result" class='codepen'>See the Pen <a href='http://codepen.io/julianshapiro/pen/KgvyC/'>Velocity.js - Option: Loop</a> by Julian Shapiro (<a href='http://codepen.io/julianshapiro'>@julianshapiro</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+          // <script async src="//codepen.io/assets/embed/ei.js"></script>
         } else if (/gist\.github\.com/i.test(url)) { 
 
           var gist = url.match(/gist.github.com\/(\w+)\/(.+)$/i);

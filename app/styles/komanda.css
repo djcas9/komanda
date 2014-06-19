@@ -514,6 +514,10 @@ display: inline-block;
 	top: -9px;
 }
 
+.channel button.zen-button.full{
+	right: 0 !important;
+}
+
 .channel .channel-names-holder{
 	display: block;
 	position: absolute;
