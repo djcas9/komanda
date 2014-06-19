@@ -93,7 +93,7 @@ requirejs(["config"], function(require) {
           s.count = {};
         });
 
-        Komanda.window.setBadgeLabel("");
+        if (window.setBadgeLabel) Komanda.window.setBadgeLabel("");
       }
     });
 
