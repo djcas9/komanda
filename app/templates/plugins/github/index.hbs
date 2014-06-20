@@ -7,11 +7,67 @@
     <span class="name">
       {{repo.metadata.name}} 
     </span>
+
+    {{#if isOrg}}
+    <span class="description">
+      {{repo.metadata.blog}}
+    </span>
+    {{else}}
+
     {{#if repo.metadata.description}}
     <span class="description">
       {{repo.metadata.description}}
     </span>
     {{/if}}
+    {{/if}}
+  </div>
+
+  <div class="plugin-options">
+  
+    {{#if isOrg}}
+
+      <button class='plugin-button' data-href="{{repo.metadata.html_url}}">
+        <span class="octicon octicon-gist"></span>
+        {{repo.metadata.public_gists}}
+      </button>
+
+      <button class='plugin-button' data-href="{{repo.metadata.html_url}}">
+        <span class="octicon octicon-repo"></span>
+        {{repo.metadata.public_repos}}
+      </button>
+
+    {{else}}
+
+      {{#if repo.metadata.has_wiki}}
+      <button class='plugin-button' data-href="{{repo.metadata.html_url}}/wiki">
+        <span class="octicon octicon-book"></span>
+      </button>
+      {{/if}}
+
+      {{#if repo.metadata.has_issues}}
+      <button class='plugin-button' data-href="{{repo.metadata.html_url}}/issues">
+        <span class="octicon octicon-issue-opened"></span>
+        {{repo.metadata.open_issues_count}}
+      </button>
+      {{/if}}
+
+      <button class="plugin-button" data-href="{{repo.metadata.html_url}}/watchers">
+        <span class="octicon octicon-eye"></span>
+        {{repo.metadata.subscribers_count}}
+      </button>
+
+      <button class="plugin-button" data-href="{{repo.metadata.html_url}}/stargazers">
+        <span class="octicon octicon-star"></span>
+        {{repo.metadata.watchers_count}}
+      </button>
+
+      <button class="plugin-button" data-href="{{repo.metadata.html_url}}/network">
+        <span class="octicon octicon-repo-forked"></span>
+        {{repo.metadata.forks_count}}
+      </button>
+
+    {{/if}}
+
   </div>
 
 </div>

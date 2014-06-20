@@ -1106,7 +1106,8 @@ body.zenmode #sidebar,
 body.zenmode .channel button.zen-button,
 body.zenmode .channel .input,
 body.zenmode .channel .messages, 
-body.zenmode .channel .topic{
+body.zenmode .channel .topic,
+body.zenmode .channel .plugin{
 	right: 0 !important;
 }
 
@@ -1175,6 +1176,49 @@ width: 400px;
 
 .plugin .plugin-logo span{
 	vertical-align: middle;	
+	cursor: pointer !important;
+}
+
+.plugin .plugin-options{
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 5px;
+	bottom: 0;
+	width: 350px;
+}
+
+.plugin .plugin-options button{
+	margin-top: 8px;
+	float: right;
+	margin-right: 5px;
+}
+
+.plugin-button{
+	background: #1d1e21;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	background-image: -moz-linear-gradient( top, #d5d6d9 0%, #afb0b7);
+	background-image: -webkit-gradient( linear, left top, left bottom, from(#d5d6d9), to(#afb0b7));
+	-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	-moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	-o-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	text-shadow: rgba(255,255,255,0.5) 0 1px 0;
+	padding-right: 8px;
+	padding-left: 8px;
+	display: block;
+	position: relative;
+	overflow: hidden;
+	font-size: 0.8em;
+}
+
+.plugin-button span{
+	padding-right: 3px;
+	padding-left: 3px;
 }
 
 .plugin .title{

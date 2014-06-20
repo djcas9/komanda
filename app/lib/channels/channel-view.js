@@ -92,7 +92,7 @@ define([
                 $(self.el).prepend(html).addClass('github-plugin');
 
                 console.log(self.model.get('channel'), repo);
-                self.githubUpdateCheck = setInterval(self.githubUpdateFunction, 60000);
+                self.githubUpdateCheck = setInterval(self.githubUpdateFunction, 30000);
               });
 
             } // has match index 3

@@ -101,6 +101,12 @@ requirejs(["config"], function(require) {
       Komanda.gui = requireNode('nw.gui');
       Komanda.window = Komanda.gui.Window.get();
 
+      $(document).on('click', 'button.plugin-button', function(e) {
+        e.preventDefault();
+        var href = $(this).attr('data-href');
+        Komanda.gui.Shell.openExternal(href);
+      });
+
       $(document).on('keypress', function(e) {
         if (Komanda.current) {
           $('.channel[data-server-id="'+Komanda.current.server+'"][data-name="'+Komanda.current.channel+'"] input').focus();
