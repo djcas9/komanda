@@ -116,6 +116,7 @@ requirejs(["config"], function(require) {
         if (Komanda.store.hasOwnProperty(Komanda.current.server)) {
           Komanda.store[Komanda.current.server].count[Komanda.current.channel] = 0;
         }
+
         Komanda.vent.trigger('komanda:update:badge');
       });
 

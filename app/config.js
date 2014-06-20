@@ -9,6 +9,7 @@ requirejs.config({
     autolink: "lib/deps/autolink",
     tabcomplete: "lib/deps/tab-complete",
     limp: "lib/deps/limp",
+    highlight: "lib/deps/highlight",
 
     // Embed
     gistembed: "lib/deps/embed/gist-embed",

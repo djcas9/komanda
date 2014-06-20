@@ -1,6 +1,7 @@
 define([
   "app",
   'underscore',
+  'helpers',
   'lib/channels/channels',
   'lib/channels/channel',
   'lib/channels/channel-view',
@@ -10,7 +11,7 @@ define([
   "hbs!templates/names",
   "moment",
   "uuid"
-], function(Komanda, _, Channels, Channel, ChannelView, ChannelsView, Message, Notice, NamesView, moment, uuid) {
+], function(Komanda, _, Helpers, Channels, Channel, ChannelView, ChannelsView, Message, Notice, NamesView, moment, uuid) {
 
   var Client = function(session) {
     var self = this;
@@ -264,6 +265,9 @@ define([
         if (chan.length > 0) return;
         $('.channel-holder').append(view.render().el);
         self.addMessage(channel, "Topic: " + channelTopic.topic);
+
+        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", channelTopic.topic);
+
         $('li.channel-item[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"]').click();
       }
     });
@@ -315,6 +319,7 @@ define([
 
       self.topics[data.server][channel] = data;
 
+
       var chan = self.findChannel(channel);
 
       if (chan) {
@@ -324,7 +329,7 @@ define([
         $('.channel[data-server-id="'+self.options.uuid+'"][data-name="'+channel+'"] .topic span.title').html(topic);
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
 
-        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", (topic || "N/A"));
+        Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", data.topic);
         Komanda.vent.trigger('topic', data);
       }
 
@@ -416,6 +421,13 @@ define([
           case '/kick':
             break;
           case '/ban':
+            break;
+          case '/code':
+            // command.shift();
+            // var codeString = command.join(" ").replace( /\n/g, "\\n").replace( /\r/g, "\\r").replace( /\t/g, "\\t");
+            // console.log(codeString);
+            // var code = Helpers.displayCode(codeString, self.options.uuid, data.target);
+            // self.addCode(data.target, code);
             break;
           case '/me':
             command.shift();
@@ -774,6 +786,26 @@ define([
     return false;
   };
 
+  Client.prototype.addCode = function(channel, message) {
+    var self = this;
+    var server = self.options.uuid;
+
+    var chan = $('div.channel[data-server-id="'+server+'"][data-name="'+channel+'"] div.messages');
+    var html = "";
+
+    if (chan.length > 0) {
+      html = Message({
+        code: true,
+        text: message,
+        timestamp: moment().format('MM/DD/YY hh:mm:ss')
+      });
+
+      chan.append(html);
+    }
+
+    var objDiv = chan.get(0);
+    objDiv.scrollTop = objDiv.scrollHeight;
+  };
 
   Client.prototype.addMessage = function(channel, message, isNotice) {
     var self = this;
