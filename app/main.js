@@ -93,13 +93,19 @@ requirejs(["config"], function(require) {
           s.count = {};
         });
 
-        Komanda.window.setBadgeLabel("");
+        if (window.setBadgeLabel) Komanda.window.setBadgeLabel("");
       }
     });
 
     Komanda.vent.on('komanda:ready', function() {
       Komanda.gui = requireNode('nw.gui');
       Komanda.window = Komanda.gui.Window.get();
+
+      $(document).on('click', 'button.plugin-button', function(e) {
+        e.preventDefault();
+        var href = $(this).attr('data-href');
+        Komanda.gui.Shell.openExternal(href);
+      });
 
       $(document).on('keypress', function(e) {
         if (Komanda.current) {
@@ -116,6 +122,7 @@ requirejs(["config"], function(require) {
         if (Komanda.store.hasOwnProperty(Komanda.current.server)) {
           Komanda.store[Komanda.current.server].count[Komanda.current.channel] = 0;
         }
+
         Komanda.vent.trigger('komanda:update:badge');
       });
 
