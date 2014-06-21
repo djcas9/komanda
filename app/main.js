@@ -170,6 +170,7 @@ requirejs(["config"], function(require) {
         }
 
       });
+
     });
 
     Komanda.addInitializer(function(options) {

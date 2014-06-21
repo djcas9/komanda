@@ -135,6 +135,10 @@ table {
 
 }
 
+code, pre {
+	font-family: "Courier New", Courier, mono;
+}
+
 /* @end */
 
 /* @group Scroll Bar */
@@ -558,8 +562,8 @@ display: inline-block;
 }
 
 .channel .names div.user{
-	height: 32px;
-	line-height: 32px;
+	height: 34px;
+	line-height: 34px;
 	padding-left: 10px;
 	padding-right: 10px;
 	cursor: pointer;
@@ -646,10 +650,13 @@ user-select: none;
 
 	background-color: #495561;
 
-	border-bottom: 1px solid #000;
 	font-size: 0.9em;	
-	-webkit-box-shadow: 0px 6px 8px -4px rgba(0,0,0,0.5);
-	box-shadow: 0px 6px 8px -4px rgba(0,0,0,0.5);
+	
+-webkit-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-moz-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-o-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-ms-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+box-shadow: 0px 0px 0px 1px rgba( 0,0,0,1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
 }
 
 .channel .input{
@@ -687,6 +694,33 @@ div.message{
 	word-wrap:break-word;
 }
 
+div.message code{
+	margin: 0;
+	border: 1px solid #282e37;
+	background-color: #293038;
+	border-radius: 3px;
+	padding: 3px 5px;
+	font-size: 0.8em;
+	color: #e8e8e8;
+}
+
+div.message pre{
+background-color: #293038;
+border: 1px solid #0d1014;
+font-size: 13px;
+line-height: 19px;
+overflow: auto;
+padding: 6px 10px;
+border-radius: 3px
+}
+
+div.message pre code{
+	background-color: transparent;
+	border: none;
+	padding-left: 0;
+	padding-right: 0;
+}
+
 div.message .body{
 	position: relative;
 	display: inline-block;
@@ -696,6 +730,8 @@ div.message .body{
 
 div.message .body .timestamp{
 	position: relative;
+	display: inline-block;
+	width: 120px;
 }
 
 div.message .body .nickname{
@@ -1161,6 +1197,21 @@ width: 400px;
 
 /* @group Github */
 
+div.message.github-message{
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+div.message.github-message .body{
+	display: block;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
 .plugin{
 	
 }
@@ -1189,7 +1240,7 @@ width: 400px;
 }
 
 .plugin .plugin-options button{
-	margin-top: 8px;
+	margin-top: 9px;
 	float: right;
 	margin-right: 5px;
 }
@@ -1219,6 +1270,7 @@ width: 400px;
 .plugin-button span{
 	padding-right: 3px;
 	padding-left: 3px;
+	font-size: 1.0em;
 }
 
 .plugin .title{
@@ -1247,6 +1299,109 @@ width: 400px;
 
 .plugin .title span.description{
 	color: #949494;
+}
+
+div.github-wrapper{
+display: block;
+position: relative;
+left: 130px;
+top: -16px;
+padding-right: 150px;
+	overflow: hidden;
+}
+
+div.github-wrapper .github-title{
+	display: block;
+}
+
+div.github-wrapper a{
+	color: #D0DAF5;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+
+div.github-wrapper .github-title strong{
+	font-weight: bold;
+	text-decoration: none;
+	font-variant: normal;
+}
+
+div.github-wrapper .github-title span{
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+div.github-wrapper .github-actor-image {
+float: left;
+margin-right: 10px;
+top: 25px;
+position: absolute;
+}
+
+div.github-wrapper .github-actor-image img {
+	vertical-align: middle;
+	border-radius: 3px;
+	width: 30px;
+	height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+div.github-wrapper .github-body{
+min-height: 35px;
+margin-top: 8px;
+display: block;
+margin-left: 40px;
+	color: #afafaf;
+}
+
+div.github-wrapper .github-body hr{
+background: rgba(41, 43, 46, 1);
+border: 0 none;
+color: #3389E7;
+height: 2px;
+padding: 0;
+margin: 15px 0;
+}
+
+div.github-wrapper .github-body img{
+max-width: 200px;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+
+div.github-wrapper .github-body p {
+display: block;
+-webkit-margin-before: 1em;
+-webkit-margin-after: 1em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+}
+
+div.github-wrapper .github-body ul{
+	padding-left: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	list-style-type: disc;
+}
+
+div.github-wrapper .github-body ul.commits{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	list-style-type: none;
+	padding: 0;
+}
+
+div.github-wrapper .github-body ul.commits li{
+	margin-top: 7px;
+	list-style-type: none;
+	color: #b2b2b2;
+	line-height: 22px;
+}
+
+div.github-wrapper .github-body ul li{
+display: list-item;
+text-align: -webkit-match-parent;
 }
 
 /* @end */

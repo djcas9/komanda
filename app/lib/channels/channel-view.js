@@ -3,9 +3,13 @@ define([
   "hbs!templates/channel",
   "underscore",
   "tabcomplete",
+  "uuid",
+  "moment",
+  "highlight",
 
-  "hbs!templates/plugins/github/index"
-], function(Marionette, template, _, tab, GithubView) {
+  "hbs!templates/plugins/github/index",
+  "hbs!templates/plugins/github/feed-item"
+], function(Marionette, template, _, tab, uuid, moment, hljs, GithubView, GithubFeedItem) {
 
   return Marionette.ItemView.extend({
     tagName: 'div',
@@ -24,10 +28,33 @@ define([
       var self = this;
       self.completerSetup = false;
       self.completer = null;
+      self.last_feed_id = 0;
 
       self.githubUpdateFunction = function() {
         self.updateAndRender(function(r) {
-          console.log("UPDATE:::", self.model.get('channel'), r);
+          if (r.feed[0].id !== self.last_feed_id) {
+            // .. add new feed items to channel
+
+            var newFeedItems = [];
+            r.feed.every(function(f) {
+              if (f.id === self.last_feed_id) return;            
+              newFeedItems.push(f);
+            });
+
+            self.last_feed_id = r.feed[0].id;
+
+            var html = GithubFeedItem({
+              items: newFeedItems,
+              uuid: uuid.v4(),
+              server: self.model.get('server'),
+              timestamp: moment().format('MM/DD/YY hh:mm:ss')
+            });
+
+            $(self.el).find('.messages').append(html);
+
+            var objDiv = $(self.el).find('.messages').get(0);
+            objDiv.scrollTop = objDiv.scrollHeight;
+          }
         });
       };
 
@@ -51,6 +78,10 @@ define([
 
       // Not sure this is the best place for this.
       Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":topic", function(topic) {
+        console.log('UPDATE TOPIC');
+
+        self.githubBar = $('.github-plugin-bar[data-server-id="'+self.model.get('server')+'"][data-name="'+self.model.get('channel')+'"]');
+
         if (topic) {
           var match = topic.match(/http(s)?:\/\/.*\.?github.com\/(.[\w|\-|\/]+)/);
 
@@ -73,33 +104,67 @@ define([
                 self.feedURL = "https://api.github.com/orgs/" + key + "/events";
               }
 
-              self.updateAndRender(function(repo) {
-                var params = {
-                  server: self.model.get('server'),
-                  channel: self.model.get('channel'),
-                  repo: repo,
-                  isOrg: false
-                };
-
-                if (repo.metadata.hasOwnProperty('type')) {
-                  if (repo.metadata.type === "Organization") {
-                    params.isOrg = true;
-                  }
-                }
-
-                var html = GithubView(params);
-                self.githubBar = $('.github-plugin-bar[data-server-id="'+params.server+'"][data-name="'+params.channel+'"]');
-                $(self.el).prepend(html).addClass('github-plugin');
-
-                console.log(self.model.get('channel'), repo);
-                self.githubUpdateCheck = setInterval(self.githubUpdateFunction, 30000);
+              self.pluginReDraw(function() {
+                // set the first feed cache id
+                self.last_feed_id = self.repo.feed[0].id;
               });
 
+            } else {
+              if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
+              if (self.githubBar) self.githubBar.remove();
+              $(self.el).removeClass('github-plugin');
             } // has match index 3
+          } else {
+            if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
+            if (self.githubBar) self.githubBar.remove();
+            $(self.el).removeClass('github-plugin');
           } // has match
+        } else {
+          if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
+          if (self.githubBar) self.githubBar.remove();
+          $(self.el).removeClass('github-plugin');
         } // has topic
 
       });
+    },
+
+    pluginReDraw: function(callback) {
+      var self = this; 
+
+      self.updateAndRender(function(repo) {
+        var params = {
+          server: self.model.get('server'),
+          channel: self.model.get('channel'),
+          repo: repo,
+          isOrg: false
+        };
+
+        if (repo.metadata.hasOwnProperty('type')) {
+          if (repo.metadata.type === "Organization") {
+            params.isOrg = true;
+          }
+        }
+
+        var html = GithubView(params);
+
+        if (self.githubBar && self.githubBar.length > 0) {
+          self.githubBar.replaceWith(html);
+        } else {
+          $(self.el).prepend(html).addClass('github-plugin');
+          self.githubBar = $('.github-plugin-bar[data-server-id="'+params.server+'"][data-name="'+params.channel+'"]');
+        }
+
+
+        var objDiv = $(self.el).find('.messages').get(0);
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+        if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
+
+        self.githubUpdateCheck = setInterval(self.githubUpdateFunction, 20000);
+
+        if (callback && typeof callback === "function") callback();
+      });
+
     },
 
     updateAndRender: function(callback, errorback) {
@@ -119,7 +184,10 @@ define([
             ifModified: true,
             success: function(feed) {
               if (metadata) self.repo.metadata = metadata;
-              if (feed) self.repo.feed = feed;
+
+              if (feed) {
+                self.repo.feed = feed;
+              }
 
               if (callback && typeof callback === "function") {
                 return callback(self.repo);
