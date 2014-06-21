@@ -4,17 +4,17 @@ define('templates/helpers/user-icon', [
 
   Handlebars.registerHelper("user-icon", function(text) {
     if (text === "&") {
-      return '<i class="iconic iconic-sm" data-glyph="globe"></i>';
+      return '<i class="iconic" data-glyph="globe"></i>';
     } if (text === "~") {
-      return '<i class="iconic iconic-sm" data-glyph="flag"></i>';
+      return '<i class="iconic" data-glyph="flag"></i>';
     } if (text === "@") {
-      return '<i class="iconic iconic-sm" data-glyph="shield"></i>';
+      return '<i class="iconic" data-glyph="shield"></i>';
     } if (text === "%") {
-      return '<i class="iconic iconic-sm" data-glyph="contrast"></i>';
+      return '<i class="iconic" data-glyph="contrast"></i>';
     } else if (text === "+") {
-      return '<i class="iconic iconic-sm" data-glyph="bullhorn"></i>';
+      return '<i class="iconic" data-glyph="bullhorn"></i>';
     } else {
-      return '<i class="iconic iconic-sm" data-glyph="person-genderless"></i>';
+      return '<i class="iconic" data-glyph="person-genderless"></i>';
     }
   });
 

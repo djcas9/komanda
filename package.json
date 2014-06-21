@@ -45,6 +45,8 @@
   },
   "dependencies": {
     "grunt": "^0.4.5",
-    "irc": "git+https://github.com/mephux/node-irc.git#komanda"
+    "highlight.js": "^8.0.0",
+    "irc": "git+https://github.com/mephux/node-irc.git#komanda",
+    "marked": "git+https://github.com/gitterHQ/marked.git"
   }
 }
