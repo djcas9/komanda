@@ -1,4 +1,5 @@
 @import "normalize.css";
 @import "iconic-glyphs.css";
 @import "komanda.css";
-@import "../../vendor/bower/octicons/octicons/octicons.css"
+@import "highlight-styles/ir_black.css";
+@import "../../vendor/bower/octicons/octicons/octicons.css";

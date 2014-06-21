@@ -1,10 +1,20 @@
 define([
   "jquery",
-  "limp"
-], function($, _, hbs) {
+  "limp",
+  "highlight"
+], function($, _, hljs) {
   
   var Helpers = {
     version: "1.0.0.beta",
+
+    init: function() {
+      hljs.initHighlightingOnLoad();
+    },
+
+    displayCode: function(code, server, target) {
+      hljs.configure({useBR: true});
+      return hljs.highlightAuto(code).value;
+    },
 
     updateBadgeCount: function() {
       Komanda.vent.trigger('komanda:update:badge');
@@ -45,7 +55,7 @@ define([
         if (callback && typeof callback === "function") {
           setTimeout(function() {
             callback();
-          }, 200);
+          }, 300);
         }
       }
     },

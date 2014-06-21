@@ -17,10 +17,16 @@
     {{/if}}
 
 
+    {{#if code}}
+    <span id="{{server}}-{{uuid}}" class="text code">
+      <pre>{{{text}}}</pre>
+    </span>
+    {{else}}
     <span id="{{server}}-{{uuid}}" class="text {{#unless nick}}system-message{{/unless}}">
       {{autolink text server uuid}}
       <div class="embed-items"></div>
     </span>
+    {{/if}}
 
   </div>
 

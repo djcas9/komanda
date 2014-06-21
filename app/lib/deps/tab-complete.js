@@ -1,7 +1,6 @@
 define([
   "jquery",
-  "underscore",
-  "caret"
+  "underscore"
 ], function($, __) {
 
   function Trie (prefix) {
@@ -107,6 +106,17 @@ define([
     return result;
   }
 
+  function moveCursorToEnd(el) {
+    if (typeof el.selectionStart == "number") {
+      el.selectionStart = el.selectionEnd = el.value.length;
+    } else if (typeof el.createTextRange != "undefined") {
+      el.focus();
+      var range = el.createTextRange();
+      range.collapse(false);
+      range.select();
+    }
+  };
+
   var setupTabCompletion = function (input, suggestions, usevalue) {
     var root = new Trie();
     var cache = false;
@@ -139,8 +149,6 @@ define([
 
         if (trie) {
           // items[(items.length - 1)] = trie.uniquePrefix();
-
-          console.log(items, value);
 
           var choices = trie.choices();
 
@@ -186,25 +194,40 @@ define([
 
       } else if (e.which === 40) {
         // down
+        //
+        Komanda.historyIndex--;
+
+        if (Komanda.historyIndex < 0) {
+          e.target.value = "";
+          Komanda.historyIndex = -1;
+        }
+
         var historyDown = Komanda.history.get(Komanda.historyIndex);
 
-        if (value) {
+        if (historyDown) {
           e.target.value = historyDown;
 
-          if (Komanda.historyIndex <= 0) {
-            e.target.value = "";
-            Komanda.historyIndex = 0;
-          } else {
-            Komanda.historyIndex--;
-          }
+          setTimeout(function() {
+            moveCursorToEnd(e.target);
+          }, 10);
+
         }
 
       } else if (e.which === 38) {
         // up
+        if (Komanda.historyIndex < 0) {
+          Komanda.historyIndex = 0;
+        };
+
         var historyUp = Komanda.history.get(Komanda.historyIndex);
 
-        if (value) {
+        if (historyUp) {
           e.target.value = historyUp;
+
+          setTimeout(function() {
+            moveCursorToEnd(e.target);
+          }, 10);
+
           var max = Komanda.history.list.length - 1;
           if (Komanda.historyIndex >= max) {
             Komanda.historyIndex = max;
