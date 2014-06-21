@@ -17,7 +17,8 @@
         <a href="https://github.com/{{actor.login}}">
           <strong>{{actor.login}}</strong> 
         </a>
-        opened issue
+        {{payload.action}}
+        issue
         <a href="{{payload.issue.html_url}}">{{repo.name}}#{{payload.issue.number}}</a>
       </div>
 
