@@ -22,10 +22,18 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     // Wipe out previous builds and test reporting.
-    clean: [
-      "build/komanda-source",
-      'build/releases/**'
-    ],
+    clean: {
+      all: [
+        "build/komanda-source",
+        'build/releases/**',
+        'node_modules',
+        'vendor'
+      ],
+      some: [
+        "build/komanda-source",
+        'build/releases/**'
+      ]
+    },
 
     handlebars: {
       compile: {
@@ -191,6 +199,14 @@ module.exports = function(grunt) {
     },
 
     shell: {
+      npm: {
+        options: {
+          stdout: false,
+          stderr: false,
+          stdin: false
+        },
+        command: "npm install"
+      },
       runnw: {
         options: {
           stdout: false,
@@ -250,6 +266,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-compress");
 
   // Third-party tasks.
+  grunt.loadNpmTasks('grunt-npm-install');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks("grunt-node-webkit-builder");
   grunt.loadNpmTasks("grunt-bbb-server");
@@ -264,7 +281,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask("build", [
-    "clean",
+    "clean:some",
+    "npm-install",
     "jshint",
     "processhtml",
     "copy",
