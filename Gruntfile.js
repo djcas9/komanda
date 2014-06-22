@@ -217,14 +217,23 @@ module.exports = function(grunt) {
         command: "./node-webkit-builds/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
       },
 
-      runLinux64: {
+      linux64: {
         options: {
           stdout: false,
           stderr: false,
           stdin: false,
         },
         command: "./build/cache/linux64/0.9.2/nw ./build/komanda-source/"
-    },
+      },
+
+      linux32: {
+        options: {
+          stdout: false,
+          stderr: false,
+          stdin: false,
+        },
+        command: "./build/cache/linux32/0.9.2/nw ./build/komanda-source/"
+      },
 
       create_dmg: {
         options: {
@@ -298,9 +307,15 @@ module.exports = function(grunt) {
     "shell:runnw"
   ]);
 
-  grunt.registerTask("runLinux64", [
+  grunt.registerTask("run:linux32", [
     "default",
     "copy",
-    "shell:runLinux64"
+    "shell:linux32"
+  ]);
+
+  grunt.registerTask("run:linux64", [
+    "default",
+    "copy",
+    "shell:linux64"
   ]);
 };
