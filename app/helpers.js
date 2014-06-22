@@ -49,7 +49,6 @@ define([
       if (settings.themes.list.hasOwnProperty(key)) {
         $('head link#theme').remove();
         var path = settings.themes.list[key].css;
-        console.log(path);
         var css = '<link id="theme" rel="stylesheet" href="'+path+'">';
         $('head').append(css);
 
