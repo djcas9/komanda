@@ -492,6 +492,23 @@ define([
       }
       self.addMessage(Komanda.current.channel, "Server:      " + data.server, true);
       self.addMessage(Komanda.current.channel, "Server Info: " + data.serverinfo, true);
+      if (data.away) {
+        self.addMessage(Komanda.current.channel, "Away:        " + data.away, true);
+      }
+      if (data.idle) {
+        var duration = moment.duration(parseInt(data.idle, 10), 'seconds');
+        var idleParts = [];
+        if ((duration.asHours() | 0) > 0) {
+          idleParts.push((duration.asHours() | 0) + 'h');
+        }
+        if (duration.minutes() > 0) {
+          idleParts.push(duration.minutes() + 'm');
+        }
+        if (duration.seconds() > 0) {
+          idleParts.push(duration.seconds() + 's');
+        }
+        self.addMessage(Komanda.current.channel, "Idle:        " + idleParts.join(' '), true);
+      }
     });
 
     self.socket.addListener('nickSet', function(nick) {
