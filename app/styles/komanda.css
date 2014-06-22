@@ -271,6 +271,7 @@ border-radius: 100px 100px 100px 100px;
 	display: inline-block;
 	float: left;
 	margin-right: 5px;
+    -webkit-app-region: no-drag;
 }
 
 /*#header .window-controls .window-button.close,*/
