@@ -27,7 +27,7 @@ requirejs(["config"], function(require) {
 
       Komanda.settings.fetch();
 
-      Komanda.settings.set("themes", Setting.prototype.defaults.themes);
+      Komanda.settings.set("themes.list", Setting.prototype.defaults.themes.list);
 
       Komanda.settings.save(null);
 

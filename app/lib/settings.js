@@ -16,9 +16,13 @@ define([
             name: "Komanda Dark",
             css: "themes/komanda-dark/komanda-dark.css"
           },
-          "komanda-octa": {
-            name: "Komanda Octa",
-            css: "themes/komanda-octa/komanda-octa.css"
+          "octa": {
+            name: "Octa",
+            css: "themes/octa/octa.css"
+          },
+          "pitch-black": {
+            name: "Pitch Black",
+            css: "themes/pitch-black/pitch-black.css"
           }
         }
       },
@@ -39,9 +43,14 @@ define([
       }
     },
 
+    modelEvents: {
+      "sync": "save"
+    },
+
     initialize: function() {
       this.bind('change', function(a, b) {
-        if (Komanda.settings) Komanda.settings.save(null);
+        // Komanda.settings.set('themes', a.attributes.themes);
+        // Komanda.settings.save(null);
 
         if (a.changed.hasOwnProperty(('themes'))) Helpers.loadTheme(a.attributes);
       });
