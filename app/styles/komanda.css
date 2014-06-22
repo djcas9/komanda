@@ -1365,7 +1365,7 @@ margin: 15px 0;
 }
 
 div.github-wrapper .github-body img{
-max-width: 200px;
+max-width: 100%;
 -moz-box-sizing: border-box;
 box-sizing: border-box;
 }
