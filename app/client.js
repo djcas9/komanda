@@ -374,7 +374,7 @@ define([
           text: data.message,
           server: self.options.uuid,
           uuid: uuid.v4(),
-          timestamp: moment().format('MM/DD/YY hh:mm:ss')
+          timestamp: moment().format(Komanda.settings.get('display.timestamp'))
         };
 
         if(isNotice) {
@@ -835,7 +835,7 @@ define([
       html = Message({
         code: true,
         text: message,
-        timestamp: moment().format('MM/DD/YY hh:mm:ss')
+        timestamp: moment().format(Komanda.settings.get('display.timestamp'))
       });
 
       chan.append(html);
@@ -860,12 +860,12 @@ define([
           nick: self.nick,
           to: channel,
           text: message,
-          timestamp: moment().format('MM/DD/YY hh:mm:ss')
+          timestamp: moment().format(Komanda.settings.get('display.timestamp'))
         });
       } else {
         html = Message({
           text: message,
-          timestamp: moment().format('MM/DD/YY hh:mm:ss')
+          timestamp: moment().format(Komanda.settings.get('display.timestamp'))
         });
       }
 
@@ -887,7 +887,7 @@ define([
       message: message,
       server: self.options.uuid,
       uuid: uuid.v4(),
-      timestamp: moment().format('MM/DD/YY hh:mm:ss'),
+      timestamp: moment().format(Komanda.settings.get('display.timestamp')),
       flip: flip
     };
 

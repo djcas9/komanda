@@ -33,6 +33,9 @@ define([
         gist: false,
         jsfiddle: false,
         images: true
+      },
+      display: {
+        timestamp: 'MM/DD/YY hh:mm:ss'
       }
     },
 
