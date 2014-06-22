@@ -51,9 +51,7 @@ define([
               });
 
               $(self.el).find('.messages').append(html);
-
-              var objDiv = $(self.el).find('.messages').get(0);
-              objDiv.scrollTop = objDiv.scrollHeight;
+              Komanda.helpers.scrollUpdate($(self.el).find('.messages'));
             }
           }
 
@@ -68,7 +66,7 @@ define([
       };
 
       Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":update:words", function(words, channels) {
-        self.updateWords(words, channels);
+        self.updateWords(false, false);
       });
 
       // Load Channel Plugins
@@ -87,7 +85,6 @@ define([
           var id = feed[i].id;
 
           if (id === self.last_feed_id) {
-            console.log('GOT ID:', feed[i].id, self.last_feed_id);
             return newFeedItems;
           } else {
             newFeedItems.push(feed[i]);
@@ -212,7 +209,6 @@ define([
             type: "get",
             ifModified: true,
             success: function(feed) {
-              console.log('SET REPO DATA', metadata, feed);
               if (metadata && !_.isEmpty(metadata)) self.repo.metadata = metadata;
 
               if (feed && feed.length > 0) {
@@ -242,12 +238,10 @@ define([
     },
 
     onClose: function() {
-      if (self.scroll) {
-        self.scroll.destroy();
-        self.scroll = null;
-      };
+      var self = this;
 
-      Komanda.vent.off()
+      if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
+      if (self.githubBar) self.githubBar.remove();
     },
 
     zenmode: function(e) {
@@ -289,12 +283,26 @@ define([
 
     updateWords: function(words, channels) {
       var self = this;
+      var keys = _.keys(self.model.get('names')) || [];
 
-      var keys = words ? _.keys(words) : _.keys(self.model.get('names'));
-      keys.push(Komanda.commands)
+      keys.push(Komanda.commands);
 
-      if (channels) keys.push(channels);
-      var keysCommands = _.flatten(keys);
+      if (Komanda.connections && Komanda.connections.hasOwnProperty(self.model.get('server'))) {
+        channels = _.map(Komanda.connections[self.model.get('server')].client.channels.models, function(c) {
+          return c.get('channel').toLowerCase();
+        });
+
+        keys.push(channels);
+      } else if (channels) {
+        keys.push(channels);
+      } else {
+        // ...
+      }
+
+      var keysCommands = _.map(_.flatten(keys), function(k) {
+        // return k.toLowerCase();
+        return k;
+      });
 
       if (!self.completer) {
         self.completerSetup = false;
