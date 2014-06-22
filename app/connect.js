@@ -1,7 +1,7 @@
 define([
-  'app',
-  'client',
-  'underscore'
+  "app",
+  "client",
+  "underscore"
 ], function(Komanda, Client, _) {
 
   var Connect = function(session, options) {

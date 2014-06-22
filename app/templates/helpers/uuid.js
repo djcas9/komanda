@@ -1,6 +1,6 @@
-define('templates/helpers/count', [
-  'hbs/handlebars',
-  'underscore',
+define("templates/helpers/count", [
+  "hbs/handlebars",
+  "underscore",
   "uuid"
 ], function(Handlebars, _, uuid) {
 

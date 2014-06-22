@@ -10,11 +10,11 @@ requirejs(["config"], function(require) {
     "lib/layout/content",
     "lib/layout/sidebar",
     "connect",
-    'lib/sessions/sessions',
-    'lib/sessions/session',
-    'history',
-    'lib/settings',
-    'helpers',
+    "lib/sessions/sessions",
+    "lib/sessions/session",
+    "history",
+    "lib/settings",
+    "helpers",
     "window-state"
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
     SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState) {
@@ -25,12 +25,12 @@ requirejs(["config"], function(require) {
 
       Komanda.settings.fetch();
 
-      Komanda.settings.set('themes', Setting.prototype.defaults.themes);
+      Komanda.settings.set("themes", Setting.prototype.defaults.themes);
 
       Komanda.settings.save(null);
 
-      if (!Komanda.settings.attributes.notifications.hasOwnProperty('badge')) {
-        Komanda.settings.set('notifications.badge', true);
+      if (!Komanda.settings.attributes.notifications.hasOwnProperty("badge")) {
+        Komanda.settings.set("notifications.badge", true);
       }
 
       Komanda.badgeCounter = 0;
@@ -61,7 +61,7 @@ requirejs(["config"], function(require) {
         "/pm",
         "/query",
         "/msg",
-        '/whois'
+        "/whois"
       ];
 
     Komanda.sessions = new Sessions();
@@ -74,7 +74,7 @@ requirejs(["config"], function(require) {
       channel: null
     };
 
-    Komanda.vent.on('komanda:update:badge', function(args) {
+    Komanda.vent.on("komanda:update:badge", function(args) {
       if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
         var masterCount = 0;
 
@@ -104,37 +104,37 @@ requirejs(["config"], function(require) {
       }
     });
 
-    Komanda.vent.on('komanda:ready', function() {
-      Komanda.gui = requireNode('nw.gui');
+    Komanda.vent.on("komanda:ready", function() {
+      Komanda.gui = requireNode("nw.gui");
       Komanda.window = Komanda.gui.Window.get();
 
-      Komanda.window.on('new-win-policy', function(frame, url, policy) {
+      Komanda.window.on("new-win-policy", function(frame, url, policy) {
         policy.ignore();
       });
 
-      $(document).on('click', 'button.plugin-button', function(e) {
+      $(document).on("click", "button.plugin-button", function(e) {
         e.preventDefault();
-        var href = $(this).attr('data-href');
+        var href = $(this).attr("data-href");
         Komanda.gui.Shell.openExternal(href);
       });
 
-      $(document).on('keypress', function(e) {
+      $(document).on("keypress", function(e) {
         if (Komanda.current) {
-          $('.channel[data-server-id="'+Komanda.current.server+'"][data-name="'+Komanda.current.channel+'"] input').focus();
+          $(".channel[data-server-id=\"" + Komanda.current.server + "\"][data-name=\"" + Komanda.current.channel + "\"] input").focus();
         }
       });
 
-      Komanda.window.on('blur', function() {
+      Komanda.window.on("blur", function() {
         Komanda.blur = true;
       });
 
-      Komanda.window.on('focus', function() {
+      Komanda.window.on("focus", function() {
         Komanda.blur = false;
         if (Komanda.store.hasOwnProperty(Komanda.current.server)) {
           Komanda.store[Komanda.current.server].count[Komanda.current.channel] = 0;
         }
 
-        Komanda.vent.trigger('komanda:update:badge');
+        Komanda.vent.trigger("komanda:update:badge");
       });
 
       // Komanda.window.window.onblur = function() {
@@ -147,35 +147,35 @@ requirejs(["config"], function(require) {
         WindowState();
       });
 
-      Komanda.vent.on('komanda:debug', function() {
+      Komanda.vent.on("komanda:debug", function() {
         Komanda.window.showDevTools();
       });
 
-      $('.window-button.close').on('click', function(e) {
+      $(".window-button.close").on("click", function(e) {
         e.preventDefault();
         Komanda.window.close();
       });
 
-      $('.window-button.minimize').on('click', function(e) {
+      $(".window-button.minimize").on("click", function(e) {
         e.preventDefault();
         Komanda.window.minimize();
       });
 
-      $('.window-button.maximize').on('click', function(e) {
+      $(".window-button.maximize").on("click", function(e) {
         e.preventDefault();
         Komanda.window.maximize();
       });
 
       _.each(Komanda.sessions.models, function(m) {
-        m.set('connectionOpen', false);
+        m.set("connectionOpen", false);
         var connect = new Connect(m);
 
-        Komanda.connections[m.get('uuid')] = connect;
+        Komanda.connections[m.get("uuid")] = connect;
 
-        if (m.get('connectOnStart')) {
+        if (m.get("connectOnStart")) {
           connect.start(function(client) {
-            _.each(m.get('channels'), function(c) {
-              Komanda.vent.trigger(m.get('uuid') + ":join", c);
+            _.each(m.get("channels"), function(c) {
+              Komanda.vent.trigger(m.get("uuid") + ":join", c);
             });
           });
         }

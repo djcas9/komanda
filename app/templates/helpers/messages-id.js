@@ -1,6 +1,6 @@
-define('templates/helpers/messages-id', [
-  'hbs/handlebars',
-  'underscore'
+define("templates/helpers/messages-id", [
+  "hbs/handlebars",
+  "underscore"
 ], function(Handlebars, _) {
 
   Handlebars.registerHelper("messages-id", function(obj) {

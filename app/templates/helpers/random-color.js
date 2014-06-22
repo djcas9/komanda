@@ -1,4 +1,4 @@
-define('templates/helpers/random-color', ['hbs/handlebars'], function ( Handlebars ) {
+define("templates/helpers/random-color", ["hbs/handlebars"], function ( Handlebars ) {
 
   var makeHashCode = function(str){
     var hash = 0;
@@ -11,9 +11,9 @@ define('templates/helpers/random-color', ['hbs/handlebars'], function ( Handleba
     return hash;
   };
 
-  Handlebars.registerHelper('random-color', function(user, dark) {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
+  Handlebars.registerHelper("random-color", function(user, dark) {
+    var letters = "0123456789ABCDEF".split("");
+    var color = "#";
     var hash1, hash2, hash3;
 
     if (user) {
