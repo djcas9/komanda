@@ -35,24 +35,26 @@ define([
 
           self.pluginToolbar(r);
 
-          if (r.feed[0].id !== self.last_feed_id) {
-            // .. add new feed items to channel
+          if (r.feed[0]) {
+            if (r.feed[0].id !== self.last_feed_id) {
+              // .. add new feed items to channel
 
-            var newFeedItems = self.newFeeditems(r.feed);
+              var newFeedItems = self.newFeeditems(r.feed);
 
-            self.last_feed_id = r.feed[0].id;
+              self.last_feed_id = r.feed[0].id;
 
-            var html = GithubFeedItem({
-              items: newFeedItems,
-              uuid: uuid.v4(),
-              server: self.model.get('server'),
-              timestamp: moment().format(Komanda.settings.get('display.timestamp'))
-            });
+              var html = GithubFeedItem({
+                items: newFeedItems,
+                uuid: uuid.v4(),
+                server: self.model.get('server'),
+                timestamp: moment().format(Komanda.settings.get('display.timestamp'))
+              });
 
-            $(self.el).find('.messages').append(html);
+              $(self.el).find('.messages').append(html);
 
-            var objDiv = $(self.el).find('.messages').get(0);
-            objDiv.scrollTop = objDiv.scrollHeight;
+              var objDiv = $(self.el).find('.messages').get(0);
+              objDiv.scrollTop = objDiv.scrollHeight;
+            }
           }
 
         });
@@ -128,7 +130,7 @@ define([
 
               self.pluginReDraw(function() {
                 // set the first feed cache id
-                self.last_feed_id = self.repo.feed[0].id;
+                if (self.repo.feed[0]) self.last_feed_id = self.repo.feed[0].id;
               });
 
             } else {
@@ -210,9 +212,10 @@ define([
             type: "get",
             ifModified: true,
             success: function(feed) {
-              if (metadata) self.repo.metadata = metadata;
+              console.log('SET REPO DATA', metadata, feed);
+              if (metadata && !_.isEmpty(metadata)) self.repo.metadata = metadata;
 
-              if (feed) {
+              if (feed && feed.length > 0) {
                 self.repo.feed = feed;
               }
 
