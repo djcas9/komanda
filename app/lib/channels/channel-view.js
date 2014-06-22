@@ -174,14 +174,14 @@ define([
         url: self.metadataURL,
         dataType: "json",
         type: "get",
-        ifModified: true,
+        ifModified: false,
         success: function(metadata) {
 
           $.ajax({
             url: self.feedURL,
             dataType: "json",
             type: "get",
-            ifModified: true,
+            ifModified: false,
             success: function(feed) {
               if (metadata) self.repo.metadata = metadata;
 
