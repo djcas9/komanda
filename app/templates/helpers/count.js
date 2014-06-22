@@ -1,6 +1,6 @@
-define('templates/helpers/count', [
-  'hbs/handlebars',
-  'underscore'
+define("templates/helpers/count", [
+  "hbs/handlebars",
+  "underscore"
 ], function(Handlebars, _) {
 
   Handlebars.registerHelper("count", function(obj) {

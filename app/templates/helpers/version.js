@@ -1,7 +1,7 @@
-define('templates/helpers/version', [
-  'hbs/handlebars',
-  'underscore',
-  'helpers'
+define("templates/helpers/version", [
+  "hbs/handlebars",
+  "underscore",
+  "helpers"
 ], function(Handlebars, _, Helpers) {
 
   Handlebars.registerHelper("version", function(obj) {

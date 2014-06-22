@@ -17,30 +17,30 @@ requirejs.config({
     "underscore": "../vendor/bower/lodash/dist/lodash.underscore",
     "moment": "../vendor/bower/momentjs/moment",
     "backbone": "../vendor/bower/backbone/backbone",
-    marionette: '../vendor/bower/marionette/lib/core/amd/backbone.marionette',
-    'backbone.wreqr': '../vendor/bower/backbone.wreqr/lib/backbone.wreqr',
-    'backbone.babysitter': '../vendor/bower/backbone.babysitter/lib/backbone.babysitter',
+    marionette: "../vendor/bower/marionette/lib/core/amd/backbone.marionette",
+    "backbone.wreqr": "../vendor/bower/backbone.wreqr/lib/backbone.wreqr",
+    "backbone.babysitter": "../vendor/bower/backbone.babysitter/lib/backbone.babysitter",
     "backbone-plugins": "backbone-plugins",
 
     // https://github.com/afeld/backbone-nested
     "backbone-nested-model": "lib/deps/backbone-nested",
-    'backbone-modelbinder': 'lib/deps/backbone-modelbinder',
+    "backbone-modelbinder": "lib/deps/backbone-modelbinder",
 
     // Require.js plugins
-    text: 'libs/require/text',
+    text: "libs/require/text",
     hbs: "lib/deps/require-handlebars-plugin/hbs",
     uuid: "lib/deps/uuid",
 
     // Keybindings             :
-    'Mousetrap'                :  '../vendor/bower/mousetrap/mousetrap',
-    'mousetrap-pause'          :  '../vendor/bower/mousetrap/plugins/pause/mousetrap-pause',
-    'backbone-mousetrap'       :  'lib/deps/backbone-mousetrap',
+    "Mousetrap"                :  "../vendor/bower/mousetrap/mousetrap",
+    "mousetrap-pause"          :  "../vendor/bower/mousetrap/plugins/pause/mousetrap-pause",
+    "backbone-mousetrap"       :  "lib/deps/backbone-mousetrap",
     // sotage
-    localStorage               :  '../vendor/bower/backbone.localStorage/backbone.localStorage'
+    localStorage               :  "../vendor/bower/backbone.localStorage/backbone.localStorage"
   },
 
   shim: {
-    'underscore': {
+    "underscore": {
       exports: "_"
     },
     "backbone": {
@@ -60,30 +60,30 @@ requirejs.config({
     "gistembed": {
       "deps": ["jquery"]
     },
-    'Mousetrap': {
+    "Mousetrap": {
       exports: "Mousetrap"
     },
-    'mousetrap-pause': {
-      deps: ['Mousetrap'],
+    "mousetrap-pause": {
+      deps: ["Mousetrap"],
       exports: "Mousetrap"
     },
-    'backbone-modelbinder': ["backbone"],
+    "backbone-modelbinder": ["backbone"],
     "uuid": {
       exports: "uuid"
     },
     localStorage: {
-      deps: ['underscore', 'backbone']
+      deps: ["underscore", "backbone"]
     }
   },
 
   hbs: {
     helpers: true,
     i18n: false,
-    templateExtension: 'hbs',
-    partialsUrl: '',
-    helperDirectory: 'template/helpers/',
+    templateExtension: "hbs",
+    partialsUrl: "",
+    helperDirectory: "template/helpers/",
     helperPathCallback: function(name) {
-      return 'templates/helpers/' + name;
+      return "templates/helpers/" + name;
     }
   }
 });

@@ -17,18 +17,18 @@ define([
     },
 
     updateBadgeCount: function() {
-      Komanda.vent.trigger('komanda:update:badge');
+      Komanda.vent.trigger("komanda:update:badge");
     },
 
     expandURL: function(url) {
       var expander = {
         expand: function (url, callback) {
           $.ajax({
-            dataType: 'jsonp',
-            url: 'http://api.longurl.org/v2/expand',
+            dataType: "jsonp",
+            url: "http://api.longurl.org/v2/expand",
             data: {
               url: url,
-              format: 'json'
+              format: "json"
             },
             success: function(response) {
               callback(response);
@@ -47,10 +47,10 @@ define([
       var key = settings.themes.current; 
 
       if (settings.themes.list.hasOwnProperty(key)) {
-        $('head link#theme').remove();
+        $("head link#theme").remove();
         var path = settings.themes.list[key].css;
-        var css = '<link id="theme" rel="stylesheet" href="'+path+'">';
-        $('head').append(css);
+        var css = "<link id=\"theme\" rel=\"stylesheet\" href=\"" + path + "\">";
+        $("head").append(css);
 
         if (callback && typeof callback === "function") {
           setTimeout(function() {
@@ -63,7 +63,7 @@ define([
       box: function(template, data, args) {
         var self = this;
 
-        if (args && args.hasOwnProperty('width')) {
+        if (args && args.hasOwnProperty("width")) {
           if (args.width) {
             Helpers.limp.options.style.width = args.width;
           }
@@ -92,29 +92,29 @@ define([
         distance: 10,
         overlayClick: true,
         enableEscapeButton: true,
-        dataType: 'html',
+        dataType: "html",
         centerOnResize: true,
         closeButton: true,
         style: {
-          '-webkit-outline': 0,
-          color: '#000',
-          position: 'fixed',
-          border: 'none',
+          "-webkit-outline": 0,
+          color: "#000",
+          position: "fixed",
+          border: "none",
           outline: 0,
           zIndex: 1000001,
           opacity: 0,
-          // overflow: 'auto',
-          background: 'transparent'
+          // overflow: "auto",
+          background: "transparent"
         },
         inside: {
-          background: 'transparent',
-          padding: '0',
-          display: 'block',
-          border: '1px solid #000',
-          overflow: 'visible'
+          background: "transparent",
+          padding: "0",
+          display: "block",
+          border: "1px solid #000",
+          overflow: "visible"
         },
         overlay: {
-          background: '#151a1f',
+          background: "#151a1f",
           opacity: 0.9
         },
         onTemplate: function(template, data, limp) {

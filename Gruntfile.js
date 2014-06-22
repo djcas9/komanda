@@ -80,7 +80,8 @@ module.exports = function(grunt) {
     jshint: {
       options: {
         smarttabs: true,
-        proto: true
+        proto: true,
+        quotmark: "double"
       },
       all: [
         "app/**/*.js",

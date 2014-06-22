@@ -16,7 +16,7 @@ define([
       validate: false
     },
     changeTriggers: {
-      '': 'change'
+      "": "change"
     }
   });
 

@@ -1,6 +1,6 @@
 define([
 ], function() {
-  'use strict';
+  "use strict";
   /**
    * Cross-platform window state preservation.
    * Yes this code is quite complicated, but this is the best I came up with for
@@ -23,7 +23,7 @@ define([
    *   Now it works correctly.
    */
 
-  var gui = requireNode('nw.gui');
+  var gui = requireNode("nw.gui");
   var win = gui.Window.get();
   var winState;
   var currWinMode;
@@ -33,23 +33,23 @@ define([
   // extra height added in linux x64 gnome-shell env, use it as workaround
   var deltaHeight = (function () {
     // use deltaHeight only in windows with frame enabled
-    if (gui.App.manifest.window.frame) return true; else return 'disabled';
+    if (gui.App.manifest.window.frame) return true; else return "disabled";
   })();
 
 
   function initWindowState() {
-    winState = JSON.parse(localStorage.windowState || 'null');
+    winState = JSON.parse(localStorage.windowState || "null");
 
     if (winState) {
       currWinMode = winState.mode;
-      if (currWinMode === 'maximized') {
+      if (currWinMode === "maximized") {
         win.maximize();
       } else {
         restoreWindowState();
       }
     } else {
-      currWinMode = 'normal';
-      if (deltaHeight !== 'disabled') deltaHeight = 0;
+      currWinMode = "normal";
+      if (deltaHeight !== "disabled") deltaHeight = 0;
       dumpWindowState();
     }
 
@@ -62,22 +62,22 @@ define([
     }
 
     // we don't want to save minimized state, only maximized or normal
-    if (currWinMode === 'maximized') {
-      winState.mode = 'maximized';
+    if (currWinMode === "maximized") {
+      winState.mode = "maximized";
     } else {
-      winState.mode = 'normal';
+      winState.mode = "normal";
     }
 
     // when window is maximized you want to preserve normal
     // window dimensions to restore them later (even between sessions)
-    if (currWinMode === 'normal') {
+    if (currWinMode === "normal") {
       winState.x = win.x;
       winState.y = win.y;
       winState.width = win.width;
       winState.height = win.height;
 
       // save delta only of it is not zero
-      if (deltaHeight !== 'disabled' && deltaHeight !== 0 && currWinMode !== 'maximized') {
+      if (deltaHeight !== "disabled" && deltaHeight !== 0 && currWinMode !== "maximized") {
         winState.deltaHeight = deltaHeight;
       }
     }
@@ -85,7 +85,7 @@ define([
 
   function restoreWindowState() {
     // deltaHeight already saved, so just restore it and adjust window height
-    if (deltaHeight !== 'disabled' && typeof winState.deltaHeight !== 'undefined') {
+    if (deltaHeight !== "disabled" && typeof winState.deltaHeight !== "undefined") {
       deltaHeight = winState.deltaHeight;
       winState.height = winState.height - deltaHeight;
     }
@@ -99,25 +99,25 @@ define([
     localStorage.windowState = JSON.stringify(winState);
   }
 
-  win.on('maximize', function () {
+  win.on("maximize", function () {
     isMaximizationEvent = true;
-    currWinMode = 'maximized';
+    currWinMode = "maximized";
   });
 
-  win.on('unmaximize', function () {
-    currWinMode = 'normal';
+  win.on("unmaximize", function () {
+    currWinMode = "normal";
     restoreWindowState();
   });
 
-  win.on('minimize', function () {
-    currWinMode = 'minimized';
+  win.on("minimize", function () {
+    currWinMode = "minimized";
   });
 
-  win.on('restore', function () {
-    currWinMode = 'normal';
+  win.on("restore", function () {
+    currWinMode = "normal";
   });
 
-  win.window.addEventListener('resize', function () {
+  win.window.addEventListener("resize", function () {
     // resize event is fired many times on one resize action,
     // this hack with setTiemout forces it to fire only once
     clearTimeout(resizeTimeout);
@@ -128,13 +128,13 @@ define([
         // first resize after maximization event should be ignored
         isMaximizationEvent = false;
       } else {
-        if (currWinMode === 'maximized') {
-          currWinMode = 'normal';
+        if (currWinMode === "maximized") {
+          currWinMode = "normal";
         }
       }
 
       // there is no deltaHeight yet, calculate it and adjust window size
-      if (deltaHeight !== 'disabled' && deltaHeight === false) {
+      if (deltaHeight !== "disabled" && deltaHeight === false) {
         deltaHeight = win.height - winState.height;
 
         // set correct size
@@ -148,7 +148,7 @@ define([
     }, 500);
   }, false);
 
-  win.on('close', function () {
+  win.on("close", function () {
     this.hide();
     saveWindowState();
 

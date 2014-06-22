@@ -1,9 +1,9 @@
-define('templates/helpers/sortNames', [
-  'hbs/handlebars',
-  'underscore'
+define("templates/helpers/sortNames", [
+  "hbs/handlebars",
+  "underscore"
 ], function(Handlebars, _) {
 
-  Handlebars.registerHelper('sortNames', function(context, options) {
+  Handlebars.registerHelper("sortNames", function(context, options) {
     var buffer = "";
     var symbols = ["&", "~", "@", "%", "+", ""];
     var users = {

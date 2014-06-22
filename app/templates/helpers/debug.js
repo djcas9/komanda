@@ -1,4 +1,4 @@
-define('templates/helpers/debug', ['hbs/handlebars'], function ( Handlebars ) {
+define("templates/helpers/debug", ["hbs/handlebars"], function ( Handlebars ) {
   Handlebars.registerHelper("debug", function(optionalValue) {
     console.log("Current Context");
     console.log("====================");

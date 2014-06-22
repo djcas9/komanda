@@ -1,9 +1,9 @@
-define('templates/helpers/markdown', [
-  'hbs/handlebars',
-  'underscore'
+define("templates/helpers/markdown", [
+  "hbs/handlebars",
+  "underscore"
 ], function(Handlebars, _) {
 
-  var marked = requireNode('marked');
+  var marked = requireNode("marked");
 
   marked.setOptions({
     gfm: true,
@@ -15,7 +15,7 @@ define('templates/helpers/markdown', [
     smartypants: false,
     highlight: function (code) {
       console.log("CODE", code);
-      return requireNode('highlight.js').highlightAuto(code).value;
+      return requireNode("highlight.js").highlightAuto(code).value;
     }
   });
 
