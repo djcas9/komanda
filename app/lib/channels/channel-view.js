@@ -19,7 +19,6 @@ define([
     events: {
       "keypress input": "sendMessage",
       "click div.message a": "openLink",
-      "mouseup div.message a": "openLink",
       "click div.user": "pm",
       "click div.show-more": "showMore",
       "click button.zen-button": "zenmode"
