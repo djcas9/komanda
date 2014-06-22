@@ -16,10 +16,10 @@ define([
             name: "Komanda Dark",
             css: "themes/komanda-dark/komanda-dark.css"
           },
-          "komanda-light": {
-            name: "Komanda Light",
-            css: "themes/komanda-light/komanda-light.css"
-          },
+          // "komanda-light": {
+            // name: "Komanda Light",
+            // css: "themes/komanda-light/komanda-light.css"
+          // },
           "komanda-octa": {
             name: "Komanda Octa",
             css: "themes/komanda-octa/komanda-octa.css"
