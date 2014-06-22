@@ -1,13 +1,13 @@
 <div class="komanda-box">
 
-  <div class='komanda-box-title'>
+  <div class="komanda-box-title">
     Komanda Settings
   </div>
 
   <div class="komanda-box-content no-padding">
-    <ul class="komanda-box-menu" >
+    <ul class="komanda-box-menu">
 
-      <li class='selected' data-show="#komanda-settings-general">
+      <li class="selected" data-show="#komanda-settings-general">
         General Settings
       </li>   
 
@@ -17,10 +17,13 @@
 
       <li data-show="#komanda-settings-embed">
         Embed Options
-      </li>   
+      </li>  
+
+      <li data-show="#komanda-settings-display">
+        Display
+      </li> 
 
     </ul>
-
 
     <div id="komanda-settings"></div>
 
@@ -29,13 +32,13 @@
 
   <div class="komanda-box-footer">
 
-    <div class='form-actions'>
+    <div class="form-actions">
 
-      <button class='button {{button.type}} limp-action update-komanda-settings'> Update Settings</button>
+      <button class="button {{button.type}} limp-action update-komanda-settings"> Update Settings</button>
 
       {{#if ignore_cancel}}
       {{else}}
-      <button class='button' onClick='$.limpClose()'>Cancel</button>
+      <button class="button" onClick="$.limpClose()">Cancel</button>
       {{/if}}
 
     </div>
