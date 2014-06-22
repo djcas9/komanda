@@ -38,7 +38,7 @@ define([
           if (r.feed[0].id !== self.last_feed_id) {
             // .. add new feed items to channel
 
-            var newFeeditems = self.newFeeditems(r.feed);
+            var newFeedItems = self.newFeeditems(r.feed);
 
             self.last_feed_id = r.feed[0].id;
 
