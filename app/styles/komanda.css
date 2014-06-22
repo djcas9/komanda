@@ -1271,6 +1271,7 @@ div.message.github-message .body{
 	padding-right: 3px;
 	padding-left: 3px;
 	font-size: 1.0em;
+	cursor: pointer; 
 }
 
 .plugin .title{
