@@ -423,6 +423,12 @@ define([
           case "/pm":
           case "/msg":
           case "/query":
+            for(var i = 0; i < self.channels.length; i++) {
+              if(self.channels.at(i).get("name").toLowerCase() === command[1].toLowerCase()) {
+                $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + self.channels.at(i).get("name") + "\"]").click();
+                return;
+              }
+            }
             Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
           break;
           case "/op":
