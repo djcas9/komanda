@@ -48,6 +48,7 @@ module.exports = function(grunt) {
     jshint: {
       options: {
         smarttabs: true,
+        proto: true
       },
       all: [
         "app/**/*.js",

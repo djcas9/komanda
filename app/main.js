@@ -19,8 +19,15 @@ requirejs(["config"], function(require) {
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
     SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState) {
 
-      Komanda.settings = new Setting({id: 1});
+      Komanda.settings = new Setting({
+        id: 1
+      });
+
       Komanda.settings.fetch();
+
+      Komanda.settings.set('themes', Setting.prototype.defaults.themes);
+
+      Komanda.settings.save(null);
 
       if (!Komanda.settings.attributes.notifications.hasOwnProperty('badge')) {
         Komanda.settings.set('notifications.badge', true);
