@@ -11,8 +11,32 @@ util._extend({
   env: null
 });
 
+var parseBuildPlatforms = function(argumentPlatform) {
+  // this will make it build no platform when the platform option is specified
+  // without a value which makes argumentPlatform into a boolean
+  var inputPlatforms = argumentPlatform || process.platform + ";" + process.arch;
+
+  // Do some scrubbing to make it easier to match in the regexes bellow
+  inputPlatforms = inputPlatforms.replace("darwin", "mac");
+  inputPlatforms = inputPlatforms.replace(/;ia|;x|;arm/, "");
+
+  var buildAll = /^all$/.test(inputPlatforms);
+
+  var buildPlatforms = {
+    mac: /mac/.test(inputPlatforms) || buildAll,
+    win: /win/.test(inputPlatforms) || buildAll,
+    linux32: /linux32/.test(inputPlatforms) || buildAll,
+    linux64: /linux64/.test(inputPlatforms) || buildAll
+  };
+
+  return buildPlatforms;
+};
+
 module.exports = function(grunt) {
   "use strict";
+
+  var buildPlatforms = parseBuildPlatforms(grunt.option('platforms'));
+  var currentVersion = grunt.file.readJSON('package.json').version;
 
   // buildPlatforms = parseBuildPlatforms(grunt.option('platforms'))
   var packageJson = grunt.file.readJSON('package.json');
@@ -181,7 +205,7 @@ module.exports = function(grunt) {
 
     nodewebkit: {
       options: {
-        // version: '0.8.5',
+        version: '0.9.2',
         app_name: "Komanda",
         app_version: '1.0.0.beta',
         build_dir: './build',
@@ -196,6 +220,30 @@ module.exports = function(grunt) {
         './build/komanda-source/**/*',
         // './node_modules/irc/**/*',
       ]
+    },
+
+    exec: {
+      win: {
+        cmd: '"build/cache/win/<%= nodewebkit.options.version %>/nw.exe" .'
+      },
+      mac: {
+        cmd: 'build/cache/mac/<%= nodewebkit.options.version %>/node-webkit.app/Contents/MacOS/node-webkit .'
+      },
+      linux32: {
+        cmd: '"build/cache/linux32/<%= nodewebkit.options.version %>/nw" .'
+      },
+      linux64: {
+        cmd: '"build/cache/linux64/<%= nodewebkit.options.version %>/nw" .'
+      },
+      createDmg: {
+        cmd: 'dist/mac/yoursway-create-dmg/create-dmg --volname "Komanda ' + currentVersion + '" --background ./dist/mac/background.png --window-size 480 540 --icon-size 128 --app-drop-link 240 370 --icon "Komanda" 240 110 ./build/releases/Komanda/mac/Komanda-' + currentVersion + '-Mac.dmg ./build/releases/Komanda/mac/'
+      },
+      createWinInstall: {
+        cmd: 'makensis dist/windows/installer.nsi'
+      },
+      createWinUpdate: {
+        cmd: 'makensis dist/windows/updater.nsi'
+      }
     },
 
     shell: {
@@ -275,6 +323,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-compress");
 
   // Third-party tasks.
+  grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-npm-install');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks("grunt-node-webkit-builder");
@@ -302,20 +351,40 @@ module.exports = function(grunt) {
     "nodewebkit"
   ]);
 
-  grunt.registerTask("run", [
+  grunt.registerTask("run", function() {
+    var start = parseBuildPlatforms();
+    if(start.win){
+      grunt.task.run('run:win');
+    }else if(start.mac){
+      grunt.task.run('run:mac');
+    }else if(start.linux32){
+      grunt.task.run('run:linux32');
+    }else if(start.linux64){
+      grunt.task.run('run:linux64');
+    }else{
+      grunt.log.writeln('OS not supported.');
+    }
+  });
+
+  grunt.registerTask("run:mac", [
     "default",
     "shell:runnw"
+  ]);
+
+  grunt.registerTask("run:win", [
+    "default",
+    "exec:win"
   ]);
 
   grunt.registerTask("run:linux32", [
     "default",
     "copy",
-    "shell:linux32"
+    "exec:linux32"
   ]);
 
   grunt.registerTask("run:linux64", [
     "default",
     "copy",
-    "shell:linux64"
+    "exec:linux64"
   ]);
 };
