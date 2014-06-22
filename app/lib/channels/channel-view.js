@@ -38,11 +38,7 @@ define([
           if (r.feed[0].id !== self.last_feed_id) {
             // .. add new feed items to channel
 
-            var newFeedItems = [];
-            r.feed.every(function(f) {
-              if (f.id === self.last_feed_id) return;
-              newFeedItems.push(f);
-            });
+            var newFeeditems = self.newFeeditems(r.feed);
 
             self.last_feed_id = r.feed[0].id;
 
@@ -52,7 +48,6 @@ define([
               server: self.model.get('server'),
               timestamp: moment().format(Komanda.settings.get('display.timestamp'))
             });
-
 
             $(self.el).find('.messages').append(html);
 
@@ -76,6 +71,30 @@ define([
 
       // Load Channel Plugins
       self.plugins();
+    },
+
+    newFeeditems: function(feed) {
+      var self = this;
+
+      var newFeedItems = [];
+      var len = feed.length;
+
+      if (len > 0) {
+
+        for (var i = 0; i < len; i += 1) {
+          var id = feed[i].id;
+
+          if (id === self.last_feed_id) {
+            console.log('GOT ID:', feed[i].id, self.last_feed_id);
+            return newFeedItems;
+          } else {
+            newFeedItems.push(feed[i]);
+          };
+        }
+      
+      } else {
+        return [];
+      };
     },
 
     plugins: function() {
