@@ -83,8 +83,6 @@ define([
 
       // Not sure this is the best place for this.
       Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":topic", function(topic) {
-        console.log('UPDATE TOPIC');
-
         self.githubBar = $('.github-plugin-bar[data-server-id="'+self.model.get('server')+'"][data-name="'+self.model.get('channel')+'"]');
 
         if (topic) {
@@ -193,7 +191,6 @@ define([
             type: "get",
             ifModified: false,
             success: function(feed) {
-              console.log('got metadata:', metadata);
               if (metadata) self.repo.metadata = metadata;
 
               if (feed) {
