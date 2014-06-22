@@ -763,6 +763,7 @@ define([
         var chans = _.map(self.channels.models, function(c) {
           return c.get("channel");
         });
+        
         Komanda.vent.trigger(self.options.uuid + ":" + channel.get("channel") + ":update:words", names, chans);
       }, 1);
     }

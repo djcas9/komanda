@@ -66,7 +66,7 @@ define([
       };
 
       Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":update:words", function(words, channels) {
-        self.updateWords(words, channels);
+        self.updateWords(false, false);
       });
 
       // Load Channel Plugins
@@ -283,12 +283,26 @@ define([
 
     updateWords: function(words, channels) {
       var self = this;
+      var keys = _.keys(self.model.get('names')) || [];
 
-      var keys = words ? _.keys(words) : _.keys(self.model.get('names'));
-      keys.push(Komanda.commands)
+      keys.push(Komanda.commands);
 
-      if (channels) keys.push(channels);
-      var keysCommands = _.flatten(keys);
+      if (Komanda.connections && Komanda.connections.hasOwnProperty(self.model.get('server'))) {
+        channels = _.map(Komanda.connections[self.model.get('server')].client.channels.models, function(c) {
+          return c.get('channel').toLowerCase();
+        });
+
+        keys.push(channels);
+      } else if (channels) {
+        keys.push(channels);
+      } else {
+        // ...
+      }
+
+      var keysCommands = _.map(_.flatten(keys), function(k) {
+        // return k.toLowerCase();
+        return k;
+      });
 
       if (!self.completer) {
         self.completerSetup = false;
