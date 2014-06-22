@@ -9,8 +9,10 @@ define([
 
     scrollUpdate: function(channel, force) {
       var objDiv = channel.get(0);
+
       if (objDiv) {
-        var value = (channel.scrollTop() + channel.innerHeight() > objDiv.scrollHeight - 100)
+        var value = (channel.scrollTop() + channel.innerHeight() > objDiv.scrollHeight - 100);
+
         if (value) {
           if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
         } else {
