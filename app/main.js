@@ -108,6 +108,10 @@ requirejs(["config"], function(require) {
       Komanda.gui = requireNode('nw.gui');
       Komanda.window = Komanda.gui.Window.get();
 
+      Komanda.window.on('new-win-policy', function(frame, url, policy) {
+        policy.ignore();
+      });
+
       $(document).on('click', 'button.plugin-button', function(e) {
         e.preventDefault();
         var href = $(this).attr('data-href');

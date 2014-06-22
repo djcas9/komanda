@@ -19,6 +19,7 @@ define([
     events: {
       "keypress input": "sendMessage",
       "click div.message a": "openLink",
+      "mouseup div.message a": "openLink",
       "click div.user": "pm",
       "click div.show-more": "showMore",
       "click button.zen-button": "zenmode"
@@ -154,9 +155,8 @@ define([
           self.githubBar = $('.github-plugin-bar[data-server-id="'+params.server+'"][data-name="'+params.channel+'"]');
         }
 
-
         var objDiv = $(self.el).find('.messages').get(0);
-        objDiv.scrollTop = objDiv.scrollHeight;
+        if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
 
         if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
 
