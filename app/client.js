@@ -520,6 +520,18 @@ define([
     self.socket.addListener('pm', function(nick, text, message) {
     });
 
+    self.socket.addListener('channellist', function(channel_list) {
+      // only do the first hundred until we have a window to handle them all,
+      // so we don't deal with freezing
+      _.each(channel_list.slice(0,100), function(channel) {
+        var msg = channel.name + " (" + channel.users + ")";
+        if(channel.topic) {
+          msg += " || " + channel.topic;
+        }
+        self.addMessage("Status", msg);
+      });
+    });
+
     self.socket.addListener('notice', function(nick, to, text, message) {
       if ( to.match(/^[#&]/) ) {
         self.sendMessage(nick, to, text, message, undefined, true);
@@ -610,7 +622,7 @@ define([
     self.socket.addListener('raw', function(message) {
       var codes = [
         "001", "002", "003", "004", "005", "006", "007",
-        "375", "372", "377", "378", "376", "221", "322",
+        "375", "372", "377", "378", "376", "221",
         "705",
         // errors
         "401", "402", "403", "404", "405", "406", "407", "408", "409", "411", "412", "413",
