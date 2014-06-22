@@ -35,8 +35,9 @@ define([
       var self = this;
       var chan = $('li.channel-item[data-server-id="'+server+'"][data-name="'+channel+'"]');
 
-      // if the channel is the selected one, move to proper endpoint
-      if (chan.hasClass('selected')) {
+      if (Komanda.current && Komanda.current.channel !== channel) {
+        $('li.channel-item[data-server-id="'+Komanda.current.server+'"][data-name="'+Komanda.current.channel+'"]').click();
+      } else {
         if (chan.prev('li.channel-item').length > 0) {
           chan.prev('li.channel-item').click();
         } else if (chan.next('li.channel-item').length > 0) {
@@ -45,6 +46,7 @@ define([
           chan.parents('.session').find('li.channel-item:first').click();
         }
       }
+
 
       chan.remove();
       $('.channel-holder div.channel[data-server-id="'+server+'"][data-name="'+channel+'"]').remove();
