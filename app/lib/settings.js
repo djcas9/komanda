@@ -13,7 +13,7 @@ define([
         current: "komanda-dark",
         list: {
           "komanda-dark": {
-            name: "Komanda Dark",
+            name: "Komanda",
             css: "themes/komanda-dark/komanda-dark.css"
           },
           "octa": {
