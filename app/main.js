@@ -20,7 +20,7 @@ requirejs(["config"], function(require) {
     SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState) {
 
       Komanda.settings = new Setting({
-        id: 1
+        id: 2
       });
 
       Komanda.settings.fetch();

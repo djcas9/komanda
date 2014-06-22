@@ -1,0 +1,35 @@
+<!DocTypE hTmL>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Demo App for require-handlebars-plugin</title>
+</head>
+<body>
+<div id="demo-app-container"></div>
+
+<!-- If you set the require variable to an object, it automatically is the config :D -->
+<script>require = {
+  locale : "en_ca",
+  // default plugin settings, listing here just as a reference
+  hbs : {
+    templateExtension : 'hbs',
+    // if disableI18n is `true` it won't load locales and the i18n helper
+    // won't work as well.
+    disableI18n : false
+  },
+  // I change the path as to not duplicate the hbs.js and handlebars plugin.
+  // Normally, just drop it in the same place as require.js and it'll work fine.
+  // Essentially just ignore this.
+  paths  : {
+    'hbs' : '../hbs',
+    'Handlebars' : '../Handlebars',
+    'underscore' : '../hbs/underscore',
+    'i18nprecompile' : '../hbs/i18nprecompile',
+    'json2' : '../hbs/json2'
+
+  }
+};</script>
+<!-- use a common require.js and app injection method. -->
+<script src="demo/require.js" data-main="demo/main.js"></script>
+</body>
+</html>

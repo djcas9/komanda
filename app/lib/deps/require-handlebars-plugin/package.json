@@ -1,0 +1,46 @@
+{
+  "name": "require-handlebars-plugin",
+  "version": "0.8.0",
+  "author": "Alex Sexton <alexsexton@gmail.com>",
+  "description": "A plugin for handlebars in require.js",
+  "repository": {
+    "type": "git",
+    "url": "https://SlexAxton@github.com/SlexAxton/require-handlebars-plugin.git"
+  },
+  "license": "To Use: WTFPL, To Contribute: Dojo CLA",
+  "main": "hbs",
+  "volo": {
+    "type": "directory",
+    "dependencies": {
+      "Handlebars": "https://raw.github.com/SlexAxton/require-handlebars-plugin/master/Handlebars.js"
+    }
+  },
+  "jam": {
+  	"name": "hbs",
+  	"dependencies": {
+  	  "Handlebars": null
+  	}
+  },
+  "scripts": {
+    "test":"node_modules/karma/bin/karma start --singleRun"
+  },
+  "contributors": [
+    "Xavier Damman <xdamman@gmail.com>"
+  ],
+  "devDependencies": {
+    "karma-script-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.1",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.2",
+    "karma-jasmine": "~0.1.4",
+    "requirejs": "~2.1.9",
+    "karma-requirejs": "~0.2.0",
+    "karma-coffee-preprocessor": "~0.1.1",
+    "karma-phantomjs-launcher": "~0.1.1",
+    "karma": "~0.10.8",
+    "mocha": "~1.15.1",
+    "karma-mocha": "~0.1.1",
+    "karma-chai": "0.0.2",
+    "karma-cajon": "0.0.1"
+  }
+}

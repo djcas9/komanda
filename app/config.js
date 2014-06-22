@@ -28,7 +28,7 @@ requirejs.config({
 
     // Require.js plugins
     text: 'libs/require/text',
-    hbs: "../vendor/bower/require-handlebars-plugin/hbs",
+    hbs: "lib/deps/require-handlebars-plugin/hbs",
     uuid: "lib/deps/uuid",
 
     // Keybindings             :

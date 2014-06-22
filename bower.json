@@ -8,7 +8,6 @@
     "lodash": "~2.4.1",
     "almond": "~0.2.9",
     "marionette": "~1.8.4",
-    "require-handlebars-plugin": "~0.8.0",
     "momentjs": "~2.6.0",
     "backbone-nested-model": "~2.0.0",
     "backbone.wreqr": "~1.3.1",

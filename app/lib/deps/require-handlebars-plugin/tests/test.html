@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <script src="../node_modules/karma-cajon/lib/cajon/cajon.js"></script>
+    <script>
+      require.config({
+        paths: {
+          hbs: "../hbs"
+        }
+      });
+    </script>
+  
+  <body>
+
+  <div id="container"></div>
+
+  <script>
+    require(['hbs!templates/subdir/parent'], function(template) {
+      var html = template({hello: 'world'});
+      var container = document.getElementById("container");
+      container.innerHTML=html;
+      console.log("html: ",html);
+    });
+  </script>
+
+  </body>
+
+</html>

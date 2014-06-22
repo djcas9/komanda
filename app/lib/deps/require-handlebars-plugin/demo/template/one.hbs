@@ -1,0 +1,40 @@
+{{!
+{
+  "name" : "one",
+  "decription" : "A Demo Template",
+  "styles" : ["one"],
+  "helpers": ["myhelper"]
+}
+}}
+<div class="best class ever">
+
+  {{#myhelper}}
+  Wow
+  {{else}}
+  Nope
+  {{/myhelper}}
+
+  {{! Do a little bit of unecessary logic in here
+  to show that it works with block helpers
+  and iterators }}
+
+  {{#if "1"}}
+  This plugin is my {{ adjective }} plugin ever.
+  {{/if}}
+  <br />
+  <br />
+
+  {{#each listofstuff}}
+    {{#if doesntexist}}
+      cant get here
+    {{else}}
+      {{yeller .}}
+      <br />
+    {{/if}}
+  {{/each}}
+  <br />
+
+  {{> template_coolPartial }}
+  <br />
+  i18n2: {{$ "key2"}}
+</div>

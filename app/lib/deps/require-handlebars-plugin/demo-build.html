@@ -1,0 +1,48 @@
+<!DocTypE hTmL>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Demo App (built) for require-handlebars-plugin</title>
+  <link href="demo-build/styles/screen.build.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="demo-app-container"></div>
+
+
+<!-- use a common require.js and app injection method. -->
+<script>require = {
+  locale : "en_ca",
+  // I change the path as to not duplicate the hbs.js and handlebars plugin.
+  // Normally, just drop it in the same place as require.js and it'll work fine.
+  // Essentially just ignore this.
+  paths  : {
+    'hbs' : '../hbs',
+    'Handlebars' : '../Handlebars'
+  }
+};</script>
+<script src="demo-build/require.js" data-main="demo-build/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Just some notes, nothing important to the demo. -->
+<p style="color:#992222;">
+Note 1: if this page isn't working for you, you probably need to run the build.<br />
+Make sure you have node.js installed and then run this in the base directory:<br /><br />
+<code>node r.js -o demo/app.build.js</code>
+</p>
+<p style="color:#992222;">
+Note 2: Generally you won't have 2 different html files for the build and dev modes. Normally you'd just serve the built directory on production where the non-build directory is on your dev server. So your template never have to change, just your static directory switched out.
+</p>
+</body>
+</html>
