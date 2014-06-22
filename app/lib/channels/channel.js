@@ -32,15 +32,18 @@ define([
     },
 
     removeChannel: function(channel, server) {
-      var self = this; 
+      var self = this;
       var chan = $('li.channel-item[data-server-id="'+server+'"][data-name="'+channel+'"]');
 
-      if (chan.prev('li.channel-item').length > 0) {
-        chan.prev('li.channel-item').click();
-      } else if (chan.next('li.channel-item').length > 0) {
-        chan.next('li.channel-item').click();
-      } else {
-        chan.parents('.session').find('li.channel-item:first').click();
+      // if the channel is the selected one, move to proper endpoint
+      if (chan.hasClass('selected')) {
+        if (chan.prev('li.channel-item').length > 0) {
+          chan.prev('li.channel-item').click();
+        } else if (chan.next('li.channel-item').length > 0) {
+          chan.next('li.channel-item').click();
+        } else {
+          chan.parents('.session').find('li.channel-item:first').click();
+        }
       }
 
       chan.remove();

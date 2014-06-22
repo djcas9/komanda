@@ -438,13 +438,22 @@ define([
             self.socket.whois(command[1]);
           break;
           case '/part':
-            self.socket.part(data.target, "Bye!", function() {
-              var chan = self.findChannel(data.target);
-              if (chan) {
-                self.removeAndCleanChannel(chan, self.options.uuid);
+            var s = data.message.split(' ');
+            var channels = (s[1]) ? s[1].split(',') : [data.target];
+            var msg = s.slice(2).join(' ') || "Bye!";
+            _.each(channels, function(channel) {
+              if(!channel.match(/^[#&]/)) {
+                return;
               }
-              Komanda.vent.trigger('channel/part', self.options.uuid, data.target);
+              self.socket.part(channel, msg, function() {
+                var chan = self.findChannel(channel);
+                if (chan) {
+                  self.removeAndCleanChannel(chan, self.options.uuid);
+                }
+                Komanda.vent.trigger('channel/part', self.options.uuid, channel);
+              });
             });
+
             break;
 
           case '/clear':
