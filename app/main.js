@@ -19,6 +19,8 @@ requirejs(["config"], function(require) {
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
     SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState) {
 
+      Komanda.helpers = Helpers;
+
       Komanda.settings = new Setting({
         id: 2
       });

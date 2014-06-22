@@ -405,8 +405,7 @@ define([
         }
 
         setTimeout(function() {
-          var objDiv = channel.get(0);
-          if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+          Helpers.scrollUpdate(channel, true);
         }, 10);
       };
 
@@ -847,8 +846,7 @@ define([
       chan.append(html);
     }
 
-    var objDiv = chan.get(0);
-    objDiv.scrollTop = objDiv.scrollHeight;
+    Helpers.scrollUpdate(chan);
   };
 
   Client.prototype.addMessage = function(channel, message, isNotice) {
@@ -877,8 +875,7 @@ define([
 
       chan.append(html);
 
-      var objDiv = chan.get(0);
-      objDiv.scrollTop = objDiv.scrollHeight;
+      Helpers.scrollUpdate(chan, isNotice);
     }
 
   };
@@ -978,9 +975,7 @@ define([
       });
 
       setTimeout(function() {
-        var objDiv = channel.get(0);
-        objDiv.scrollTop = objDiv.scrollHeight;
-
+        Helpers.scrollUpdate(channel);
       }, 10);
     }
   };

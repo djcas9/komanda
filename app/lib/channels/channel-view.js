@@ -51,9 +51,7 @@ define([
               });
 
               $(self.el).find('.messages').append(html);
-
-              var objDiv = $(self.el).find('.messages').get(0);
-              objDiv.scrollTop = objDiv.scrollHeight;
+              Komanda.helpers.scrollUpdate($(self.el).find('.messages'));
             }
           }
 

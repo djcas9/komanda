@@ -7,6 +7,22 @@ define([
   var Helpers = {
     version: "1.0.0.beta",
 
+    scrollUpdate: function(channel, force) {
+      var objDiv = channel.get(0);
+      if (objDiv) {
+        var value = (channel.scrollTop() + channel.innerHeight() > objDiv.scrollHeight - 100)
+        if (value) {
+          if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+        } else {
+          if (force) {
+            if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+          } else {
+            // ...
+          }
+        }
+      }
+    },
+
     init: function() {
       hljs.initHighlightingOnLoad();
     },
