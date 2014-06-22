@@ -34,6 +34,8 @@ define([
       model: self.channel
     });
 
+    self.views = [];
+
     $(".channel-item[data-name=\"Status\"]").removeClass("selected");
     $(".channel").hide();
 
@@ -111,6 +113,10 @@ define([
 
     self.socket.disconnect("Bye", function() {
       self.session.set("connectionOpen", false);
+
+      _.each(self.views, function(v) {
+        v.close();
+      });
 
       self.socket.conn.end();
       clearInterval(self.reconnectCheck);
@@ -256,6 +262,8 @@ define([
         var view = new ChannelView({
           model: c
         });
+
+        self.views.push(view);
 
         Komanda.vent.trigger("names", data);
         Komanda.vent.trigger("channel/join", c, data);
@@ -1003,6 +1011,8 @@ define([
       var view = new ChannelView({
         model: chan
       });
+
+      self.views.push(view);
 
       self.channels.add(chan);
       $(".channel-holder").append(view.render().el);

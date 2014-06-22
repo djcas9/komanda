@@ -74,6 +74,10 @@ define([
 
         var remove = function() {
           var m = Komanda.sessions.get(uuid);
+
+          var cv = Komanda.connections[uuid].client.channelsView;
+          if (cv) cv.close();
+
           m.destroy();
           Komanda.sessions.remove(m);
 
@@ -82,7 +86,6 @@ define([
         };
 
         if (this.model.get('connectionOpen')) {
-          console.log('in remove');
           Komanda.vent.trigger(uuid + ':disconnect', remove);
         } else {
           remove();

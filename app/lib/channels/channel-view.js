@@ -87,7 +87,6 @@ define([
           var id = feed[i].id;
 
           if (id === self.last_feed_id) {
-            console.log('GOT ID:', feed[i].id, self.last_feed_id);
             return newFeedItems;
           } else {
             newFeedItems.push(feed[i]);
@@ -212,7 +211,6 @@ define([
             type: "get",
             ifModified: true,
             success: function(feed) {
-              console.log('SET REPO DATA', metadata, feed);
               if (metadata && !_.isEmpty(metadata)) self.repo.metadata = metadata;
 
               if (feed && feed.length > 0) {
@@ -242,12 +240,10 @@ define([
     },
 
     onClose: function() {
-      if (self.scroll) {
-        self.scroll.destroy();
-        self.scroll = null;
-      };
+      var self = this;
 
-      Komanda.vent.off()
+      if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
+      if (self.githubBar) self.githubBar.remove();
     },
 
     zenmode: function(e) {
