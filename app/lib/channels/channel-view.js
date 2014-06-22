@@ -48,7 +48,7 @@ define([
               items: newFeedItems,
               uuid: uuid.v4(),
               server: self.model.get('server'),
-              timestamp: moment().format('MM/DD/YY hh:mm:ss')
+              timestamp: moment().format(Komanda.settings.get('display.timestamp'))
             });
 
             $(self.el).find('.messages').append(html);

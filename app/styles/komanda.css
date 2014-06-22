@@ -731,7 +731,6 @@ div.message .body{
 div.message .body .timestamp{
 	position: relative;
 	display: inline-block;
-	width: 120px;
 }
 
 div.message .body .nickname{
