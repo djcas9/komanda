@@ -37,7 +37,7 @@ define([
 
             var newFeedItems = [];
             r.feed.every(function(f) {
-              if (f.id === self.last_feed_id) return;            
+              if (f.id === self.last_feed_id) return;
               newFeedItems.push(f);
             });
 
@@ -129,7 +129,7 @@ define([
     },
 
     pluginReDraw: function(callback) {
-      var self = this; 
+      var self = this;
 
       self.updateAndRender(function(repo) {
         var params = {
@@ -174,14 +174,12 @@ define([
         url: self.metadataURL,
         dataType: "json",
         type: "get",
-        ifModified: true,
         success: function(metadata) {
 
           $.ajax({
             url: self.feedURL,
             dataType: "json",
             type: "get",
-            ifModified: true,
             success: function(feed) {
               if (metadata) self.repo.metadata = metadata;
 
