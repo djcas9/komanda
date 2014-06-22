@@ -61,8 +61,8 @@ define([
       self.githubUpdateCheck = null;
 
       self.repo = {
-        metadata: null,
-        feed: null
+        metadata: {},
+        feed: []
       };
 
       Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":update:words", function(words, channels) {
@@ -201,14 +201,14 @@ define([
         url: self.metadataURL,
         dataType: "json",
         type: "get",
-        ifModified: false,
+        ifModified: true,
         success: function(metadata) {
 
           $.ajax({
             url: self.feedURL,
             dataType: "json",
             type: "get",
-            ifModified: false,
+            ifModified: true,
             success: function(feed) {
               if (metadata) self.repo.metadata = metadata;
 
