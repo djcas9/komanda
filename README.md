@@ -10,7 +10,7 @@ Komanda is a IRC client built with node-webkit, javascript, html and css for peo
 
 # The Plan (in progress)
 
-* Themeable and extensable with plugins.
+* Themeable and extensible with plugins.
 * Load code snippets from gist.github.com, pastie, jsfiddle etc. (gist/jsfiddle added already)
 * Search github/bitbucket for a repo based on the channel name.
 * Import issues, wiki articles etc.
