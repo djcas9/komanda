@@ -32,6 +32,9 @@ define([
 
       self.githubUpdateFunction = function() {
         self.updateAndRender(function(r) {
+
+          self.pluginToolbar(r);
+
           if (r.feed[0].id !== self.last_feed_id) {
             // .. add new feed items to channel
 
@@ -50,11 +53,13 @@ define([
               timestamp: moment().format(Komanda.settings.get('display.timestamp'))
             });
 
+
             $(self.el).find('.messages').append(html);
 
             var objDiv = $(self.el).find('.messages').get(0);
             objDiv.scrollTop = objDiv.scrollHeight;
           }
+
         });
       };
 
@@ -128,40 +133,46 @@ define([
       });
     },
 
+    pluginToolbar: function(repo) {
+      var self = this;
+
+      var params = {
+        server: self.model.get('server'),
+        channel: self.model.get('channel'),
+        repo: repo,
+        isOrg: false
+      };
+
+      self.githubBar = $('.github-plugin-bar[data-server-id="'+params.server+'"][data-name="'+params.channel+'"]');
+
+      if (repo.metadata.hasOwnProperty('type')) {
+        if (repo.metadata.type === "Organization") {
+          params.isOrg = true;
+        }
+      }
+
+      var html = GithubView(params);
+
+      if (self.githubBar && self.githubBar.length > 0) {
+        self.githubBar.replaceWith(html);
+      } else {
+        $(self.el).prepend(html).addClass('github-plugin');
+        self.githubBar = $('.github-plugin-bar[data-server-id="'+params.server+'"][data-name="'+params.channel+'"]');
+      }
+    },
+
     pluginReDraw: function(callback) {
       var self = this;
 
       self.updateAndRender(function(repo) {
-        var params = {
-          server: self.model.get('server'),
-          channel: self.model.get('channel'),
-          repo: repo,
-          isOrg: false
-        };
 
-        if (repo.metadata.hasOwnProperty('type')) {
-          if (repo.metadata.type === "Organization") {
-            params.isOrg = true;
-          }
-        }
-
-        var html = GithubView(params);
-
-        if (self.githubBar && self.githubBar.length > 0) {
-          self.githubBar.replaceWith(html);
-        } else {
-          $(self.el).prepend(html).addClass('github-plugin');
-          self.githubBar = $('.github-plugin-bar[data-server-id="'+params.server+'"][data-name="'+params.channel+'"]');
-        }
-
-        var objDiv = $(self.el).find('.messages').get(0);
-        if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+        self.pluginToolbar(repo);
 
         if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
 
         self.githubUpdateCheck = setInterval(self.githubUpdateFunction, 20000);
 
-        if (callback && typeof callback === "function") callback();
+        if (callback && typeof callback === "function") callback(repo);
       });
 
     },
@@ -182,6 +193,7 @@ define([
             type: "get",
             ifModified: false,
             success: function(feed) {
+              console.log('got metadata:', metadata);
               if (metadata) self.repo.metadata = metadata;
 
               if (feed) {
