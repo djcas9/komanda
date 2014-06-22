@@ -264,7 +264,7 @@ define([
 
         if (chan.length > 0) return;
         $('.channel-holder').append(view.render().el);
-        self.addMessage(channel, "Topic: " + channelTopic.topic);
+        self.addMessage(channel, "Topic: " + (channelTopic.topic || "N/A"));
 
         Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", channelTopic.topic);
 
