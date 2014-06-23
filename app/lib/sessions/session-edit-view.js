@@ -59,7 +59,9 @@ define([
       if (self.model.get('connectOnStart')) {
         connect.start(function(client) {
           _.each(self.model.get('channels'), function(c) {
-            Komanda.vent.trigger(self.model.get('uuid') + ":join", c.trim());
+            if (c.trim().length > 0) {
+              Komanda.vent.trigger(self.model.get('uuid') + ":join", c.trim());
+            }
           });
         });
       }

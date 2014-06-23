@@ -119,7 +119,9 @@ define([
               } else {
                 connect.start(function(client) {
                   _.each(session.get('channels'), function(c) {
-                    Komanda.vent.trigger(uuid + ":join", c);
+                    if (c.trim().length > 0) {
+                      Komanda.vent.trigger(uuid + ":join", c);
+                    }
                   });
                 });
               };
