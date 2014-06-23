@@ -168,7 +168,13 @@ requirejs(["config"], function(require) {
 
         $(".window-button.maximize").on("click", function(e) {
           e.preventDefault();
-          Komanda.window.maximize();
+          if ($(".window-button.maximize").data("is-maximized")) {
+            Komanda.window.unmaximize();
+            $(".window-button.maximize").data("is-maximized", false);
+          } else {
+            Komanda.window.maximize();
+            $(".window-button.maximize").data("is-maximized", true);
+          }
         });
 
         _.each(Komanda.sessions.models, function(m) {
