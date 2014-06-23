@@ -3,7 +3,7 @@ define([
   "jquery",
 ], function (Promise, $) {
   return function bootstrapEmbedTwitter (register) {
-    register("twitter", /twitter/i, {
+    register("twitter", /http(s)?:\/\/(.*\.)?twitter.com\/(\w+)\/status\/(\d+)/i, {
       title: "Twitter",
       enabled: true
     },
