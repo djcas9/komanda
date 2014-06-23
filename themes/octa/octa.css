@@ -460,6 +460,18 @@ div.message .body .text .embed-items .show-more{
 
 /* @end */
 
+/* @group GitHub */
+
+div.github-wrapper a{
+	color: #4183c4;
+}
+
+div.github-wrapper .github-body ul.commits li{
+	color: #2C2C2C;
+}
+
+/* @end*/
+
 /* @group Box */
 
 .limp-box-close{
