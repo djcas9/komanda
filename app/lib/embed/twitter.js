@@ -8,9 +8,10 @@ define([
       enabled: true
     },
     function (link, settings) {
-      var match = link.url.match(/http(s)?:\/\/(.*\.)?twitter.com\/(\w+)\/status\/(\d+)/i);
-      var name = match[3];
-      var id = match[4];
+      var tweet = /http(s)?:\/\/(.*\.)?twitter.com\/(\w+)\/status\/(\d+)/i.exec(link.url);
+      if (!tweet) return;
+      var name = tweet[3];
+      var id = tweet[4];
       if (!id) return;
 
       Promise.resolve($.ajax({
