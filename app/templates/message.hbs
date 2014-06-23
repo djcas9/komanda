@@ -8,7 +8,7 @@
 
     {{#if nick}}
     <span class="nickname {{#if highlight}}highlight{{/if}}" style="color:{{random-color nick }}">
-      {{nick}}:
+      {{nick}}{{#unless isAction}}:{{/unless}}
     </span>
     {{else}}
     <span class="nickname {{#unless nick}}system-message{{/unless}}">

@@ -922,7 +922,7 @@ define([
 
   };
 
-  Client.prototype.sendMessage = function(nick, to, text, message, flip, isNotice) {
+  Client.prototype.sendMessage = function(nick, to, text, message, flip, isNotice, isAction) {
     var self = this;
 
     var data = {
@@ -933,7 +933,8 @@ define([
       server: self.options.uuid,
       uuid: uuid.v4(),
       timestamp: moment().format(Komanda.settings.get("display.timestamp")),
-      flip: flip
+      flip: flip,
+      isAction: isAction
     };
 
     if (text.match(self.nick) && !self.me(nick)) {
