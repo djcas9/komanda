@@ -1349,7 +1349,7 @@ div.github-wrapper .github-actor-image img {
 
 div.github-wrapper .github-body{
 min-height: 35px;
-margin-top: 8px;
+margin-top: 10px;
 display: block;
 margin-left: 40px;
 	color: #afafaf;
@@ -1365,15 +1365,15 @@ margin: 15px 0;
 }
 
 div.github-wrapper .github-body img{
-max-width: 200px;
+max-width: 100%;
 -moz-box-sizing: border-box;
 box-sizing: border-box;
 }
 
 div.github-wrapper .github-body p {
 display: block;
--webkit-margin-before: 1em;
--webkit-margin-after: 1em;
+-webkit-margin-before: 0.5em;
+-webkit-margin-after: 0.5em;
 -webkit-margin-start: 0px;
 -webkit-margin-end: 0px;
 }

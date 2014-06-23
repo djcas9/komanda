@@ -1,0 +1,477 @@
+/* @group Main */
+
+html, body{
+	color: #fff;
+	background: #000;
+ 	-webkit-font-smoothing: antialiased;
+	font: 1.0em 'Lato', Calibri, Arial, sans-serif;
+	overflow: hidden;
+	font-weight: normal;
+}
+
+/* @end */
+
+
+
+/* @group Header */
+
+#header{
+	background-color: #171717;
+	border-bottom: 1px solid #000;
+	
+}
+
+#header .title{
+	color: #fff;
+	text-shadow: rgba(0,0,0,0.5) 0 -1px 0;
+	font-size: 0.85em;
+	text-transform: capitalize;
+	text-align: center;
+}
+
+#header .window-controls .window-button{
+	cursor: pointer;
+	background-color: #383838;
+	
+-webkit-border-radius: 100px 100px 100px 100px;
+-moz-border-radius: 100px 100px 100px 100px;
+border-radius: 100px 100px 100px 100px;
+	width: 13px;
+	height: 13px;
+	display: inline-block;
+	float: left;
+	margin-right: 5px;
+}
+
+/* @end */
+
+
+/* @group Content  */
+
+#content{
+	background-color: #000;
+}
+
+/* @end */
+
+
+
+/* @group Sidebar */
+
+#sidebar{
+	background-color: #000;
+	border-right: 1px solid #000;
+}
+
+#sidebar .session .server,
+div.header-box{
+background-color: #000;
+	border-bottom: 1px solid #000;
+	font-size: 0.9em;
+}
+
+#sidebar .session .server-metadata,
+div.break{
+	background-color: #000;
+	border-top: 1px solid rgba(254,255,255,0.1);
+	border-bottom: 1px solid rgba(0,0,0,0.6);
+	font-size: 0.7em;
+}
+
+#sidebar .session .server i.show-hide-icon,
+div.header-box i.show-hide-icon{
+	opacity: 0.3;
+	margin: 0;
+	display: block;
+	position: absolute;
+	top: 1px;
+	color: #fff;
+	width: 30px;
+	height: 30px;
+	right: -10px;
+	font-size: 0.6em;
+}
+
+#sidebar .session .server:hover i.show-hide-icon,
+div.header-box:hover i.show-hide-icon{
+	opacity: 1;
+}
+
+#sidebar .session .channel-list ul.channels li{
+	background-color: #000;
+	border-top: 1px solid rgba(254,255,255,0.1);
+	border-bottom: 1px solid rgba(0,0,0,0.6);
+	font-size: 0.8em;
+}
+
+#sidebar .session .channel-list ul.channels li span.user-count{
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #000;
+	font-size: 0.7em;
+	text-align: center;
+	border-bottom: 1px solid #000;
+}
+
+#sidebar .session .channel-list ul.channels li i{
+	opacity: 0.4;
+	font-size: 0.7em;
+	color: #fff;
+}
+
+#sidebar .session .channel-list ul.channels li.selected i,
+#sidebar .session .channel-list ul.channels li:hover i{
+	opacity: 1;
+}
+
+#sidebar .session .channel-list ul.channels li:hover{
+	background-color: #181818;
+	border-top: 1px solid rgba(254,255,255,0.1);
+	border-bottom: 1px solid rgba(0,0,0,0.6);
+}
+
+#sidebar .session .channel-list ul.channels li.selected,
+#sidebar .session .channel-list ul.channels li.selected:hover{
+	background-color: #181818;
+	border-top: 1px solid rgba(254,255,255,0.1);
+	border-bottom: 1px solid rgba(0,0,0,0.6);
+}
+
+#sidebar .session .channel-list ul.channels li div.status{
+	cursor: pointer;
+	background-color: #262626;
+	
+-webkit-border-radius: 100px 100px 100px 100px;
+-moz-border-radius: 100px 100px 100px 100px;
+border-radius: 100px 100px 100px 100px;
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	float: left;
+	margin-right: 10px;
+	margin-top: 11px;
+}
+
+#sidebar .session .channel-list ul.channels li.selected div.status.server-status,
+#sidebar .session .channel-list ul.channels li div.status.server-status{
+	background-color: #000;
+}
+
+#sidebar .session .channel-list ul.channels li.offline {
+	background-color: #000 !important;
+}
+
+#sidebar .session .channel-list ul.channels li.offline div.status{
+	background-color: #ff2600;	
+}
+
+#sidebar .session .channel-list ul.channels li.selected div.status{
+	background-color: #000;	
+}
+
+#sidebar .session .channel-list ul.channels li div.status.new-messages{
+	background-color: #d8bc13;
+}
+
+#sidebar .session .channel-list ul.channels li div.status.highlight{
+	background-color: #a31300;
+}
+
+/* @end */
+
+
+
+
+/* @group Channel */
+
+.channel button.zen-button{
+	background: transparent;
+	outline: none;
+	text-align: center;
+	outline: none;
+	color: #fff;
+	font-size: 0.6em;
+}
+
+.channel .names{
+	background-color: #000;
+	border-left: 1px solid #000;
+}
+
+.channel .names div.user{
+	color: #fff;
+	border-bottom: 1px solid #111316;
+	font-size: 0.8em;
+	background-color: #000;
+	border-top: 1px solid rgba(216,232,255,0.1);
+}
+
+.channel .names div.user i {
+	opacity: 0.5;
+	font-size: 0.8em;
+}
+
+.channel .names div.user[data-value="@"] i{
+}
+
+.channel .names div.user[data-value="+"] i{
+}
+
+.channel .names div.user:hover,
+.channel .names div.user.selected:hover{
+	background-color: #000;	
+}
+
+.full{
+	right: 0 !important;
+}
+
+.channel .topic{
+	z-index: 999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+	background-color: #000;
+	border-bottom: 1px solid #000;
+	font-size: 0.9em;	
+	-webkit-box-shadow: 0px 6px 8px -4px rgba(0,0,0,0.5);
+	box-shadow: 0px 6px 8px -4px rgba(0,0,0,0.5);
+}
+
+.channel .input{
+	background-color: #000;
+	
+-webkit-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-moz-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-o-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-ms-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+box-shadow: 0px 0px 0px 1px rgba( 0,0,0,1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+}
+
+.channel .input input{
+	background-color: #000;
+	border: 1px solid rgba(255,255,255,0.2);
+	font-size: 0.9em;
+	color: #fff;
+}
+
+/* @end */
+
+
+
+/* @group Message */
+
+div.message{
+	font-size: 14px;
+}
+
+div.message.highlight{
+	background-color: rgba(254,255,255,0.03);
+}
+
+div.message .body .timestamp{
+	color: #39474c;
+}
+
+div.message .body .nickname.highlight{
+	color: #ffe900 !important;
+	font-weight: bold !important;
+}
+
+div.message .body .text{
+	color: #e8e8e8;
+}
+
+div.message .body .nickname.system-message,
+div.message .body .text.system-message{
+	color: #717171;	
+}
+
+div.message .body .text a{
+	color: #96b5c4;
+}
+
+div.message .body .text a:hover{
+	color: #abcddf;	
+}
+
+div.message .body .text .embed-items .show-more{
+	border-radius: 5px;
+	border: 1px solid rgba(0,0,0,0.51);
+	box-shadow: 0px 1px 0px rgba( 255,255,255,0.05 ), inset 0px 1px 0px rgba( 255,255,255,0.12);
+	background: #2f2f2f;
+	background: -moz-linear-gradient(top, rgba( 255,255,255,0.06) 0%, rgba( 255,255,255,0 ) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba( 255,255,255,0.06)), color-stop(100%,rgba( 255,255,255,0)));
+	background: -webkit-linear-gradient(top, rgba( 255,255,255,0.06) 0%, rgba( 255,255,255,0.0) 100%);
+	background: -o-linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	background: -ms-linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	background: linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#434343', endColorstr='#2d2e34',GradientType=0 );
+	color: #fff;
+	font-size: 0.9em;
+}
+
+/* @end */
+
+
+
+/* @group Master Control */
+
+#master-control-wrapper{
+  /*-webkit-box-shadow: 0px -6px 15px 0px rgba(0,0,0,0.3);
+  box-shadow: 0px -6px 15px 0px rgba(0,0,0,0.3);*/
+}
+
+#master-control-wrapper div.break{
+	border-top: 1px solid #000;
+	z-index: 99999;
+}
+
+#master-control{
+	background-color: #000;
+	font-size: 0.9em;
+	
+-webkit-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-moz-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-o-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+-ms-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+}
+
+#master-control .master-control-button{
+	cursor: pointer;
+	vertical-align: middle;
+	text-align: center;
+	
+	font-size: 0.8em;
+	
+	
+	border-radius: 5px;
+	border: 1px solid rgba(0,0,0,0.51);
+	box-shadow: 0px 1px 0px rgba( 255,255,255,0.05 ), inset 0px 1px 0px rgba( 255,255,255,0.12);
+	background: #2f2f2f;
+	background: -moz-linear-gradient(top, rgba( 255,255,255,0.06) 0%, rgba( 255,255,255,0 ) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba( 255,255,255,0.06)), color-stop(100%,rgba( 255,255,255,0)));
+	background: -webkit-linear-gradient(top, rgba( 255,255,255,0.06) 0%, rgba( 255,255,255,0.0) 100%);
+	background: -o-linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	background: -ms-linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	background: linear-gradient(top, rgba( 255,255,255,0.06) 0%,rgba( 255,255,255,0) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#434343', endColorstr='#2d2e34',GradientType=0 );
+	top: 9.5px;
+}
+
+#master-control .master-control-button i{
+	opacity: 0.5;
+	vertical-align: middle;
+	text-shadow: rgba(0,0,0,0.7) 0 1px 0;
+}
+
+#master-control .master-control-button:hover i{
+	opacity: 1;
+}
+
+#master-control .add-server{
+	
+}
+
+#master-control .settings{
+	
+}
+
+/* @end */
+
+
+
+/* @group Forms */
+
+div.form-box.inline{
+	display: inline-block;
+}
+
+div.form-box label{
+	text-align: right;
+	color: #a3a3a3;
+}
+
+div.form-box input[type='text'],
+div.form-box input[type='password']{
+	width: 300px;
+	resize: none;
+	outline: none;
+	background-color: #000;
+	border: 1px solid #4d5967;
+	font-size: 0.9em;
+	color: #fff;
+}
+
+/* @end */
+
+/* @group Buttons */
+
+.button{
+	outline: none;
+	color: #aeb2b7;
+	font-size: 13px;
+	background: #1d1e21;
+	border: none;
+	-webkit-box-shadow: 0px 1px 0px rgba( 255,255,255,0.05 ), inset 1px 1px 2px rgba( 0,0,0,0.3 );
+	padding: 8px 10px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	-webkit-transition: background 0.3s ease;
+	-moz-transition: background 0.3s ease;
+	-o-transition: background 0.3s ease;
+	transition: background 0.3s ease;
+	
+	
+	font-size: 13px;
+	color: #2e2e2e;
+	font-weight: bold;
+	background-image: -moz-linear-gradient( top, #d5d6d9 0%, #afb0b7);
+	background-image: -webkit-gradient( linear, left top, left bottom, from(#d5d6d9), to(#afb0b7));
+	-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	-moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	-o-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+	text-shadow: 0px 1px 0px rgba(255,255,255,0.5), 0px 1px 0px rgba(255,255,255,1);
+	text-align: center;
+}
+
+.button.warning{
+	background-color: #ff2600;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(255, 38, 0)), to(rgb(217, 30, 14)));
+	background-image: -webkit-linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+	background-image: -moz-linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+	background-image: -o-linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+	background-image: -ms-linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+	background-image: linear-gradient(top, rgb(255, 38, 0), rgb(217, 30, 14));
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#ff2600', EndColorStr='#d91e0e');
+	text-shadow: rgba(0,0,0,0.5) 0 1px 0;
+	color: #fff;
+}
+
+/* @end */
+
+/* @group Zenmode */
+
+body.zenmode #content{
+	left:  0 !important;
+}
+
+body.zenmode .channel .channel-names-holder,
+body.zenmode #sidebar{
+	left: -200px !important;
+}
+
+body.zenmode #sidebar,
+body.zenmode .channel button.zen-button,
+body.zenmode .channel .input,
+body.zenmode .channel .messages, 
+body.zenmode .channel .topic{
+	right: 0 !important;
+}
+
+/* @end */

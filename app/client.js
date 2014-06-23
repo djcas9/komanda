@@ -34,6 +34,8 @@ define([
       model: self.channel
     });
 
+    self.views = [];
+
     $(".channel-item[data-name=\"Status\"]").removeClass("selected");
     $(".channel").hide();
 
@@ -111,6 +113,10 @@ define([
 
     self.socket.disconnect("Bye", function() {
       self.session.set("connectionOpen", false);
+
+      _.each(self.views, function(v) {
+        v.close();
+      });
 
       self.socket.conn.end();
       clearInterval(self.reconnectCheck);
@@ -257,16 +263,24 @@ define([
           model: c
         });
 
+        self.views.push(view);
+
         Komanda.vent.trigger("names", data);
         Komanda.vent.trigger("channel/join", c, data);
 
         var chan = $("div.channel[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + channel + "\"]");
 
         if (chan.length > 0) return;
+
         $(".channel-holder").append(view.render().el);
+
         self.addMessage(channel, "Topic: " + (channelTopic.topic || "N/A"));
         Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", channelTopic.topic);
         $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + channel + "\"]").click();
+
+        setTimeout(function() {
+          Helpers.scrollUpdate(chan, true);
+        }, 100);
       }
     });
 
@@ -324,7 +338,7 @@ define([
         var d = chan.attributes;
         chan.set(d);
 
-        $(".channel[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + channel + "\"] .topic span.title").html(topic);
+        $(".channel[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + channel + "\"] .topic span.title").html(topic || "");
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
 
         Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", data.topic);
@@ -397,8 +411,7 @@ define([
         }
 
         setTimeout(function() {
-          var objDiv = channel.get(0);
-          if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+          Helpers.scrollUpdate(channel, true);
         }, 10);
       };
 
@@ -750,6 +763,7 @@ define([
         var chans = _.map(self.channels.models, function(c) {
           return c.get("channel");
         });
+        
         Komanda.vent.trigger(self.options.uuid + ":" + channel.get("channel") + ":update:words", names, chans);
       }, 1);
     }
@@ -839,8 +853,7 @@ define([
       chan.append(html);
     }
 
-    var objDiv = chan.get(0);
-    objDiv.scrollTop = objDiv.scrollHeight;
+    Helpers.scrollUpdate(chan);
   };
 
   Client.prototype.addMessage = function(channel, message, isNotice) {
@@ -869,8 +882,7 @@ define([
 
       chan.append(html);
 
-      var objDiv = chan.get(0);
-      objDiv.scrollTop = objDiv.scrollHeight;
+      Helpers.scrollUpdate(chan, isNotice);
     }
 
   };
@@ -970,9 +982,7 @@ define([
       });
 
       setTimeout(function() {
-        var objDiv = channel.get(0);
-        objDiv.scrollTop = objDiv.scrollHeight;
-
+        Helpers.scrollUpdate(channel);
       }, 10);
     }
   };
@@ -1003,6 +1013,8 @@ define([
       var view = new ChannelView({
         model: chan
       });
+
+      self.views.push(view);
 
       self.channels.add(chan);
       $(".channel-holder").append(view.render().el);

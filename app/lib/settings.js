@@ -4,8 +4,8 @@ define([
 ], function(Backbone, Helpers) {
 
   var Settings = Backbone.NestedModel.extend({
-    localStorage: new Backbone.LocalStorage('komanda.settings'),
-    store : 'settings',
+    localStorage: new Backbone.LocalStorage("komanda.settings"),
+    store: "settings",
 
     defaults: {
       themes: {
@@ -13,12 +13,16 @@ define([
         current: "komanda-dark",
         list: {
           "komanda-dark": {
-            name: "Komanda Dark",
+            name: "Komanda",
             css: "themes/komanda-dark/komanda-dark.css"
           },
-          "komanda-octa": {
-            name: "Komanda Octa",
-            css: "themes/komanda-octa/komanda-octa.css"
+          "octa": {
+            name: "Octa",
+            css: "themes/octa/octa.css"
+          },
+          "pitch-black": {
+            name: "Pitch Black",
+            css: "themes/pitch-black/pitch-black.css"
           }
         }
       },
@@ -28,22 +32,21 @@ define([
         status: true,
         badge: true
       },
-      embed: {
-        all: false,
-        gist: false,
-        jsfiddle: false,
-        images: true
-      },
       display: {
-        timestamp: 'MM/DD/YY hh:mm:ss'
+        timestamp: "MM/DD/YY hh:mm:ss"
       }
+    },
+
+    modelEvents: {
+      "sync": "save"
     },
 
     initialize: function() {
       this.bind('change', function(a, b) {
-        if (Komanda.settings) Komanda.settings.save(null);
+        // Komanda.settings.set('themes', a.attributes.themes);
+        // Komanda.settings.save(null);
 
-        if (a.changed.hasOwnProperty(('themes'))) Helpers.loadTheme(a.attributes);
+        if (a.changed.hasOwnProperty("themes")) Helpers.loadTheme(a.attributes);
       });
     }
   });

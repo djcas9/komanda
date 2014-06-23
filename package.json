@@ -3,7 +3,7 @@
   "version": "1.0.0-beta",
   "main": "app://host/index.html",
   "webkit": {
-    "page-cache":false
+    "page-cache": false
   },
   "window": {
     "toolbar": false,

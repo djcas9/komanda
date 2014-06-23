@@ -30,10 +30,10 @@ Komanda is currently in beta. Things may not be perfect but it's pretty solid on
 
 # GUI
 
-![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-4.png)
 ![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-1.png)
 ![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-2.png)
 ![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-3.png)
+![Komanda](https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/screenshot/komanda-ss-4.png)
 
 # TODO
 
