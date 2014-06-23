@@ -5,10 +5,10 @@ define("templates/helpers/sortNames", [
 
   Handlebars.registerHelper("sortNames", function(context, options) {
     var buffer = "";
-    var symbols = ["&", "~", "@", "%", "+", ""];
+    var symbols = ["~", "&", "@", "%", "+", ""];
     var users = {
-      "&": [],
       "~": [],
+      "&": [],
       "@": [],
       "%": [],
       "+": [],
