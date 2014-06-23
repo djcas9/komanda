@@ -8,8 +8,12 @@ define([], function () {
       volume: { type: "text", value: 0 }
     },
     function (link, settings) {
-      var video = $("<video autoplay=\"" + settings.autoplay.value + "\" controls=\"controls\" loop=\"" + settings.loop.value + "\" src=\"" + link.url + "\" style=\"max-width: 600px; max-height: 400px\"></video>");
-      video.prop("volume", settings.volume.value);
+      var video = $("<video src=\"" + link.url + "\" style=\"max-width: 600px; max-height: 400px\"></video>");
+
+      video.prop("controls", true)
+           .prop("autoplay", settings.autoplay.value)
+           .prop("loop", settings.loop.value)
+           .prop("volume", settings.volume.value);
 
       link.div.append(video);
     });

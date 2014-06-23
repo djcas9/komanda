@@ -14,15 +14,13 @@ define([
     Komanda.Embed = {};
 
     Komanda.Embed.register = function (name, match, settings, handler) {
-      console.log("Adding", name, Komanda.settings.get("embed." + name));
-
       Komanda.Embed.list.push({
         name: name,
         match: match,
         handler: handler
       });
 
-      if (!Komanda.settings.get("embed." + name)) Komanda.settings.set("embed." + name, settings);
+      if (!Komanda.settings.get("embeds." + name)) Komanda.settings.set("embeds." + name, settings);
     };
 
     Komanda.Embed.list = [];
@@ -63,11 +61,11 @@ define([
                 if (_.isFunction(embed.match)) return embed.match(link.url);
             })
             .filter(function (embed) {
-              return Komanda.settings.get("embed." + embed.name + ".enabled");
+              return Komanda.settings.get("embeds." + embed.name + ".enabled");
             })
             .forEach(function (embed) {
               link.div.css("display", "block");
-              embed.handler(link, Komanda.settings.get("embed." + embed.name));
+              embed.handler(link, Komanda.settings.get("embeds." + embed.name));
             });
         }
       }    
