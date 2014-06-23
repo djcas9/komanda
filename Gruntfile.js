@@ -214,7 +214,8 @@ module.exports = function(grunt) {
         win: true,
         linux32: true,
         linux64: true,
-        mac_icns: "app/styles/images/logo/komanda.icns"
+        mac_icns: "app/styles/images/logo/komanda.icns",
+        credits: "credits.html"
       },
       // src: ['./**/*'],
       src: [
