@@ -614,6 +614,31 @@ define([
 
     });
 
+    self.socket.addListener("action", function(nick, to, text, message) {
+
+      if ( to.match(/^[#&]/) ) {
+        self.sendMessage(nick, to, text, message, false, false, true);
+      } else {
+        // PM
+
+         self.buildPM(nick, function() {
+            self.sendMessage(nick, to, text, message, true, false, true);
+
+            if (window.Notification && Komanda.settings.get("notifications.highlight")) {
+              var n = new Notification("Private Message From " + nick, {
+                tag: "Komanda",
+                body: nick + text
+              });
+
+              n.onClick = function() {
+                alert("word");
+              };
+            }
+        });
+      }
+
+    });
+
 
     self.socket.addListener("registered", function(message) {
       Komanda.vent.trigger("registered", {
