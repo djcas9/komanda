@@ -51,7 +51,11 @@ define([
               });
 
               $(self.el).find('.messages').append(html);
-              Komanda.helpers.scrollUpdate($(self.el).find('.messages'));
+
+              // Not sure why this wont scroll the window down
+              setTimeout(function() {
+                Komanda.helpers.scrollUpdate($(self.el).find('.messages'));
+              }, 100);
             }
           }
 

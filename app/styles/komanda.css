@@ -752,6 +752,8 @@ div.message .body .text{
 div.message .body .text .embed-items{
 	display: inline-block;
 	position: relative;
+	margin-left: 10px;
+	margin-top: 10px;
 }
 
 div.message .body .text .embed-items .show-more{
