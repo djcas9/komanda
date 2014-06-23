@@ -614,6 +614,31 @@ define([
 
     });
 
+    self.socket.addListener("action", function(nick, to, text, message) {
+
+      if ( to.match(/^[#&]/) ) {
+        self.sendMessage(nick, to, text, message, false, false, true);
+      } else {
+        // PM
+
+         self.buildPM(nick, function() {
+            self.sendMessage(nick, to, text, message, true, false, true);
+
+            if (window.Notification && Komanda.settings.get("notifications.highlight")) {
+              var n = new Notification("Private Message From " + nick, {
+                tag: "Komanda",
+                body: nick + text
+              });
+
+              n.onClick = function() {
+                alert("word");
+              };
+            }
+        });
+      }
+
+    });
+
 
     self.socket.addListener("registered", function(message) {
       Komanda.vent.trigger("registered", {
@@ -897,7 +922,7 @@ define([
 
   };
 
-  Client.prototype.sendMessage = function(nick, to, text, message, flip, isNotice) {
+  Client.prototype.sendMessage = function(nick, to, text, message, flip, isNotice, isAction) {
     var self = this;
 
     var data = {
@@ -908,7 +933,8 @@ define([
       server: self.options.uuid,
       uuid: uuid.v4(),
       timestamp: moment().format(Komanda.settings.get("display.timestamp")),
-      flip: flip
+      flip: flip,
+      isAction: isAction
     };
 
     if (text.match(self.nick) && !self.me(nick)) {
