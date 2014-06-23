@@ -17,6 +17,7 @@
     "mousetrap": "~1.4.6",
     "backbone.mousetrap": "git://github.com/elasticsales/backbone.mousetrap.git#11ecdbfbe1099249daa6e1e86db7aee090ea5801",
     "jquery-ui": "~1.10.4",
-    "octicons": "~2.0.2"
+    "octicons": "~2.0.2",
+    "bluebird": "~2.1.3"
   }
 }

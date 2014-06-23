@@ -4,8 +4,8 @@ define([
 ], function(Backbone, Helpers) {
 
   var Settings = Backbone.NestedModel.extend({
-    localStorage: new Backbone.LocalStorage('komanda.settings'),
-    store : 'settings',
+    localStorage: new Backbone.LocalStorage("komanda.settings"),
+    store: "settings",
 
     defaults: {
       themes: {
@@ -32,14 +32,8 @@ define([
         status: true,
         badge: true
       },
-      embed: {
-        all: false,
-        gist: false,
-        jsfiddle: false,
-        images: true
-      },
       display: {
-        timestamp: 'MM/DD/YY hh:mm:ss'
+        timestamp: "MM/DD/YY hh:mm:ss"
       }
     },
 
@@ -52,7 +46,7 @@ define([
         // Komanda.settings.set('themes', a.attributes.themes);
         // Komanda.settings.save(null);
 
-        if (a.changed.hasOwnProperty(('themes'))) Helpers.loadTheme(a.attributes);
+        if (a.changed.hasOwnProperty("themes")) Helpers.loadTheme(a.attributes);
       });
     }
   });

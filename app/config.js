@@ -1,23 +1,24 @@
 require.nodeRequire = window.requireNode;
 
 requirejs.config({
-  paths: {
+  "paths": {
     "vendor": "../vendor",
     "almond": "../vendor/bower/almond/almond",
     "jquery": "../vendor/bower/jquery/dist/jquery",
     "jquery-ui": "../vendor/bower/jquery-ui/ui/jquery-ui",
-    autolink: "lib/deps/autolink",
-    tabcomplete: "lib/deps/tab-complete",
-    limp: "lib/deps/limp",
-    highlight: "lib/deps/highlight",
+    "bluebird": "../vendor/bower/bluebird/js/browser/bluebird",
+    "autolink": "lib/deps/autolink",
+    "tabcomplete": "lib/deps/tab-complete",
+    "limp": "lib/deps/limp",
+    "highlight": "lib/deps/highlight",
 
     // Embed
-    gistembed: "lib/deps/embed/gist-embed",
+    "gistembed": "lib/deps/embed/gist-embed",
 
     "underscore": "../vendor/bower/lodash/dist/lodash.underscore",
     "moment": "../vendor/bower/momentjs/moment",
     "backbone": "../vendor/bower/backbone/backbone",
-    marionette: "../vendor/bower/marionette/lib/core/amd/backbone.marionette",
+    "marionette": "../vendor/bower/marionette/lib/core/amd/backbone.marionette",
     "backbone.wreqr": "../vendor/bower/backbone.wreqr/lib/backbone.wreqr",
     "backbone.babysitter": "../vendor/bower/backbone.babysitter/lib/backbone.babysitter",
     "backbone-plugins": "backbone-plugins",
@@ -27,21 +28,22 @@ requirejs.config({
     "backbone-modelbinder": "lib/deps/backbone-modelbinder",
 
     // Require.js plugins
-    text: "libs/require/text",
-    hbs: "lib/deps/require-handlebars-plugin/hbs",
-    uuid: "lib/deps/uuid",
+    "text": "libs/require/text",
+    "hbs": "lib/deps/require-handlebars-plugin/hbs",
+    "uuid": "lib/deps/uuid",
 
-    // Keybindings             :
-    "Mousetrap"                :  "../vendor/bower/mousetrap/mousetrap",
-    "mousetrap-pause"          :  "../vendor/bower/mousetrap/plugins/pause/mousetrap-pause",
-    "backbone-mousetrap"       :  "lib/deps/backbone-mousetrap",
-    // sotage
-    localStorage               :  "../vendor/bower/backbone.localStorage/backbone.localStorage"
+    // Keybindings
+    "Mousetrap": "../vendor/bower/mousetrap/mousetrap",
+    "mousetrap-pause": "../vendor/bower/mousetrap/plugins/pause/mousetrap-pause",
+    "backbone-mousetrap": "lib/deps/backbone-mousetrap",
+    
+    // Storage
+    "localStorage": "../vendor/bower/backbone.localStorage/backbone.localStorage"
   },
 
-  shim: {
+  "shim": {
     "underscore": {
-      exports: "_"
+      "exports": "_"
     },
     "backbone": {
       "deps": ["underscore", "jquery"],
@@ -52,7 +54,7 @@ requirejs.config({
     },
     "jquery-ui": {
       "deps": ["jquery"],
-      exports: "$"
+      "exports": "$"
     },
     "limp": {
       "deps": ["jquery"]
@@ -61,28 +63,31 @@ requirejs.config({
       "deps": ["jquery"]
     },
     "Mousetrap": {
-      exports: "Mousetrap"
+      "exports": "Mousetrap"
     },
     "mousetrap-pause": {
-      deps: ["Mousetrap"],
-      exports: "Mousetrap"
+      "deps": ["Mousetrap"],
+      "exports": "Mousetrap"
     },
     "backbone-modelbinder": ["backbone"],
     "uuid": {
-      exports: "uuid"
+      "exports": "uuid"
     },
-    localStorage: {
-      deps: ["underscore", "backbone"]
+    "localStorage": {
+      "deps": ["underscore", "backbone"]
+    },
+    "bluebird": {
+      "exports": "Promise"
     }
   },
 
-  hbs: {
-    helpers: true,
-    i18n: false,
-    templateExtension: "hbs",
-    partialsUrl: "",
-    helperDirectory: "template/helpers/",
-    helperPathCallback: function(name) {
+  "hbs": {
+    "helpers": true,
+    "i18n": false,
+    "templateExtension": "hbs",
+    "partialsUrl": "",
+    "helperDirectory": "template/helpers/",
+    "helperPathCallback": function(name) {
       return "templates/helpers/" + name;
     }
   }
