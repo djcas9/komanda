@@ -8,11 +8,11 @@ define([
       enabled: true
     },
     function (link, settings) {
-      var gist = link.url.match(/gist.github.com\/(\w+)\/(.+)$/i);
+      var gist = /gist.github.com\/((-|\w)+)\/(.+)$/i.exec(link.url);
 
-      if (gist !== null && gist.length === 3) {
+      if (gist !== null && gist.length === 4) {
         var gistUser = gist[1];
-        var gistID = gist[2];
+        var gistID = gist[3];
 
         link.div.append(ShowMore({
           icon: "code",
