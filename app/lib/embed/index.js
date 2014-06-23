@@ -5,7 +5,8 @@ define([
   "lib/embed/video",
   "lib/embed/gist",
   "lib/embed/jsfiddle",
-], function (_, Promise, EmbedImage, EmbedVideo, EmbedGist, EmbedJsFiddle) {
+  "lib/embed/twitter",
+], function (_, Promise, EmbedImage, EmbedVideo, EmbedGist, EmbedJsFiddle, EmbedTwitter) {
   //var fs = Promise.promisifyAll(require('fs'));
   //var gui = require('nw.gui');
   //var path = require('path');
@@ -77,6 +78,7 @@ define([
     EmbedVideo(Komanda.Embed.register);
     EmbedGist(Komanda.Embed.register);
     EmbedJsFiddle(Komanda.Embed.register);
+    EmbedTwitter(Komanda.Embed.register);
 
     Komanda.Embed.reload();
   };
