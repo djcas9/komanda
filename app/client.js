@@ -275,6 +275,12 @@ define([
         $(".channel-holder").append(view.render().el);
 
         self.addMessage(channel, "Topic: " + (channelTopic.topic || "N/A"));
+        if (channelTopic.nick && channelTopic.message && channelTopic.message.args[3]) {
+          // node-irc passes the topic creation date/time as a unix timestamp in message.args[3]
+          var topicTimestamp = moment.unix(parseInt(channelTopic.message.args[3])).format(Komanda.settings.get("display.timestamp"));
+          self.addMessage(channel, "Set by " + channelTopic.nick + " on " + topicTimestamp);
+        }
+
         Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", channelTopic.topic);
         $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + channel + "\"]").click();
 
@@ -340,6 +346,10 @@ define([
 
         $(".channel[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + channel + "\"] .topic span.title").html(topic || "");
         self.addMessage(channel, "Topic: " + (topic || "N/A"));
+        if (message.args[3]) {
+          var topicTimestamp = moment.unix(parseInt(message.args[3])).format(Komanda.settings.get("display.timestamp"));
+          self.addMessage(channel, "Set by " + nick + " on " + topicTimestamp);
+        }
 
         Komanda.vent.trigger(self.options.uuid + ":" + channel + ":topic", data.topic);
         Komanda.vent.trigger("topic", data);
