@@ -9,9 +9,10 @@ define([
   "hbs!templates/message",
   "hbs!templates/notice",
   "hbs!templates/names",
+  "hbs!templates/popup",
   "moment",
   "uuid"
-], function(Komanda, _, Helpers, Channels, Channel, ChannelView, ChannelsView, Message, Notice, NamesView, moment, uuid) {
+], function(Komanda, _, Helpers, Channels, Channel, ChannelView, ChannelsView, Message, Notice, NamesView, Popup, moment, uuid) {
 
   var Client = function(session) {
     var self = this;
@@ -430,11 +431,14 @@ define([
         var $channel = $("div.channel[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + data.target + "\"] div.messages");
 
         switch(command[0]) {
-          case "/pm":
           case "/msg":
+            Komanda.vent.trigger(self.options.uuid + ":send", { target: command[1], message: command.slice(2).join(" ") });
+            Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
+            break;
+          case "/pm":
           case "/query":
             Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
-          break;
+            break;
           case "/op":
             break;
           case "/voice":
@@ -671,12 +675,34 @@ define([
         "375", "372", "377", "378", "376", "221",
         "705",
         // errors
-        "401", "402", "403", "404", "405", "406", "407", "408", "409", "411", "412", "413",
+        "402", "404", "405", "406", "407", "408", "409", "411", "412", "413",
         "414", "415", "416", "421", "422", "423", "424", "431", "432", "433", "436", "437",
         "438", "439", "441", "442", "443", "444", "445", "446", "451", "461", "462", "463",
         "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477",
         "478", "481", "482", "483", "484", "485", "491", "501", "502", "511"
       ];
+      if (message.rawCommand === "401" || message.rawCommand === "403") {
+        self.removeAndCleanChannel(self.findChannel(message.args[1]), self.options.uuid);
+        var box = Helpers.limp.box(Popup, {
+          title: "Error #" + message.rawCommand,
+          content: message.args[2] + ": " + message.args[1],
+          buttons: [
+            { classes: "right", close: true, name: "OK" }
+          ]
+        }, {
+          onOpen: function() {
+            $(document).off("keypress");
+          },
+          afterDestroy: function() {
+            $(document).on("keypress", function(e) {
+              if (Komanda.current) {
+                $("#content .channel[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + channel.get("channel") + "\"] input").focus();
+              }
+            });
+          }
+        });
+        box.open();
+      }
       if (_.contains(codes, message.rawCommand) || message.commandType === "error") {
         if (self.me(message.args[0])) message.args.shift();
         self.addMessage("Status", message.args.join(" "));
@@ -798,7 +824,7 @@ define([
         var chans = _.map(self.channels.models, function(c) {
           return c.get("channel");
         });
-        
+
         Komanda.vent.trigger(self.options.uuid + ":" + channel.get("channel") + ":update:words", names, chans);
       }, 1);
     }

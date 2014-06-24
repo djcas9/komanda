@@ -1,0 +1,19 @@
+<div class="komanda-box">
+
+  <div class='komanda-box-title'>
+    {{title}}
+  </div>
+
+  <div class="komanda-box-content">
+  {{content}}
+  </div>
+
+  <div class="komanda-box-footer">
+    <div class='form-actions'>
+      {{#each buttons}}
+      <button class='button {{classes}}'{{#if close}} onClick='$.limpClose()'{{/if}}>{{name}}</button>
+      {{/each}}
+    </div>
+  </div>
+
+</div>
