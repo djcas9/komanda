@@ -1,11 +1,11 @@
 define([
-  "marionette", 
+  "marionette",
   "hbs!templates/channel-item",
   "helpers"
 ], function(Marionette, template, helpers) {
 
   return Marionette.ItemView.extend({
-    tagName: 'li',
+    tagName: "li",
     className: "channel-item",
     template: template,
 
@@ -14,9 +14,9 @@ define([
 
     initialize: function() {
       var self = this;
-      self.showStatusChange = Komanda.settings.get('notifications.status');
+      self.showStatusChange = Komanda.settings.get("notifications.status");
 
-      Komanda.vent.on('ignoreStatusChange', function() {
+      Komanda.vent.on("ignoreStatusChange", function() {
         self.showStatusChange = false;
       });
     },
@@ -27,32 +27,32 @@ define([
     onRender: function() {
       var self = this;
       var $this = $(this.el);
-      var server = this.model.get('server');
-      var channel = this.model.get('channel');
+      var server = this.model.get("server");
+      var channel = this.model.get("channel");
 
       var s = Komanda.sessions.get(server);
 
       if (s) {
-        if (this.model.get('status') && !s.get('connectionOpen')) {
-          $this.addClass('offline');
+        if (this.model.get("status") && !s.get("connectionOpen")) {
+          $this.addClass("offline");
         }
-      };
+      }
 
-      $this.attr('data-server-id', server);
-      $this.attr('data-name', channel);
+      $this.attr("data-server-id", server);
+      $this.attr("data-name", channel);
 
       if (Komanda.current.server === server && Komanda.current.channel === channel) {
-        $('li.channel-list').removeClass('selected');
-        $this.addClass('selected');
+        $("li.channel-list").removeClass("selected");
+        $this.addClass("selected");
       }
 
       if (Komanda.store.hasOwnProperty(server)) {
 
         if (Komanda.store[server].hasOwnProperty(channel)) {
           if (Komanda.store[server][channel] == 1) {
-            $this.find('div.status').addClass('new-messages');
+            $this.find("div.status").addClass("new-messages");
           } else if (Komanda.store[server][channel] == 2) {
-            $this.find('div.status').addClass('highlight');
+            $this.find("div.status").addClass("highlight");
           }
         }
 
@@ -63,7 +63,7 @@ define([
         Komanda.store[server][channel] = 0;
         Komanda.store[server].count[channel] = 0;
 
-        Komanda.vent.trigger('komanda:update:badge');
+        Komanda.vent.trigger("komanda:update:badge");
       }
 
 

@@ -44,7 +44,7 @@ define([
     saveSession: function(e) {
       var self = this;
 
-      self.model.set('uuid', uuid.v4());
+      self.model.set("uuid", uuid.v4());
 
       Komanda.sessions.fetch();
       Komanda.sessions.add(self.model);
@@ -52,15 +52,15 @@ define([
       self.model.save(null);
 
       var connect = new Connect(self.model);
-      Komanda.connections[self.model.get('uuid')] = connect;
+      Komanda.connections[self.model.get("uuid")] = connect;
 
       $.limpClose();
 
-      if (self.model.get('connectOnStart')) {
+      if (self.model.get("connectOnStart")) {
         connect.start(function(client) {
-          _.each(self.model.get('channels'), function(c) {
+          _.each(self.model.get("channels"), function(c) {
             if (c.trim().length > 0) {
-              Komanda.vent.trigger(self.model.get('uuid') + ":join", c.trim());
+              Komanda.vent.trigger(self.model.get("uuid") + ":join", c.trim());
             }
           });
         });
@@ -71,8 +71,8 @@ define([
     destroySession: function() {
       var self = this;
 
-      if (confirm('Are you sure you want to delete this server?')) {
-        var uuid = this.model.get('uuid');
+      if (confirm("Are you sure you want to delete this server?")) {
+        var uuid = this.model.get("uuid");
 
         var remove = function() {
           var m = Komanda.sessions.get(uuid);
@@ -83,16 +83,16 @@ define([
           m.destroy();
           Komanda.sessions.remove(m);
 
-          $('.channel-holder .channel[data-server-id="'+uuid+'"]').remove();
+          $(".channel-holder .channel[data-server-id=\"" + uuid + "\"]").remove();
           $.limpClose();
         };
 
-        if (this.model.get('connectionOpen')) {
-          Komanda.vent.trigger(uuid + ':disconnect', remove);
+        if (this.model.get("connectionOpen")) {
+          Komanda.vent.trigger(uuid + ":disconnect", remove);
         } else {
           remove();
         }
-      };
+      }
     },
 
     onRender: function() {

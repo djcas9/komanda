@@ -12,7 +12,7 @@ define([
 ], function(Marionette, template, _, tab, uuid, moment, hljs, GithubView, GithubFeedItem) {
 
   return Marionette.ItemView.extend({
-    tagName: 'div',
+    tagName: "div",
     className: "channel",
     template: template,
 
@@ -46,15 +46,15 @@ define([
               var html = GithubFeedItem({
                 items: newFeedItems,
                 uuid: uuid.v4(),
-                server: self.model.get('server'),
-                timestamp: moment().format(Komanda.settings.get('display.timestamp'))
+                server: self.model.get("server"),
+                timestamp: moment().format(Komanda.settings.get("display.timestamp"))
               });
 
-              $(self.el).find('.messages').append(html);
+              $(self.el).find(".messages").append(html);
 
               // Not sure why this wont scroll the window down
               setTimeout(function() {
-                Komanda.helpers.scrollUpdate($(self.el).find('.messages'));
+                Komanda.helpers.scrollUpdate($(self.el).find(".messages"));
               }, 100);
             }
           }
@@ -69,7 +69,7 @@ define([
         feed: []
       };
 
-      Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":update:words", function(words, channels) {
+      Komanda.vent.on(self.model.get("server") + ":" + self.model.get("channel") + ":update:words", function(words, channels) {
         self.updateWords(false, false);
       });
 
@@ -92,20 +92,20 @@ define([
             return newFeedItems;
           } else {
             newFeedItems.push(feed[i]);
-          };
+          }
         }
-      
+
       } else {
         return [];
-      };
+      }
     },
 
     plugins: function() {
       var self = this;
 
       // Not sure this is the best place for this.
-      Komanda.vent.on(self.model.get('server') + ":" + self.model.get('channel') + ":topic", function(topic) {
-        self.githubBar = $('.github-plugin-bar[data-server-id="'+self.model.get('server')+'"][data-name="'+self.model.get('channel')+'"]');
+      Komanda.vent.on(self.model.get("server") + ":" + self.model.get("channel") + ":topic", function(topic) {
+        self.githubBar = $(".github-plugin-bar[data-server-id=\"" + self.model.get("server") + "\"][data-name=\"" + self.model.get("channel") + "\"]");
 
         if (topic) {
           var match = topic.match(/http(s)?:\/\/.*\.?github.com\/(.[\w|\-|\/]+)/);
@@ -118,7 +118,7 @@ define([
               self.feedURL = "";
 
               if (/\/$/.test(key)) {
-                key = key.replace(/\/$/, '');
+                key = key.replace(/\/$/, "");
               }
 
               if (/\//.test(key)) {
@@ -137,17 +137,17 @@ define([
             } else {
               if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
               if (self.githubBar) self.githubBar.remove();
-              $(self.el).removeClass('github-plugin');
+              $(self.el).removeClass("github-plugin");
             } // has match index 3
           } else {
             if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
             if (self.githubBar) self.githubBar.remove();
-            $(self.el).removeClass('github-plugin');
+            $(self.el).removeClass("github-plugin");
           } // has match
         } else {
           if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
           if (self.githubBar) self.githubBar.remove();
-          $(self.el).removeClass('github-plugin');
+          $(self.el).removeClass("github-plugin");
         } // has topic
 
       });
@@ -157,15 +157,15 @@ define([
       var self = this;
 
       var params = {
-        server: self.model.get('server'),
-        channel: self.model.get('channel'),
+        server: self.model.get("server"),
+        channel: self.model.get("channel"),
         repo: repo,
         isOrg: false
       };
 
-      self.githubBar = $('.github-plugin-bar[data-server-id="'+params.server+'"][data-name="'+params.channel+'"]');
+      self.githubBar = $(".github-plugin-bar[data-server-id=\"" + params.server + "\"][data-name=\"" + params.channel + "\"]");
 
-      if (repo.metadata.hasOwnProperty('type')) {
+      if (repo.metadata.hasOwnProperty("type")) {
         if (repo.metadata.type === "Organization") {
           params.isOrg = true;
         }
@@ -176,8 +176,8 @@ define([
       if (self.githubBar && self.githubBar.length > 0) {
         self.githubBar.replaceWith(html);
       } else {
-        $(self.el).prepend(html).addClass('github-plugin');
-        self.githubBar = $('.github-plugin-bar[data-server-id="'+params.server+'"][data-name="'+params.channel+'"]');
+        $(self.el).prepend(html).addClass("github-plugin");
+        self.githubBar = $(".github-plugin-bar[data-server-id=\"" + params.server + "\"][data-name=\"" + params.channel + "\"]");
       }
     },
 
@@ -251,18 +251,18 @@ define([
     zenmode: function(e) {
       e.preventDefault();
 
-      if ($('body').hasClass('zenmode')) {
-        $('body').removeClass('zenmode');
+      if ($("body").hasClass("zenmode")) {
+        $("body").removeClass("zenmode");
       } else {
-        $('body').addClass('zenmode');
-      };
+        $("body").addClass("zenmode");
+      }
     },
 
     showMore: function(e) {
       e.preventDefault();
       var current = $(e.currentTarget);
-      var ele =  current.attr('data-ele');
-      var show = current.attr('data-show');
+      var ele =  current.attr("data-ele");
+      var show = current.attr("data-show");
 
       $(show, ele).toggle();
     },
@@ -271,8 +271,8 @@ define([
       e.preventDefault();
 
       var item = $(e.currentTarget);
-      var nick = item.attr('data-name');
-      var server = item.parents('.channel').attr('data-server-id');
+      var nick = item.attr("data-name");
+      var server = item.parents(".channel").attr("data-server-id");
       Komanda.vent.trigger(server + ":pm", nick);
     },
 
@@ -280,20 +280,20 @@ define([
       var self = this;
       if (!self.completerSetup) {
         self.completerSetup = true;
-        self.completer = tab($(this.el).find('input'), $('#main-search-suggestions'));
+        self.completer = tab($(this.el).find("input"), $("#main-search-suggestions"));
         self.updateWords();
-      };
+      }
     },
 
     updateWords: function(words, channels) {
       var self = this;
-      var keys = _.keys(self.model.get('names')) || [];
+      var keys = _.keys(self.model.get("names")) || [];
 
       keys.push(Komanda.commands);
 
-      if (Komanda.connections && Komanda.connections.hasOwnProperty(self.model.get('server'))) {
-        channels = _.map(Komanda.connections[self.model.get('server')].client.channels.models, function(c) {
-          return c.get('channel').toLowerCase();
+      if (Komanda.connections && Komanda.connections.hasOwnProperty(self.model.get("server"))) {
+        channels = _.map(Komanda.connections[self.model.get("server")].client.channels.models, function(c) {
+          return c.get("channel").toLowerCase();
         });
 
         keys.push(channels);
@@ -318,36 +318,36 @@ define([
 
     openLink: function(e) {
       e.preventDefault();
-      var href = $(e.currentTarget).attr('href');
+      var href = $(e.currentTarget).attr("href");
       Komanda.gui.Shell.openExternal(href);
-      $(this.el).find('input').focus();
+      $(this.el).find("input").focus();
     },
 
     onRender: function() {
       var self = this;
       var $this = $(this.el);
 
-      $this.attr('data-server-id', this.model.get('server'));
-      $this.attr('data-name', this.model.get('channel'));
+      $this.attr("data-server-id", this.model.get("server"));
+      $this.attr("data-name", this.model.get("channel"));
 
       self.setupAutoComplete();
       self.updateWords();
     },
 
     focus: function(e) {
-      $(this.el).find('input').focus();
+      $(this.el).find("input").focus();
     },
 
     sendMessage: function(e) {
       e.stopPropagation();
 
-      var server = this.model.get('server');
+      var server = this.model.get("server");
       var message = $(e.currentTarget).val();
 
       if (e.charCode == 13) {
         if (message.length <= 0) return false;
 
-        var textarea = $(e.currentTarget).parent('.input').find('textarea');
+        var textarea = $(e.currentTarget).parent(".input").find("textarea");
         textarea.val(message);
 
         $(e.currentTarget).val("");
@@ -355,13 +355,13 @@ define([
         Komanda.history.add(message);
         Komanda.historyIndex = 0;
 
-        if(message.split(" ")[0] === '/devtools') {
-          Komanda.vent.trigger('komanda:debug');
+        if(message.split(" ")[0] === "/devtools") {
+          Komanda.vent.trigger("komanda:debug");
           return;
         }
 
-        Komanda.vent.trigger(server + ':send', {
-          target: this.model.get('channel'),
+        Komanda.vent.trigger(server + ":send", {
+          target: this.model.get("channel"),
           message: message
         });
       }

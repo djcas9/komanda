@@ -1,11 +1,11 @@
 define([
-  'backbone',
-  'underscore',
-  'uuid'
+  "backbone",
+  "underscore",
+  "uuid"
 ], function(Backbone, _, uuid) {
 
   var Session = Backbone.Model.extend({
-    idAttribute: 'uuid',
+    idAttribute: "uuid",
 
     defaults: {
       connectOnStart: false,
@@ -13,8 +13,8 @@ define([
       server: "irc.freenode.net",
       nick: "komanda",
       nickPassword: "",
-      userName: 'komanda',
-      realName: 'The Komanda IRC Client',
+      userName: "komanda",
+      realName: "The Komanda IRC Client",
       port: 6667,
       debug: false,
       showErrors: false,
@@ -46,14 +46,16 @@ define([
       if (key == null) return this;
 
       // Handle both `"key", value` and `{key: value}` -style arguments.
-      if (typeof key === 'object') {
+      if (typeof key === "object") {
         attrs = key;
         options = val;
       } else {
         (attrs = {})[key] = val;
       }
 
-      options || (options = {});
+      if(!options) {
+        options = {};
+      }
 
       // Run validation.
       if (!this._validate(attrs, options)) return false;
@@ -71,7 +73,8 @@ define([
         this._previousAttributes = _.clone(this.attributes);
         this.changed = {};
       }
-      current = this.attributes, prev = this._previousAttributes;
+      current = this.attributes;
+      prev = this._previousAttributes;
 
       // Check for changes of `id`.
       if (this.idAttribute in attrs) this.id = attrs[this.idAttribute];
@@ -85,25 +88,29 @@ define([
         } else {
           delete this.changed[attr];
         }
-        unset ? delete current[attr] : current[attr] = val;
+        if (unset) {
+          delete current[attr];
+        } else {
+          current[attr] = val;
+        }
       }
 
       // Trigger all relevant attribute changes.
       if (!silent) {
         if (changes.length) this._pending = options;
         for (var i = 0, length = changes.length; i < length; i++) {
-          this.trigger('change:' + changes[i], this, current[changes[i]], options);
+          this.trigger("change:" + changes[i], this, current[changes[i]], options);
         }
       }
 
-      // You might be wondering why there's a `while` loop here. Changes can
+      // You might be wondering why there"s a `while` loop here. Changes can
       // be recursively nested within `"change"` events.
       if (changing) return this;
       if (!silent) {
         while (this._pending) {
           options = this._pending;
           this._pending = false;
-          this.trigger('change', this, options);
+          this.trigger("change", this, options);
         }
       }
       this._pending = false;
@@ -113,9 +120,9 @@ define([
     },
 
     convert: function(data) {
-       if (data.hasOwnProperty('channels')) {
+       if (data.hasOwnProperty("channels")) {
          if (typeof data.channels === "string") {
-           data.channels = data.channels.split(',');
+           data.channels = data.channels.split(",");
          }
        }
 

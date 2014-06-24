@@ -31,12 +31,12 @@ define([
       e.preventDefault();
       e.stopPropagation();
 
-      var item = $(e.currentTarget).parent('.channel-item');
-      var channel = item.attr('data-name');
-      var server = item.attr('data-server-id');
+      var item = $(e.currentTarget).parent(".channel-item");
+      var channel = item.attr("data-name");
+      var server = item.attr("data-server-id");
 
       if (!server) {
-        server = item.parents('.session').attr('data-id');
+        server = item.parents(".session").attr("data-id");
       }
 
       Komanda.store[server].count[channel] = 0;
@@ -47,34 +47,34 @@ define([
       var self = this;
       e.preventDefault();
 
-      $('.channel-holder .channel').hide();
+      $(".channel-holder .channel").hide();
 
       var item = $(e.currentTarget);
-      var channel = item.attr('data-name');
-      var server = item.attr('data-server-id');
+      var channel = item.attr("data-name");
+      var server = item.attr("data-server-id");
 
       if (!server) {
-        server = item.parents('.session').attr('data-id');
+        server = item.parents(".session").attr("data-id");
       }
 
       if (Komanda.store.hasOwnProperty(server)) {
         if (Komanda.store.hasOwnProperty(channel)) {
           Komanda.store[server][channel] = 0;
 
-          if (Komanda.store[server].hasOwnProperty('count')) {
+          if (Komanda.store[server].hasOwnProperty("count")) {
             Komanda.store[server].count[channel] = 0;
           } else {
-            Komanda.store[server].count = {}
+            Komanda.store[server].count = {};
             Komanda.store[server].count[channel] = 0;
           }
 
         } else {
           Komanda.store[server][channel] = 0;
 
-          if (Komanda.store[server].hasOwnProperty('count')) {
+          if (Komanda.store[server].hasOwnProperty("count")) {
             Komanda.store[server].count[channel] = 0;
           } else {
-            Komanda.store[server].count = {}
+            Komanda.store[server].count = {};
             Komanda.store[server].count[channel] = 0;
           }
         }
@@ -87,25 +87,25 @@ define([
       }
 
       Komanda.store[server].count[channel] = 0;
-      Komanda.vent.trigger('komanda:update:badge');
+      Komanda.vent.trigger("komanda:update:badge");
 
-      item.find('div.status').removeClass('new-messages');
-      item.find('div.status').removeClass('highlight');
-      $('li.channel-item').removeClass('selected');
-      item.addClass('selected');
+      item.find("div.status").removeClass("new-messages");
+      item.find("div.status").removeClass("highlight");
+      $("li.channel-item").removeClass("selected");
+      item.addClass("selected");
 
       Komanda.current = {
         server: server,
         channel: channel
       };
 
-      var select = '.channel-holder .channel[data-server-id="'+server+'"][data-name="'+channel+'"]';
+      var select = ".channel-holder .channel[data-server-id=\"" + server + "\"][data-name=\"" + channel + "\"]";
       $(select).show();
 
-      var objDiv = $(select).find('.messages').get(0);
+      var objDiv = $(select).find(".messages").get(0);
       if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
 
-      $(select).find('input').val("").focus();
+      $(select).find("input").val("").focus();
     },
 
     getEmptyView: function() {}

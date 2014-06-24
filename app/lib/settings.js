@@ -46,8 +46,8 @@ define([
     },
 
     initialize: function() {
-      this.bind('change', function(a, b) {
-        // Komanda.settings.set('themes', a.attributes.themes);
+      this.bind("change", function(a, b) {
+        // Komanda.settings.set("themes", a.attributes.themes);
         // Komanda.settings.save(null);
 
         if (a.changed.hasOwnProperty("themes")) Helpers.loadTheme(a.attributes);

@@ -21,15 +21,12 @@ define([
 
     openLink: function(e) {
       e.preventDefault();
-      var href = $(e.currentTarget).attr('href');
+      var href = $(e.currentTarget).attr("href");
       Komanda.gui.Shell.openExternal(href);
     },
 
     onClose: function() {
       this._modelBinder.unbind();
-    },
-
-    events: {
     },
 
     onRender: function() {

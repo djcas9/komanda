@@ -81,12 +81,13 @@ module.exports = function(grunt) {
       options: {
         smarttabs: true,
         proto: true,
+        eqnull: true,
         quotmark: "double"
       },
       all: [
         "app/**/*.js",
         "!app/templates.js",
-        "!app/lib/**/*.js"
+        "!app/lib/deps/**/*.js"
       ]
     },
 

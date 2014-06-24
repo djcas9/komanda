@@ -1,17 +1,17 @@
 define([
   "underscore",
-  "marionette", 
+  "marionette",
   "hbs!templates/layout/sidebar",
   "helpers",
-  'hbs!templates/settings/add-server',
-  'hbs!templates/settings/edit-server',
-  'hbs!templates/settings/index',
-  'hbs!templates/settings/about',
+  "hbs!templates/settings/add-server",
+  "hbs!templates/settings/edit-server",
+  "hbs!templates/settings/index",
+  "hbs!templates/settings/about",
   "lib/sessions/session",
   "lib/sessions/session-edit-view",
   "lib/settings",
   "lib/settings-view"
-], function(_, Marionette, template, Helpers, AddServerView, EditServerView, 
+], function(_, Marionette, template, Helpers, AddServerView, EditServerView,
             SettingsIndexView, AboutView, Session, SessionEditView, Settings, SettingsEditView) {
 
   return Marionette.ItemView.extend({
@@ -29,9 +29,9 @@ define([
     },
 
     limpOnClose: function() {
-      $(document).on('keypress', function(e) {
+      $(document).on("keypress", function(e) {
         if (Komanda.current) {
-          $('.channel[data-server-id="'+Komanda.current.server+'"][data-name="'+Komanda.current.channel+'"] input').focus();
+          $(".channel[data-server-id=\"" + Komanda.current.server + "\"][data-name=\"" + Komanda.current.channel + "\"] input").focus();
         }
       });
     },
@@ -44,55 +44,55 @@ define([
 
       e.preventDefault();
 
-      var uuid = $(e.currentTarget).attr('data-uuid');
+      var uuid = $(e.currentTarget).attr("data-uuid");
       var session = Komanda.sessions.get(uuid);
 
       var view = null;
       var region = null;
 
-      var connected = session.get('connectionOpen');
+      var connected = session.get("connectionOpen");
 
       var box = Helpers.limp.box(EditServerView, {
         session: session,
         connected: connected,
-        name: session.get('server')
+        name: session.get("server")
       }, {
         onOpen: function() {
-          $(document).off('keypress');
+          $(document).off("keypress");
 
           view = new SessionEditView({
             model: session
           });
 
           region = new Marionette.Region({
-            el: '.komanda-box-content'
+            el: ".komanda-box-content"
           });
         },
         afterOpen: function(limp, html) {
           region.show(view);
 
-          html.on('click', 'button.destroy-session', function(e) {
+          html.on("click", "button.destroy-session", function(e) {
             e.preventDefault();
             view.destroySession();
           });
 
-          html.on('click', 'button.disconnect-session', function(e) {
+          html.on("click", "button.disconnect-session", function(e) {
             e.preventDefault();
 
-            Komanda.vent.trigger(uuid + ':disconnect');
+            Komanda.vent.trigger(uuid + ":disconnect");
 
-            $('.channel[data-server-id="'+uuid+'"] .messages').html();
-            $('li.channel-item[data-server-id="'+uuid+'"]').each(function() {
+            $(".channel[data-server-id=\"" + uuid + "\"] .messages").html();
+            $("li.channel-item[data-server-id=\"" + uuid + "\"]").each(function() {
               var i = $(this);
-              if (i.attr('data-name') !== "Status") i.remove();
+              if (i.attr("data-name") !== "Status") i.remove();
             });
 
-            $('li.channel-item[data-server-id="'+uuid+'"][data-name="Status"]').click();
+            $("li.channel-item[data-server-id=\"" + uuid + "\"][data-name=\"Status\"]").click();
 
             $.limpClose();
           });
 
-          html.on('click', 'button.connect-session', function(e) {
+          html.on("click", "button.connect-session", function(e) {
             e.preventDefault();
 
             view.editSession();
@@ -106,28 +106,28 @@ define([
                 connect.client.socket.conn.end();
 
                 connect.client.socket.connect(20, function() {
-                
+
                   if (Komanda.connections.hasOwnProperty(uuid)) {
                     Komanda.connections[uuid].hasClient = true;
                   }
 
-                  Komanda.vent.trigger('connect', {
+                  Komanda.vent.trigger("connect", {
                     server: uuid
                   });
-                }); 
+                });
 
               } else {
                 connect.start(function(client) {
-                  _.each(session.get('channels'), function(c) {
+                  _.each(session.get("channels"), function(c) {
                     if (c.trim().length > 0) {
                       Komanda.vent.trigger(uuid + ":join", c);
                     }
                   });
                 });
-              };
+              }
 
               $.limpClose();
-            };
+            }
           });
 
         },
@@ -157,14 +157,14 @@ define([
         edit: false
       }, {
         onOpen: function() {
-          $(document).off('keypress');
+          $(document).off("keypress");
 
           view = new SessionEditView({
             model: session
           });
 
           region = new Marionette.Region({
-            el: '.komanda-box-content'
+            el: ".komanda-box-content"
           });
         },
         afterOpen: function(limp, html) {
@@ -192,32 +192,32 @@ define([
 
       var box = Helpers.limp.box(SettingsIndexView, {}, {
         onOpen: function() {
-          $(document).off('keypress');
+          $(document).off("keypress");
 
           view = new SettingsEditView({
             model: Komanda.settings
           });
 
           region = new Marionette.Region({
-            el: '#komanda-settings'
+            el: "#komanda-settings"
           });
         },
         afterOpen: function() {
           region.show(view);
 
-          $('ul.komanda-box-menu li').on('click', function(e) {
+          $("ul.komanda-box-menu li").on("click", function(e) {
             e.preventDefault();
-            $('ul.komanda-box-menu li').removeClass('selected');
-            $(this).addClass('selected');
-            var show = $(this).attr('data-show');
-            $('.settings-section-holder').hide();
+            $("ul.komanda-box-menu li").removeClass("selected");
+            $(this).addClass("selected");
+            var show = $(this).attr("data-show");
+            $(".settings-section-holder").hide();
             $(show).show();
           });
 
         },
         onAction: function() {
           Komanda.settings.save(null);
-          Komanda.vent.trigger('komanda:update:badge')
+          Komanda.vent.trigger("komanda:update:badge");
           $.limpClose();
         },
         afterDestroy: function() {
@@ -234,13 +234,13 @@ define([
       e.preventDefault();
       var box = Helpers.limp.box(AboutView, {}, {
         onOpen: function() {
-          $(document).off('keypress');
+          $(document).off("keypress");
         },
         afterOpen: function() {
-          $('.komanda-box-content a').on('click', function(e) {
+          $(".komanda-box-content a").on("click", function(e) {
             e.preventDefault();
 
-            var href = $(this).attr('href');
+            var href = $(this).attr("href");
             Komanda.gui.Shell.openExternal(href);
           });
         },

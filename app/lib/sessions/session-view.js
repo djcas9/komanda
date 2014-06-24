@@ -1,10 +1,10 @@
 define([
-  "marionette", 
+  "marionette",
   "hbs!templates/session",
 ], function(Marionette, template) {
 
   return Marionette.ItemView.extend({
-    tagName: 'div',
+    tagName: "div",
     className: "session",
     template: template,
 
@@ -13,7 +13,7 @@ define([
     },
 
     modelEvents: {
-      'change': 'updateName'
+      "change": "updateName"
     },
 
     initialize: function() {
@@ -21,22 +21,22 @@ define([
 
     updateName: function() {
       var item = $(this.el);
-      item.find('span.server-name').html(this.model.get('name'));
+      item.find("span.server-name").html(this.model.get("name"));
     },
 
     toggleSession: function(e) {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      var parent = $(e.currentTarget).parents('.session')
-      parent.find('.channel-list').toggle();
-      parent.find('.server-metadata').toggle();
+      var parent = $(e.currentTarget).parents(".session");
+      parent.find(".channel-list").toggle();
+      parent.find(".server-metadata").toggle();
     },
 
     onRender: function() {
       var $this = $(this.el);
-      $this.attr('data-server-id', this.model.get('server'));
-      $this.attr('data-id', this.model.get('uuid'));
+      $this.attr("data-server-id", this.model.get("server"));
+      $this.attr("data-id", this.model.get("uuid"));
     }
 
   });
