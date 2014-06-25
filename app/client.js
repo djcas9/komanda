@@ -69,6 +69,8 @@ define([
       selector.append(self.channelsView.render().el);
     }
 
+    self._whois = {};
+
     return this;
   };
 
@@ -129,6 +131,85 @@ define([
         name: self.options.name
       });
     });
+  };
+
+  Client.prototype.processWhois = function(message) {
+    var self = this;
+
+    var target = message.args[1].toLowerCase();
+    // return if called out of turn
+    if (!self._whois[target]) {
+      return;
+    }
+    var data = message.args.slice(2);
+
+    switch(message.command) {
+      // away
+      case "rpl_away":
+        if(data.length > 1) {
+          self._whois[target].away = data[1];
+        } else {
+          self._whois[target].away = data[0];
+        }
+        break;
+      // user info
+      case "rpl_whoisuser":
+        self._whois[target].nick = message.args[1];
+        self._whois[target].user = data[0];
+        self._whois[target].host = data[1];
+        self._whois[target].realName = data[3];
+        break;
+      // channels
+      case "rpl_whoischannels":
+        self._whois[target].channels = data[0].trim().split(" ");
+        break;
+      // server info
+      case "rpl_whoisserver":
+        self._whois[target].server = {
+          hostName: data[0],
+          location: data[1]
+        };
+        break;
+      // idle info
+      case "rpl_whoisidle":
+        self._whois[target].idleDuration = moment.duration(parseInt(data[0], 10), "seconds");
+        self._whois[target].signOnTime = moment(1000 * parseInt(data[1], 10));
+        break;
+      // using secure connection
+      case "671":
+        if (data[0] === "is using a secure connection") {
+          self._whois[target].ssl = true;
+        }
+        break;
+      // logged in as...
+      case "330":
+        self._whois[target].account = {
+          authName: data[0],
+          info: data[1]
+        };
+        break;
+      // RPL_WHOIS(SVCMSG|HELPOPSERVICE)
+      case "310":
+        self._whois[target].service = data[0];
+        break;
+      // on some servers, corresponds to client certificate
+      case "276":
+        self._whois[target].cert = data[0];
+        break;
+      // oper
+      case "rpl_whoisoperator":
+        self._whois[target].oper = data[0];
+        break;
+      // we're done here, trigger whois with data we collated
+      case "rpl_endofwhois":
+        Komanda.vent.trigger(self.options.uuid + ":whois", self._whois[target]);
+        delete self._whois[target];
+        break;
+      // don't know what to do with these yet, so do nothing!
+      default:
+        //console.log(message.command, data);
+        break;
+    }
   };
 
   Client.prototype.bind = function() {
@@ -460,7 +541,8 @@ define([
             break;
           case "/whois":
             if (command.length > 1) {
-              self.socket.whois(command[1]);
+              self._whois[command[1].toLowerCase()] = {};
+              self.socket.send("WHOIS", command[1]);
             }
           break;
           case "/part":
@@ -507,34 +589,51 @@ define([
       });
     });
 
-    self.socket.addListener("whois", function(data) {
-      self.addMessage(Komanda.current.channel, "*** WHOIS FOR USER: " + data.nick, true);
-      self.addMessage(Komanda.current.channel, "Nick:        " + data.nick, true);
-      self.addMessage(Komanda.current.channel, "User Name:   " + data.user, true);
-      self.addMessage(Komanda.current.channel, "Real Name:   " + data.realname, true);
-      self.addMessage(Komanda.current.channel, "Host:        " + data.host, true);
+    Komanda.vent.on(self.options.uuid + ":whois", function(data) {
+      var msgData = [
+        "*** WHOIS FOR USER: " + data.nick,
+        "Hostmask:    " + data.user + "@" + data.host,
+        "Real Name:   " + data.realName,
+      ];
       if (data.channels) {
-        self.addMessage(Komanda.current.channel, "Channels:    " + data.channels.join(", "), true);
+        msgData.push("Channels:    " + data.channels.join(", "));
       }
-      self.addMessage(Komanda.current.channel, "Server:      " + data.server, true);
-      self.addMessage(Komanda.current.channel, "Server Info: " + data.serverinfo, true);
+      msgData.push("Server:      " + data.server.hostName + " (" + data.server.location + ")");
+      if (data.account) {
+        msgData.push(data.account.info + " " + data.account.authName);
+      }
       if (data.away) {
-        self.addMessage(Komanda.current.channel, "Away:        " + data.away, true);
+        msgData.push("Away:        " + data.away);
       }
-      if (data.idle) {
-        var duration = moment.duration(parseInt(data.idle, 10), "seconds");
+      if (data.idleDuration) {
         var idleParts = [];
-        if ((duration.asHours() | 0) > 0) {
-          idleParts.push((duration.asHours() | 0) + "h");
+        if ((data.idleDuration.asHours() | 0) > 0) {
+          idleParts.push((data.idleDuration.asHours() | 0) + "h");
         }
-        if (duration.minutes() > 0) {
-          idleParts.push(duration.minutes() + "m");
+        if (data.idleDuration.minutes() > 0) {
+          idleParts.push(data.idleDuration.minutes() + "m");
         }
-        if (duration.seconds() > 0) {
-          idleParts.push(duration.seconds() + "s");
+        if (data.idleDuration.seconds() > 0) {
+          idleParts.push(data.idleDuration.seconds() + "s");
         }
-        self.addMessage(Komanda.current.channel, "Idle:        " + idleParts.join(" "), true);
+        msgData.push("Idle:        " + idleParts.join(" "));
+        msgData.push("Signed On:   " + data.signOnTime.format("MMMM Do YYYY, hh:mm:ss A"));
       }
+      if (data.ssl) {
+        msgData.push("is using a secure connection");
+      }
+      if (data.cert) {
+        msgData.push(data.cert);
+      }
+      if (data.oper) {
+        msgData.push(data.oper);
+      }
+      if (data.service) {
+        msgData.push(data.service);
+      }
+      _.each(msgData, function(msg) {
+        self.addMessage(Komanda.current.channel, msg, true);
+      });
     });
 
     self.socket.addListener("nickSet", function(nick) {
@@ -673,7 +772,7 @@ define([
     self.socket.addListener("raw", function(message) {
       var codes = [
         "001", "002", "003", "004", "005", "006", "007",
-        "375", "372", "377", "378", "376", "221",
+        "372", "375", "376", "377", "378", "221",
         "705",
         // errors
         "402", "404", "405", "406", "407", "408", "409", "411", "412", "413",
@@ -682,7 +781,14 @@ define([
         "464", "465", "466", "467", "468", "471", "472", "473", "474", "475", "476", "477",
         "478", "481", "482", "483", "484", "485", "491", "501", "502", "511"
       ];
-      if (message.rawCommand === "401" || message.rawCommand === "403") {
+      var whoisCodes = [
+        "276", "301", "307", "308", "309", "309", "310", "311", "312", "313", "316", "317",
+        "318", "319", "320", "330", "335", "338", "378", "379", "615", "616",
+        "617", "671", "689", "690"
+      ];
+      if (_.contains(whoisCodes, message.rawCommand)) {
+        self.processWhois(message);
+      } else if (message.rawCommand === "401" || message.rawCommand === "403") {
         self.removeAndCleanChannel(self.findChannel(message.args[1]), self.options.uuid);
         var box = Helpers.limp.box(Popup, {
           title: "Error #" + message.rawCommand,
@@ -703,12 +809,9 @@ define([
           }
         });
         box.open();
-      }
-      if (_.contains(codes, message.rawCommand) || message.commandType === "error") {
+      } else if (_.contains(codes, message.rawCommand) || message.commandType === "error") {
         if (self.me(message.args[0])) message.args.shift();
         self.addMessage("Status", message.args.join(" "));
-      } else {
-
       }
       // Komanda.vent.trigger("raw", {
         // message: message,
