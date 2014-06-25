@@ -11,6 +11,7 @@ requirejs.config({
     "tabcomplete": "lib/deps/tab-complete",
     "limp": "lib/deps/limp",
     "highlight": "lib/deps/highlight",
+    "ion.sound": "lib/deps/ion.sound",
 
     // Embed
     "gistembed": "lib/deps/embed/gist-embed",
@@ -78,6 +79,9 @@ requirejs.config({
     },
     "bluebird": {
       "exports": "Promise"
+    },
+    "ion.sound": {
+      "deps": ["jquery"]
     }
   },
 

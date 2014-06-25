@@ -303,6 +303,7 @@ module.exports = function(grunt) {
 
     fs.copySync("build/komanda-source/app/styles/images", "build/komanda-source/images")
     fs.copySync("build/komanda-source/app/styles/fonts", "build/komanda-source/fonts");
+    fs.copySync("build/komanda-source/app/sounds", "build/komanda-source/sounds");
     fs.copySync("build/komanda-source/vendor/bower/octicons/octicons", "build/komanda-source/fonts/octicons/");
     fs.copySync("node_modules/irc/", "build/komanda-source/node_modules/irc/");
     fs.copySync("node_modules/marked/", "build/komanda-source/node_modules/marked/");

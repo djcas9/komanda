@@ -979,6 +979,13 @@ define([
       html = Notice(data);
     } else {
       html = Message(data);
+      // We check that the message received is not a pm and is not a highlight.
+      if (data.flip !== true && data.highlight !== true) {
+        Komanda.vent.trigger("komanda:soundnotification", "chat");
+      // If it was not a normal message, we check if it is a pm
+      } else if (data.flip === true) {
+        Komanda.vent.trigger("komanda:soundnotification", "pm");
+      }
     }
 
     if (channel.length > 0) {
@@ -991,6 +998,11 @@ define([
               tag: "Komanda",
               body: "<" + nick + "> " + text
             });
+          }
+          // In order to call the highlight sound, we have to make sure it is not a pm. If you are
+          // highlighted in a PM, it would count as a pm sound, not highlight sound.
+          if (data.flip !== true) {
+            Komanda.vent.trigger("komanda:soundnotification", "highlight");
           }
         }
 

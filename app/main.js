@@ -16,9 +16,10 @@ requirejs(["config"], function(require) {
     "lib/settings",
     "helpers",
     "window-state",
-    "lib/embed/index"
+    "lib/embed/index",
+    "lib/deps/ion.sound"
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
-    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed) {
+    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, ionSound) {
 
       Komanda.helpers = Helpers;
 
@@ -79,6 +80,32 @@ requirejs(["config"], function(require) {
         channel: null
       };
 
+      /**
+       * This event gets triggered by client.js when a message, a highlight, or a pm is received.
+       * The function receives the type of notification as a parameter.
+       * @param  {string}       The type of sound to play
+       * @return {none}         This function does not return a value
+       */
+      Komanda.vent.on("komanda:soundnotification", function(sound) {
+        switch (sound) {
+          case "chat":
+            if (Komanda.settings.get("sounds.chat")) {
+              $.ionSound.play("water_droplet");
+            }
+            break;
+          case "highlight":
+            if (Komanda.settings.get("sounds.highlight")) {
+              $.ionSound.play("glass");
+            }
+            break;
+          case "pm":
+            if (Komanda.settings.get("sounds.pm")) {
+              $.ionSound.play("glass");
+            }
+            break;
+        }
+      });
+
       Komanda.vent.on("komanda:update:badge", function(args) {
         if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
           var masterCount = 0;
@@ -112,6 +139,16 @@ requirejs(["config"], function(require) {
       Komanda.vent.on("komanda:ready", function() {
         Komanda.gui = requireNode("nw.gui");
         Komanda.window = Komanda.gui.Window.get();
+
+        // When komanda is ready, we use this function to register the sounds we will use.
+        // An explanation of how to add them can be found on this pull request: https://github.com/mephux/komanda/pull/136
+        $.ionSound({
+          sounds: [
+            "glass:1.0",
+            "water_droplet:0.5"
+          ],
+          path: "app://host/sounds/" // This folder is made by grunt, you should add sound files inside /app/sounds
+        });
 
         Komanda.window.on("new-win-policy", function(frame, url, policy) {
           policy.ignore();
