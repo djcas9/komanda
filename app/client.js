@@ -956,6 +956,11 @@ define([
       html = Notice(data);
     } else {
       html = Message(data);
+      if (data.flip !== true && data.highlight !== true) {
+        Komanda.vent.trigger("komanda:soundnotification", "chat");
+      } else if (data.flip === true) {
+        Komanda.vent.trigger("komanda:soundnotification", "pm");
+      }
     }
 
     if (channel.length > 0) {
@@ -968,6 +973,9 @@ define([
               tag: "Komanda",
               body: "<" + nick + "> " + text
             });
+          }
+          if (data.flip !== true) {
+            Komanda.vent.trigger("komanda:soundnotification", "highlight");
           }
         }
 

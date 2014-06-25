@@ -16,9 +16,10 @@ requirejs(["config"], function(require) {
     "lib/settings",
     "helpers",
     "window-state",
-    "lib/embed/index"
+    "lib/embed/index",
+    "lib/deps/ion.sound"
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
-    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed) {
+    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, ionSound) {
 
       Komanda.helpers = Helpers;
 
@@ -79,6 +80,26 @@ requirejs(["config"], function(require) {
         channel: null
       };
 
+      Komanda.vent.on("komanda:soundnotification", function(sound) {
+        switch (sound) {
+          case "chat":
+            if (Komanda.settings.get("sounds.chat")) {
+              $.ionSound.play("water_droplet");
+            }
+            break;
+          case "highlight":
+            if (Komanda.settings.get("sounds.highlight")) {
+              $.ionSound.play("glass");
+            }
+            break;
+          case "pm":
+            if (Komanda.settings.get("sounds.pm")) {
+              $.ionSound.play("glass");
+            }
+            break;
+        }
+      });
+
       Komanda.vent.on("komanda:update:badge", function(args) {
         if (Komanda.settings.get("notifications.badge") && Komanda.window.setBadgeLabel) {
           var masterCount = 0;
@@ -112,6 +133,14 @@ requirejs(["config"], function(require) {
       Komanda.vent.on("komanda:ready", function() {
         Komanda.gui = requireNode("nw.gui");
         Komanda.window = Komanda.gui.Window.get();
+
+        $.ionSound({
+          sounds: [
+            "glass:1.0",
+            "water_droplet:0.5"
+          ],
+          path: "app://host/sounds/"
+        });
 
         Komanda.window.on("new-win-policy", function(frame, url, policy) {
           policy.ignore();

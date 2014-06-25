@@ -38,6 +38,11 @@ define([
       },
       display: {
         timestamp: "MM/DD/YY hh:mm:ss"
+      },
+      sounds: {
+        chat: false,
+        pm: true,
+        hightlight: true
       }
     },
 
