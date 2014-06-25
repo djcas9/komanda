@@ -80,6 +80,12 @@ requirejs(["config"], function(require) {
         channel: null
       };
 
+      /**
+       * This event gets triggered by client.js when a message, a highlight, or a pm is received.
+       * The function receives the type of notification as a parameter.
+       * @param  {string}       The type of sound to play
+       * @return {none}         This function does not return a value
+       */
       Komanda.vent.on("komanda:soundnotification", function(sound) {
         switch (sound) {
           case "chat":
@@ -134,12 +140,14 @@ requirejs(["config"], function(require) {
         Komanda.gui = requireNode("nw.gui");
         Komanda.window = Komanda.gui.Window.get();
 
+        // When komanda is ready, we use this function to register the sounds we will use.
+        // An explanation of how to add them can be found on this pull request: https://github.com/mephux/komanda/pull/136
         $.ionSound({
           sounds: [
             "glass:1.0",
             "water_droplet:0.5"
           ],
-          path: "app://host/sounds/"
+          path: "app://host/sounds/" // This folder is made by grunt, you should add sound files inside /app/sounds
         });
 
         Komanda.window.on("new-win-policy", function(frame, url, policy) {
