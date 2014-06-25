@@ -48,6 +48,14 @@ Komanda is currently in beta. Things may not be perfect but it's pretty solid on
  * `npm install`
  * `grunt run`
 
+## Self-Promotion
+
+Like Komanda? Follow the repository on
+[GitHub](https://github.com/mephux/komanda) and if
+you would like to stalk me, follow [mephux](http://dweb.io/) on
+[Twitter](http://twitter.com/mephux) and
+[GitHub](https://github.com/mephux).
+
 # MIT LICENSE
 
 The MIT License (MIT)
