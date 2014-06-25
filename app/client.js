@@ -460,7 +460,9 @@ define([
             self.addMessage(data.target, command.join(" "), true);
             break;
           case "/whois":
-            self.socket.whois(command[1]);
+            if (command.length > 1) {
+              self.socket.whois(command[1]);
+            }
           break;
           case "/part":
             var s = data.message.split(" ");
