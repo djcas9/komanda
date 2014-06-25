@@ -40,7 +40,12 @@
         }
 
         sounds[name] = new Audio();
-        url = settings.path + name + ".ogg";
+        /* canMp3 = sonds[name].canPlayType("audio/mp3");
+        if (canMp3 === "probably" || canMp3 === "maybe") {
+        	url = settings.path + name + ".mp3";
+        } else { */
+        	url = settings.path + name + ".ogg";
+        /* }; */
 
         $(sounds[name]).prop("src", url);
         sounds[name].load();
@@ -132,7 +137,7 @@
     $.ionSound = function (options) {
 
         settings = $.extend({
-            sounds: [],
+            sounds: [/* This array had one element, it got removed */],
             path: "./sounds/",
             multiPlay: true,
             volume: "1.0"
