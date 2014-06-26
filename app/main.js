@@ -214,6 +214,10 @@ requirejs(["config"], function(require) {
           }
         });
 
+        $(".window-button-fullscreen").on("click", function(e) {
+          Komanda.window.toggleFullscreen();
+        });
+
         _.each(Komanda.sessions.models, function(m) {
           m.set("connectionOpen", false);
           var connect = new Connect(m);
