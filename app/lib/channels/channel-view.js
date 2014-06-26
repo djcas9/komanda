@@ -302,7 +302,10 @@ define([
 
     updateWords: function(words, channels) {
       var self = this;
+    
       var keys = _.keys(self.model.get("names")) || [];
+
+      console.log(keys);
 
       keys.push(Komanda.commands);
 

@@ -29,15 +29,15 @@ define([
    * Add a single word to the trie.
    */
   Trie.prototype.word = function (word) {
-
     var c = word.charAt(0);
+
     if (!(c in this.children)) {
-      this.children[c.toLowerCase()] = new Trie(this.prefix + c);
+      this.children["" + c + ""] = new Trie(this.prefix + c);
     }
     if (word.length > 1) {
-      this.children[c.toLowerCase()].word(word.substring(1));
+      this.children["" + c + ""].word(word.substring(1));
     } else {
-      this.children[c.toLowerCase()].isEnd = true;
+      this.children["" + c + ""].isEnd = true;
     }
     return this;
   };
@@ -54,7 +54,7 @@ define([
     } else {
       var c = prefix[0];
       if (c in this.children) {
-        return this.children[c].find(prefix.substring(1));
+        return this.children["" + c + ""].find(prefix.substring(1));
       } else {
         return null;
       }
@@ -142,7 +142,7 @@ define([
         }
 
         if(!__.isUndefined(value)) {
-          value = value.toLowerCase();
+          value = value;
         }
 
         var trie = root.find(value);
@@ -156,7 +156,7 @@ define([
 
             if (index >= choices.length) index = 0;
 
-            if (items.length === 1 && items[0].toLowerCase() === value) {
+            if (items.length === 1 && items[0] === value) {
               var v = choices[index];
 
               if (v.match(/\//) || v.match(/\#/)) {
@@ -171,7 +171,7 @@ define([
             }
 
           } else {
-            if (items.length === 1 && items[0].toLowerCase() === value) {
+            if (items.length === 1 && items[0] === value) {
               var v = choices[index];
               if (v.match(/\//) || v.match(/\#/)) {
                 e.target.value = v + " ";

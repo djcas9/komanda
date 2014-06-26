@@ -30,6 +30,9 @@ define([
           }
         }
       },
+      plugins: {
+        github: true
+      },
       notifications: {
         highlight: true,
         pm: true,
