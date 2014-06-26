@@ -465,6 +465,9 @@ define([
 
     Komanda.vent.on(self.options.uuid + ":join", function(channel) {
       self.socket.join(channel, function() {
+        // retrieve modes
+        self.socket.send("MODE", channel.trim());
+        // trigger actual join on screen
         Komanda.vent.trigger("channel/join", self.options.uuid, channel);
         $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + channel + "\"]").click();
       });
@@ -788,6 +791,11 @@ define([
       ];
       if (_.contains(whoisCodes, message.rawCommand)) {
         self.processWhois(message);
+      } else if (message.rawCommand === "324") {
+        // modes came in for a channel!
+        var channel = message.args[1];
+        var modes = message.args.slice(2).join(" ");
+        self.findChannel(channel).set("modes", modes.trim());
       } else if (message.rawCommand === "401" || message.rawCommand === "403") {
         self.removeAndCleanChannel(self.findChannel(message.args[1]), self.options.uuid);
         var box = Helpers.limp.box(Popup, {

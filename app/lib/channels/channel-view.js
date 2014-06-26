@@ -16,6 +16,10 @@ define([
     className: "channel",
     template: template,
 
+    modelEvents: {
+      "change:modes": "modesChanged"
+    },
+
     events: {
       "keypress input": "sendMessage",
       "click div.message a": "openLink",
@@ -282,6 +286,16 @@ define([
         self.completer = tab($(this.el).find("input"), $("#main-search-suggestions"));
         self.updateWords();
       }
+    },
+
+    modesChanged: function() {
+      var self = this;
+      
+      var text = self.model.get("channel");
+      if (self.model.get("modes") !== "") {
+        text += " (" + self.model.get("modes") + ")";
+      }
+      $(this.el).find(".chan-name").text(text);
     },
 
     updateWords: function(words, channels) {

@@ -11,7 +11,9 @@
     Private Message (PM) with {{channel}}
   </span>
   {{else}}
-  {{channel}}
+  <span class='chan-name'>
+    {{channel}} {{modes}}
+  </span>
   <span class='title' title="{{topic.topic}}">
     {{topic.topic}}
   </span>

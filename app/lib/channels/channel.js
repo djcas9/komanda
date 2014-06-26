@@ -14,6 +14,7 @@ define([
       topic: "",
       names: "",
       server: "",
+      modes: "",
       uuid: uuid.v4(),
       selected: false,
       status: false,
