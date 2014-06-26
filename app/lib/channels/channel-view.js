@@ -37,7 +37,6 @@ define([
       self.githubUpdateFunction = function() {
         self.updateAndRender(function(r) {
 
-          self.pluginToolbar(r);
 
           if (r.feed[0]) {
             if (r.feed[0].id !== self.last_feed_id) {
@@ -216,7 +215,10 @@ define([
             type: "get",
             ifModified: true,
             success: function(feed) {
-              if (metadata && !_.isEmpty(metadata)) self.repo.metadata = metadata;
+              if (metadata && !_.isEmpty(metadata)) {
+                self.repo.metadata = metadata;
+                self.pluginToolbar(self.repo);
+              }
 
               if (feed && feed.length > 0) {
                 self.repo.feed = feed;
