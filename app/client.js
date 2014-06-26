@@ -278,7 +278,7 @@ define([
         self.addMessage(channel, "Topic: " + (channelTopic.topic || "N/A"));
         if (channelTopic.nick && channelTopic.message && channelTopic.message.args[3]) {
           // node-irc passes the topic creation date/time as a unix timestamp in message.args[3]
-          var topicTimestamp = moment.unix(parseInt(channelTopic.message.args[3])).format(Komanda.settings.get("display.timestamp"));
+          var topicTimestamp = moment.unix(parseInt(channelTopic.message.args[3])).format("MM/DD/YY hh:mm:ss");
           self.addMessage(channel, "Set by " + channelTopic.nick + " on " + topicTimestamp);
         }
 
@@ -396,8 +396,7 @@ define([
           to: data.target || "",
           text: data.message,
           server: self.options.uuid,
-          uuid: uuid.v4(),
-          timestamp: moment().format(Komanda.settings.get("display.timestamp"))
+          uuid: uuid.v4()
         };
 
         if(isNotice) {
@@ -899,7 +898,7 @@ define([
     return false;
   };
 
-  Client.prototype.addCode = function(channel, message) {
+  Client.prototype.addCode = function(channel, text) {
     var self = this;
     var server = self.options.uuid;
 
@@ -909,8 +908,7 @@ define([
     if (chan.length > 0) {
       html = Message({
         code: true,
-        text: message,
-        timestamp: moment().format(Komanda.settings.get("display.timestamp"))
+        text: text
       });
 
       chan.append(html);
@@ -919,7 +917,7 @@ define([
     Helpers.scrollUpdate(chan);
   };
 
-  Client.prototype.addMessage = function(channel, message, isNotice) {
+  Client.prototype.addMessage = function(channel, text, isNotice) {
     var self = this;
     var server = self.options.uuid;
 
@@ -933,13 +931,11 @@ define([
         html = Notice({
           nick: self.nick,
           to: channel,
-          text: message,
-          timestamp: moment().format(Komanda.settings.get("display.timestamp"))
+          text: text
         });
       } else {
         html = Message({
-          text: message,
-          timestamp: moment().format(Komanda.settings.get("display.timestamp"))
+          text: text
         });
       }
 
@@ -960,7 +956,6 @@ define([
       message: message,
       server: self.options.uuid,
       uuid: uuid.v4(),
-      timestamp: moment().format(Komanda.settings.get("display.timestamp")),
       flip: flip,
       isAction: isAction
     };

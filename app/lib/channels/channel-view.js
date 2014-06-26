@@ -46,8 +46,7 @@ define([
               var html = GithubFeedItem({
                 items: newFeedItems,
                 uuid: uuid.v4(),
-                server: self.model.get("server"),
-                timestamp: moment().format(Komanda.settings.get("display.timestamp"))
+                server: self.model.get("server")
               });
 
               $(self.el).find(".messages").append(html);
