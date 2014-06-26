@@ -797,7 +797,10 @@ define([
         var modes = message.args.slice(2).join(" ");
         self.findChannel(channel).set("modes", modes.trim());
       } else if (message.rawCommand === "401" || message.rawCommand === "403") {
-        self.removeAndCleanChannel(self.findChannel(message.args[1]), self.options.uuid);
+        var chan = self.findChannel(message.args[1]);
+        if(chan) {
+          self.removeAndCleanChannel(chan, self.options.uuid);
+        }
         var box = Helpers.limp.box(Popup, {
           title: "Error #" + message.rawCommand,
           content: message.args[2] + ": " + message.args[1],
