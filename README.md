@@ -41,7 +41,7 @@ Komanda is currently in beta. Things may not be perfect but it's pretty solid on
 
 # Build
   * `npm install`
-  * `grunt build [--platforms=[win,mac,linux32,linux64]]`
+  * `grunt build [--platforms=all | [win,mac,linux32,linux64]]`
 
 # dev
 
