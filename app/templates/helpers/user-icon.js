@@ -5,7 +5,7 @@ define("templates/helpers/user-icon", [
   Handlebars.registerHelper("user-icon", function(text) {
     if (text === "&") {
       return "<i class=\"iconic\" data-glyph=\"globe\"></i>";
-    } if (text === "~") {
+    } if (text === "~" || text === "!") {
       return "<i class=\"iconic\" data-glyph=\"flag\"></i>";
     } if (text === "@") {
       return "<i class=\"iconic\" data-glyph=\"shield\"></i>";
