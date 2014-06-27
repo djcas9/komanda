@@ -17,9 +17,10 @@ requirejs(["config"], function(require) {
     "helpers",
     "window-state",
     "lib/embed/index",
+    "command",
     "lib/deps/ion.sound"
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
-    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, ionSound) {
+    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, Command, ionSound) {
 
       Komanda.helpers = Helpers;
 
@@ -51,24 +52,9 @@ requirejs(["config"], function(require) {
         Komanda.notification = window.Notification;
       }
 
-      Komanda.commands = [
-        "/help",
-        "/nick",
-        "/join",
-        "/part",
-        "/clear",
-        "/topic",
-        "/quit",
-        "/disconnect",
-        "/ignore",
-        "/ignore-list",
-        "/unignore",
-        "/nickserv",
-        "/pm",
-        "/query",
-        "/msg",
-        "/whois"
-      ];
+      Komanda.command = Command;
+
+      Komanda.cmd = Komanda.command.register;
 
       Komanda.sessions = new Sessions();
       Komanda.sessions.fetch();

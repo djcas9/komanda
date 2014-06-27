@@ -6,7 +6,6 @@ define([
   "uuid",
   "moment",
   "highlight",
-
   "hbs!templates/plugins/github/index",
   "hbs!templates/plugins/github/feed-item"
 ], function(Marionette, template, _, tab, uuid, moment, hljs, GithubView, GithubFeedItem) {
@@ -305,9 +304,7 @@ define([
     
       var keys = _.keys(self.model.get("names")) || [];
 
-      console.log(keys);
-
-      keys.push(Komanda.commands);
+      keys.push(Komanda.command.getCommands());
 
       if (Komanda.connections && Komanda.connections.hasOwnProperty(self.model.get("server"))) {
         channels = _.map(Komanda.connections[self.model.get("server")].client.channels.models, function(c) {
