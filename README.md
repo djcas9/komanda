@@ -1,4 +1,4 @@
-<img height="150px" width="150px" src="https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/logo/komanda%20(PNG)/256x256.png"> 
+<img height="150px" width="150px" src="https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/logo/komanda%20(PNG)/256x256.png">
 
 # Komanda
 
@@ -41,7 +41,7 @@ Komanda is currently in beta. Things may not be perfect but it's pretty solid on
 
 # Build
   * `npm install`
-  * `grunt build` # windows, linux, macosx
+  * `grunt build [--platforms=[win,mac,linux32,linux64]]`
 
 # dev
 
