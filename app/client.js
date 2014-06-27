@@ -509,79 +509,13 @@ define([
         }, 10);
       };
 
-      if (data.message && data.message.match(/^\//)) {
-        var command = data.message.split(" ");
-        var $channel = $("div.channel[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + data.target + "\"] div.messages");
-
-        switch(command[0]) {
-          case "/msg":
-            Komanda.vent.trigger(self.options.uuid + ":send", { target: command[1], message: command.slice(2).join(" ") });
-            Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
-            break;
-          case "/pm":
-          case "/query":
-            Komanda.vent.trigger(self.options.uuid + ":pm", command[1]);
-            break;
-          case "/op":
-            break;
-          case "/voice":
-            break;
-          case "/kick":
-            break;
-          case "/ban":
-            break;
-          case "/code":
-            // command.shift();
-            // var codeString = command.join(" ").replace( /\n/g, "\\n").replace( /\r/g, "\\r").replace( /\t/g, "\\t");
-            // console.log(codeString);
-            // var code = Helpers.displayCode(codeString, self.options.uuid, data.target);
-            // self.addCode(data.target, code);
-            break;
-          case "/me":
-            command.shift();
-            self.socket.action(data.target, command.join(" "));
-            self.addMessage(data.target, command.join(" "), true);
-            break;
-          case "/whois":
-            if (command.length > 1) {
-              self._whois[command[1].toLowerCase()] = {};
-              self.socket.send("WHOIS", command[1]);
-            }
-          break;
-          case "/part":
-            var s = data.message.split(" ");
-            var channels = (s[1]) ? s[1].split(",") : [data.target];
-            var msg = s.slice(2).join(" ") || "Bye!";
-            _.each(channels, function(channel) {
-              if(!channel.match(/^[#&]/)) {
-                return;
-              }
-              self.socket.part(channel, msg, function() {
-                var chan = self.findChannel(channel);
-                if (chan) {
-                  self.removeAndCleanChannel(chan, self.options.uuid);
-                }
-                Komanda.vent.trigger("channel/part", self.options.uuid, channel);
-              });
-            });
-
-            break;
-
-          case "/clear":
-            $channel.html("");
-            break;
-
-          case "/notice":
-            self.socket.notice(command[1], command.slice(2).join(" "));
-            render(true);
-            break;
-
-          default:
-            command[0] = command[0].replace("\/", "");
-            self.socket.send.apply(self.socket, command);
-        }
-
-      } else {
+      if (data.message.trim()[0] === "/") {
+        Komanda.command.handle(self, data, function (client, data, args) {
+          // default, called when no matches
+          client.socket.send.apply(client.socket, data.message.slice(1).split(" "));
+        });
+      }
+      else {
         render();
       }
     });
