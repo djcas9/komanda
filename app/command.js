@@ -82,7 +82,9 @@ define("command", [
   };
 
   Command.getCommands = function () {
-    return _.pluck(Command.list.concat(Command.aliases), "title");
+    return _.map(Command.list.concat(Command.aliases), function (command) {
+      return "/" + command.title;
+    });
   };
 
   Command.handle = function (client, data, defaultFn) {
