@@ -520,6 +520,90 @@ define([
       }
     });
 
+    // internal commands go here
+    // make sure to set priority on internal functions so plugins have to explicity set priority to override
+    // String: 4
+    // RegExp: 5
+    // Function: 6
+    Komanda.cmd("msg", function (client, data, args) {
+      Komanda.vent.trigger(client.options.uuid + ":send", { target: args[0], message: args.slice(1).join(" ") });
+      Komanda.vent.trigger(client.options.uuid + ":pm", args[0]);
+    }, 4);
+
+    Komanda.cmd("query", function (client, data, args) {
+      Komanda.vent.trigger(client.options.uuid + ":pm", args[0]);
+    }, 4);
+
+    Komanda.cmd("me", function (client, data, args) {
+      client.socket.action(data.target, args.join(" "));
+      //client.addMessage(data.target, args.join(" "), true);
+    }, 4);
+
+    Komanda.cmd("whois", function (client, data, args) {
+      if (args.length > 0) {
+        client._whois[args[0].toLowerCase()] = {};
+        client.socket.send("WHOIS", args[0]);
+      }
+    }, 4);
+
+    Komanda.cmd("part", function (client, data, args) {
+      var channels = (args[0]) ? args[0].split(",") : [data.target];
+      var msg = args.slice(1).join(" ") || "Bye!";
+
+      _.each(channels, function (channel) {
+        // TODO: central channel name validation
+        if (!channel.match(/^[#&]/)) return;
+
+        client.socket.part(channel, msg, function() {
+          var chan = client.findChannel(channel);
+
+          if (chan) client.removeAndCleanChannel(chan, client.options.uuid);
+
+          Komanda.vent.trigger("channel/part", client.options.uuid, channel);
+        });
+      });
+    }, 4);
+
+    Komanda.cmd("clear", function (client, data, args) {
+      $("div.channel[data-server-id=\"" + client.options.uuid + "\"][data-name=\"" + data.target + "\"] div.messages").html("");
+    }, 4);
+
+    Komanda.cmd("notice", function (client, data, args) {
+      client.socket.notice(args[0], args.slice(1).join(" "));
+      //render(true); // is this needed?
+    }, 4);
+
+    Komanda.cmd("set", function (client, data, args) {
+      var setting;
+
+      if (args.length === 0) {
+        client.addMessage("Status", JSON.stringify(Komanda.settings.toJSON()));
+      }
+      else if (args.length === 1) {
+        setting = Komanda.settings.get(args[0]);
+        client.addMessage("Status", args[0] + " = " + _.isObject(setting) || _.isArray(setting) ? JSON.stringify(setting) : setting);
+      }
+      else if (args.length === 2) {
+        var val;
+
+        try {
+          val = JSON.parse(args[1]);
+        }
+        catch (e) {
+          val = args[1];
+        }
+
+        Komanda.settings.set(args[0], val);
+        setting = Komanda.settings.get(args[0]);
+        client.addMessage("Status", args[0] + " = " + _.isObject(setting) || _.isArray(setting) ? JSON.stringify(setting) : setting);
+      }
+    }, 4);
+
+    // aliases
+    Komanda.cmd("q", "query", 4);
+    Komanda.cmd("pm", "query", 4);
+    Komanda.cmd("j", "join", 4);
+
     Komanda.vent.on(self.options.uuid + ":pm", function(nick) {
       self.buildPM(nick, function() {
         $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + nick + "\"]").click();
