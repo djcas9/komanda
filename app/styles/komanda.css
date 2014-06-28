@@ -728,19 +728,26 @@ div.message code{
 	border: 1px solid #282e37;
 	background-color: #293038;
 	border-radius: 3px;
-	padding: 3px 5px;
-	font-size: 1.0em;
+	padding: 0 3px;
+	font-size: 1em;
 	color: #e8e8e8;
 }
 
+div.message code a{
+	text-decoration: none;
+	font-weight: normal;
+	font-style: normal;
+	font-variant: normal;
+}
+
 div.message pre{
-background-color: #293038;
-border: 1px solid #0d1014;
-font-size: 13px;
-line-height: 19px;
-overflow: auto;
-padding: 6px 10px;
-border-radius: 3px
+	background-color: #293038;
+	border: 1px solid #0d1014;
+	font-size: 13px;
+	line-height: 19px;
+	overflow: auto;
+	padding: 6px 10px;
+	border-radius: 3px
 }
 
 div.message pre code{

@@ -203,7 +203,7 @@ requirejs(["config"], function(require) {
         $(".window-button-fullscreen").on("click", function(e) {
           if ($(".window-button.maximize").data("is-maximized", false)) {
             Komanda.window.toggleFullscreen();
-          };
+          }
         });
 
         _.each(Komanda.sessions.models, function(m) {
