@@ -1205,8 +1205,9 @@ define([
   Client.prototype.buildPM = function(nick, callback) {
     var self = this;
 
-    if (!nick)
+    if (!nick) {
       nick = "Status";
+    }
 
     var chan = self.findChannel(nick);
 
