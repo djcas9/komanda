@@ -41,7 +41,8 @@ Komanda is currently in beta. Things may not be perfect but it's pretty solid on
 
 # Build
   * `npm install`
-  * `grunt build [--platforms=all | [win,mac,linux32,linux64]]`
+  * `grunt build[:<target>]` where `<target>` is one of `all | [win,mac,linux32,linux64]`.
+  Defaults to `process.platform` (i.e. the platform you're building on).
 
 # dev
 
