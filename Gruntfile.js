@@ -264,8 +264,8 @@ module.exports = function(grunt) {
           stderr: false,
           stdin: false
         },
-        // command: "./build/cache/mac/0.9.2/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
-        command: "./node-webkit-builds/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
+        command: "./build/cache/mac/0.9.2/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
+        // command: "./node-webkit-builds/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
       },
 
       linux64: {
