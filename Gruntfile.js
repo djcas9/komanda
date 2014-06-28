@@ -342,7 +342,15 @@ module.exports = function(grunt) {
 
   ]);
 
-  grunt.registerTask("build", [
+  grunt.registerTask("build", function(platforms) {
+    var targetPlatforms = parseBuildPlatforms(platforms);
+    // Overwrite initial nodewebkit.options.<target> bool with the
+    // one returned by parseBuildPlatforms
+    Object.keys(targetPlatforms).forEach(function(target) {
+      grunt.config("nodewebkit.options." + target, targetPlatforms[target]);
+    });
+
+    grunt.task.run([
     "clean:some",
     "npm-install",
     "jshint",
@@ -353,7 +361,8 @@ module.exports = function(grunt) {
     "cssmin",
     "cleanBuildDir",
     "nodewebkit"
-  ]);
+    ]);
+  });
 
   grunt.registerTask("run", function() {
     var start = parseBuildPlatforms();
