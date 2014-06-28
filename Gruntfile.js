@@ -211,10 +211,10 @@ module.exports = function(grunt) {
         app_name: "Komanda",
         app_version: '1.0.0.beta',
         build_dir: './build',
-        mac: buildPlatforms.mac,
-        win: buildPlatforms.win,
-        linux32: buildPlatforms.linux32,
-        linux64: buildPlatforms.linux64,
+        mac: true,
+        win: true,
+        linux32: true,
+        linux64: true,
         mac_icns: "app/styles/images/logo/komanda.icns",
         credits: "credits.html"
       },
@@ -342,7 +342,15 @@ module.exports = function(grunt) {
 
   ]);
 
-  grunt.registerTask("build", [
+  grunt.registerTask("build", function(platforms) {
+    var targetPlatforms = parseBuildPlatforms(platforms);
+    // Overwrite initial nodewebkit.options.<target> bool with the
+    // one returned by parseBuildPlatforms
+    Object.keys(targetPlatforms).forEach(function(target) {
+      grunt.config("nodewebkit.options." + target, targetPlatforms[target]);
+    });
+
+    grunt.task.run([
     "clean:some",
     "npm-install",
     "jshint",
@@ -353,7 +361,8 @@ module.exports = function(grunt) {
     "cssmin",
     "cleanBuildDir",
     "nodewebkit"
-  ]);
+    ]);
+  });
 
   grunt.registerTask("run", function() {
     var start = parseBuildPlatforms();
