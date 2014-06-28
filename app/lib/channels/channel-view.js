@@ -248,8 +248,10 @@ define([
     onClose: function() {
       var self = this;
 
+      console.log('IN VIEW CLOSE');
       if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
       if (self.githubBar) self.githubBar.remove();
+      self.githubUpdateFunction = null;
     },
 
     zenmode: function(e) {

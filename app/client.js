@@ -21,7 +21,13 @@ define([
     self.options = session.attributes;
     self.nick = session.attributes.nick;
     self.socket = null;
+
     self.session = session;
+
+    self.retryCount = 300;
+    self.retryCountCurrent = 0;
+    self.retryFunction = null;
+    self.attemptingReconnect = false;
 
     self.topics = {};
 
@@ -76,13 +82,36 @@ define([
 
   Client.prototype.isConnected = function() {
     var self = this;
-    if (self.socket) {
+
+    if (self.socket && self.socket.conn && window.navigator.onLine) {
       if (self.socket.conn.readable && self.socket.conn.writable) {
+        self.session.set("connectionOpen", true);
         return true;
       } else {
+        self.clearViews();
+        Komanda.vent.trigger(self.options.uuid + ":disconnect");
+        self.socket.conn.end();
+        self.session.set("connectionOpen", false);
+
+        if (Komanda.current.channel !== "Status") {
+          $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").click();
+        }
+
         return false;
       }
     } else {
+      self.clearViews();
+      Komanda.vent.trigger(self.options.uuid + ":disconnect");
+
+      if (self.socket && self.socket.conn) {
+        self.socket.conn.end();
+      }
+
+      self.session.set("connectionOpen", false);
+
+      if (Komanda.current.channel !== "Status") {
+        $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").click();
+      }
       return false;
     }
   };
@@ -100,9 +129,12 @@ define([
       if (callback && typeof callback === "function") callback(self);
 
       self.session.set("connectionOpen", true);
+
       if (Komanda.connections.hasOwnProperty(self.options.uuid)) {
         Komanda.connections[self.options.uuid].hasClient = true;
       }
+
+      self.bindReconnect();
 
       Komanda.vent.trigger("connect", {
         server: self.options.uuid,
@@ -111,20 +143,27 @@ define([
     });
   };
 
+  Client.prototype.clearViews = function() {
+    var self = this;
+    _.each(self.views, function(v) {
+      v.close();
+    });
+
+    $(".channel-item[data-server-id=\""+self.options.uuid+"\"][data-name!=\"Status\"]").remove();
+  };
+
   Client.prototype.disconnect = function(callback) {
     var self = this;
+
+    self.attemptingReconnect = false;
 
     self.socket.disconnect("Bye", function() {
       self.session.set("connectionOpen", false);
 
-      _.each(self.views, function(v) {
-        v.close();
-      });
-
+      self.clearViews();
       self.socket.conn.end();
-      clearInterval(self.reconnectCheck);
 
-      if (callback && typeof callback === "function") callback();
+      if (callback && typeof callback === "function") callback(self);
 
       Komanda.vent.trigger("disconnect", {
         server: self.options.uuid,
@@ -212,47 +251,83 @@ define([
     }
   };
 
+  Client.prototype.bindReconnect = function() {
+    var self = this;
+
+    self.reconnectFunction = function() {
+      if (!self.isConnected()) {
+
+        if (self.socket && self.socket.conn) {
+
+          self.socket.conn.requestedDisconnect = false;
+          $(".channel-item[data-name!=\"Status\"]").remove();
+
+          Komanda.vent.trigger(self.options.uuid + ":disconnect");
+          self.socket.conn.end();
+          self.clearViews();
+
+          if (self.retryCountCurrent < self.retryCount) {
+            Komanda.connections[self.options.uuid].inReconnect = true;
+
+            if (!self.attemptingReconnect) {
+              self.retryCountCurrent++;
+              self.socket.emit('connection:reconnect', self.retryCountCurrent);
+
+              self.socket.connect(function() {
+                clearInterval(self.reconnectCheck);
+                self.retryCountCurrent = 0;
+                self.bindReconnect();
+                // we need to rejoin channels here
+              });
+
+              self.attemptingReconnect = true;
+            };
+
+          } else {
+            clearInterval(self.reconnectCheck);
+            Komanda.connections[self.options.uuid].inReconnect = false;
+            self.socket.emit('connection:abort', self.retryCount, self.retryCountCurrent);
+          }
+        }
+
+      } else if (!window.navigator.onLine) {
+        Komanda.vent.trigger(self.options.uuid + ":disconnect");
+        self.socket.conn.end();
+
+        self.session.set("connectionOpen", false);
+        self.clearViews();
+      }
+    };
+
+    if (self.reconnectCheck) {
+      clearInterval(self.reconnectCheck);
+    };
+
+    self.reconnectCheck = setInterval(self.reconnectFunction, 10000);
+  };
+
   Client.prototype.bind = function() {
     var self = this;
 
     if (self.binded) return;
     self.binded = true;
 
-    self.reconnectFunction = function() {
-      if (!window.navigator.onLine) {
-        if (self.socket) {
-          self.socket.conn.requestedDisconnect = false;
-          $(".channel[data-server-id=\"" + self.options.uuid + "\"] .messages").html();
-          self.socket.conn.end();
-          self.socket.connect();
-        }
-        clearInterval(self.reconnectCheck);
-      }
-    };
-
-    self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
-
     self.offlineCheckFunction = function() {
-      if (self.socket) {
-        if (self.socket.conn.readable && self.socket.conn.writable) {
-          self.session.set("connectionOpen", true);
-        } else {
-          self.session.set("connectionOpen", false);
-        }
-      } else {
-        self.session.set("connectionOpen", false);
-      }
+      self.isConnected()
     };
 
     self.offlineCheck = setInterval(self.offlineCheckFunction, 4000);
 
-    Komanda.vent.on(self.options.uuid + ":disconnect", function(callback) {
+    Komanda.vent.on(self.options.uuid + ":disconnect", function(callback, otherback) {
+      if (otherback && typeof otherback === "function") {
+        otherback(self);
+      }
       self.disconnect(callback);
     });
 
     Komanda.vent.on("disconnect", function() {
       self.session.set("connectionOpen", false);
-      self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+      self.bindReconnect();
     });
 
     Komanda.vent.on("connect", function() {
@@ -267,21 +342,29 @@ define([
         }
       }
 
-      self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+      self.bindReconnect();
       $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").removeClass("offline");
     });
 
     self.socket.addListener("connection:end", function() {});
 
-    self.socket.addListener("connection:abort", function(max, count) {});
+    self.socket.addListener("connection:abort", function(max, count) {
+      self.addMessage("Status", "Komanda Notice: Reconnect has been aborted", true);
+    });
 
     self.socket.addListener("connection:timeout", function() {});
 
     self.socket.addListener("connection:error", function(error) {
+      self.attemptingReconnect = false;
+
       var message = "Komanda Error: " + (error.hasOwnProperty("message") ? error.message : "Unknown Error");
 
+      if (error.code === "EADDRNOTAVAIL") {
+        message = "Komanda Error: You have lost connection to the internet. Komanda will attempt to reconnect.";
+      }
+
       if (error.code === "ENOTFOUND") {
-        message = "Komanda Error: You are not connected to the internet.";
+        message = "Komanda Error: You are not connected to the internet. Komanda will attempt to reconnect.";
       }
 
       self.addMessage("Status", message, true);
@@ -291,21 +374,19 @@ define([
       $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").addClass("offline");
     });
 
-    self.socket.addListener("connection:reconnect", function(retry) {});
+    self.socket.addListener("connection:reconnect", function(retry) {
+      self.addMessage("Status", "Komanda Notice: Attempting To Reconnect. (" + self.retryCountCurrent + "/" + self.retryCount + ")" , true);
+    });
 
     self.socket.addListener("connection:disconnect", function(retry) {
-      clearInterval(self.reconnectCheck);
-      self.reconnectCheck = null;
-
+      self.attemptingReconnect = false;
       self.session.set("connectionOpen", false);
       $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").addClass("offline");
     });
 
     self.socket.addListener("connection:connect", function() {
       self.session.set("connectionOpen", true);
-      clearInterval(self.reconnectCheck);
-
-      self.reconnectCheck = setInterval(self.reconnectFunction, 2000);
+      self.bindReconnect();
       $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").removeClass("offline");
     });
 

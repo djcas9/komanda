@@ -47,6 +47,8 @@ define([
       var uuid = $(e.currentTarget).attr("data-uuid");
       var session = Komanda.sessions.get(uuid);
 
+      $("li.channel-item[data-server-id=\"" + uuid + "\"][data-name=\"Status\"]").click();
+
       var view = null;
       var region = null;
 
@@ -55,6 +57,7 @@ define([
       var box = Helpers.limp.box(EditServerView, {
         session: session,
         connected: connected,
+        inReconnect: Komanda.connections[uuid].inReconnect,
         name: session.get("server")
       }, {
         onOpen: function() {
@@ -79,7 +82,11 @@ define([
           html.on("click", "button.disconnect-session", function(e) {
             e.preventDefault();
 
-            Komanda.vent.trigger(uuid + ":disconnect");
+            Komanda.vent.trigger(uuid + ":disconnect", null, function(client) {
+              Komanda.connections[uuid].inReconnect = false;
+              clearInterval(client.reconnectCheck);
+              client.socket.emit('connection:abort', client.retryCount, client.retryCountCurrent);
+            });
 
             $(".channel[data-server-id=\"" + uuid + "\"] .messages").html();
             $("li.channel-item[data-server-id=\"" + uuid + "\"]").each(function() {
@@ -88,13 +95,11 @@ define([
             });
 
             $("li.channel-item[data-server-id=\"" + uuid + "\"][data-name=\"Status\"]").click();
-
             $.limpClose();
           });
 
           html.on("click", "button.connect-session", function(e) {
             e.preventDefault();
-
             view.editSession();
 
             if (Komanda.connections.hasOwnProperty(uuid)) {
@@ -104,6 +109,7 @@ define([
 
                 connect.client.socket.conn.requestedDisconnect = true;
                 connect.client.socket.conn.end();
+                connect.inReconnect = true;
 
                 connect.client.socket.connect(20, function() {
 
@@ -114,6 +120,7 @@ define([
                   Komanda.vent.trigger("connect", {
                     server: uuid
                   });
+
                 });
 
               } else {
@@ -126,6 +133,7 @@ define([
                 });
               }
 
+              $("li.channel-item[data-server-id=\"" + uuid + "\"][data-name=\"Status\"]").click();
               $.limpClose();
             }
           });

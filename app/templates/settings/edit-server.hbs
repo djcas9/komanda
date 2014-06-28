@@ -15,10 +15,16 @@
 
       <button class='button limp-action edit-session'>Save Changes</button>
 
+      {{#if inReconnect}}
+      <button class='button right warning disconnect-session'>Disconnect</button>
+      {{else}}
+
       {{#if connected}}
       <button class='button right warning disconnect-session'>Disconnect</button>
       {{else}}
       <button class='button right connect-session'>Connect</button>
+      {{/if}}
+
       {{/if}}
 
       <button class='button right warning destroy-session'>Delete Server</button>

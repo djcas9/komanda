@@ -8,6 +8,7 @@ define([
     this.session = session;
     this.options = options;
     this.hasClient = false;
+    this.inReconnect = false;
 
     this.client = new Client(session); 
   };
@@ -15,8 +16,9 @@ define([
   Connect.prototype.start = function(callback) {
     var self = this; 
 
-
     this.hasClient = true;
+    this.inReconnect = true;
+
     self.client.connect(function() {
       if (callback && typeof callback === "function") return callback(self.session.uuid);
     });
