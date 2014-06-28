@@ -602,6 +602,7 @@ define([
     // aliases
     Komanda.cmd("q", "query", 4);
     Komanda.cmd("pm", "query", 4);
+    Komanda.cmd("m", "msg", 4);
     Komanda.cmd("j", "join", 4);
     Komanda.cmd("m", "msg", 4);
 
