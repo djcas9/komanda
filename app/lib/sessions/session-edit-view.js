@@ -77,6 +77,9 @@ define([
         var remove = function() {
           var m = Komanda.sessions.get(uuid);
 
+          Komanda.connections[uuid].inReconnect = false;
+          clearInterval(Komanda.connections[uuid].client.reconnectCheck);
+
           var cv = Komanda.connections[uuid].client.channelsView;
           if (cv) cv.close();
 
