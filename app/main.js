@@ -22,6 +22,11 @@ requirejs(["config"], function(require) {
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
     SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, Command, ionSound) {
 
+      // We should use domains instead
+      window.process.on("uncaughtException", function(err) {
+        console.log("Caught exception: " + err);
+      });
+
       Komanda.helpers = Helpers;
 
       Komanda.settings = new Setting({

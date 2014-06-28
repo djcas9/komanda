@@ -7,20 +7,32 @@ define([
   var Helpers = {
     version: "1.0.0.beta",
 
-    scrollUpdate: function(channel, force) {
+    scrollUpdate: function(channel, force, delay) {
       var objDiv = channel.get(0);
 
       if (objDiv) {
         var value = (channel.scrollTop() + channel.innerHeight() > objDiv.scrollHeight - 100);
 
         if (value) {
-          if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+
+          if (objDiv) {
+            setTimeout(function() {
+              objDiv.scrollTop = objDiv.scrollHeight;
+            }, (delay || 100));
+          } 
+
         } else {
+
           if (force) {
-            if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+            if (objDiv) {
+              setTimeout(function() {
+                objDiv.scrollTop = objDiv.scrollHeight;
+              }, (delay || 100));
+            } 
           } else {
             // ...
           }
+
         }
       }
     },

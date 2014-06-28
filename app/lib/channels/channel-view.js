@@ -253,10 +253,12 @@ define([
     },
 
     zenmode: function(e) {
+      var self = this;
       e.preventDefault();
 
       if ($("body").hasClass("zenmode")) {
         $("body").removeClass("zenmode");
+        Komanda.helpers.scrollUpdate($(self.el).find(".messages"));
       } else {
         $("body").addClass("zenmode");
       }
