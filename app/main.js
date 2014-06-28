@@ -138,7 +138,7 @@ requirejs(["config"], function(require) {
             "glass:1.0",
             "water_droplet:0.5"
           ],
-          path: "app://host/sounds/" // This folder is made by grunt, you should add sound files inside /app/sounds
+          path: "app://host/sounds/"
         });
 
         Komanda.window.on("new-win-policy", function(frame, url, policy) {

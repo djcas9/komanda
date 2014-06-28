@@ -79,9 +79,6 @@ requirejs.config({
     },
     "bluebird": {
       "exports": "Promise"
-    },
-    "ion.sound": {
-      "deps": ["jquery"]
     }
   },
 

@@ -6,9 +6,9 @@
     "page-cache": false
   },
   "window": {
-    "toolbar": false,
-    "frame": false,
-    "show": false,
+    "toolbar": true,
+    "frame": true,
+    "show": true,
     "title": "Komanda",
     "icon": "app://../images/logo/komanda.png",
     "width": 1100,
