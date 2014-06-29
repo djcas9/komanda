@@ -271,7 +271,7 @@ define([
 
             if (!self.attemptingReconnect) {
               self.retryCountCurrent++;
-              self.socket.emit('connection:reconnect', self.retryCountCurrent);
+              self.socket.emit("connection:reconnect", self.retryCountCurrent);
 
               self.socket.connect(function() {
                 clearInterval(self.reconnectCheck);
@@ -281,12 +281,12 @@ define([
               });
 
               self.attemptingReconnect = true;
-            };
+            }
 
           } else {
             clearInterval(self.reconnectCheck);
             Komanda.connections[self.options.uuid].inReconnect = false;
-            self.socket.emit('connection:abort', self.retryCount, self.retryCountCurrent);
+            self.socket.emit("connection:abort", self.retryCount, self.retryCountCurrent);
           }
         }
 
@@ -301,7 +301,7 @@ define([
 
     if (self.reconnectCheck) {
       clearInterval(self.reconnectCheck);
-    };
+    }
 
     self.reconnectCheck = setInterval(self.reconnectFunction, 10000);
   };
@@ -313,7 +313,7 @@ define([
     self.binded = true;
 
     self.offlineCheckFunction = function() {
-      self.isConnected()
+      self.isConnected();
     };
 
     self.offlineCheck = setInterval(self.offlineCheckFunction, 4000);
