@@ -6,7 +6,7 @@ Komanda is a IRC client built with node-webkit, javascript, html and css for peo
 
 # Download (prebuilt binaries)
 
- * comming soon - you will have to build from source for now.
+ * [http://komanda.io](http://komanda.io)
 
 # The Plan (in progress)
 
