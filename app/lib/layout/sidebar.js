@@ -85,7 +85,7 @@ define([
             Komanda.vent.trigger(uuid + ":disconnect", null, function(client) {
               Komanda.connections[uuid].inReconnect = false;
               clearInterval(client.reconnectCheck);
-              client.socket.emit('connection:abort', client.retryCount, client.retryCountCurrent);
+              client.socket.emit("connection:abort", client.retryCount, client.retryCountCurrent);
             });
 
             $(".channel[data-server-id=\"" + uuid + "\"] .messages").html();
