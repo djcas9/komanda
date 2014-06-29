@@ -216,7 +216,8 @@ module.exports = function(grunt) {
         linux32: true,
         linux64: true,
         mac_icns: "app/styles/images/logo/komanda.icns",
-        credits: "credits.html"
+        credits: "credits.html",
+        download_url: 'http://komanda.io/nw/'
       },
       // src: ['./**/*'],
       src: [
@@ -265,7 +266,6 @@ module.exports = function(grunt) {
           stdin: false
         },
         command: "./build/cache/mac/0.9.2/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
-        // command: "./node-webkit-builds/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
       },
 
       linux64: {
