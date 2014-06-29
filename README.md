@@ -1,6 +1,6 @@
 <img height="150px" width="150px" src="https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/logo/komanda%20(PNG)/256x256.png">
 
-# Komanda
+# Komanda [http://komanda.io](http://komanda.io)
 
 Komanda is a IRC client built with node-webkit, javascript, html and css for people who write code. The project goal is to build the best client for developers that use IRC for their projects, follow others or getting help on a new language or framework.
 
