@@ -217,7 +217,7 @@ define([
         if (pluginSettings[i].stylesheet) {
           var stylesheetpath = path.join(pluginRoot, pluginSettings[i].location, pluginSettings[i].stylesheet);
           if (fs.existsSync(stylesheetpath)) {
-            pluginobj["stylesheetPath"] = stylesheetpath;
+            pluginobj.stylesheetPath = stylesheetpath;
           }
         }
 

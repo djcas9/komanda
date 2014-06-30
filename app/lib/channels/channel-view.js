@@ -105,9 +105,9 @@ define([
         // If this plugin has a stylesheet append it to the head now [overwriting any other stylesheet for this plugin].
         if (_.has(channelPlugin, "stylesheetPath")) {
           var pluginStyleId = channelPlugin.name + "-stylesheet";
-          var pluginStyleLink = $("<link id=\"" + pluginStyleId + "\" rel=\"stylesheet\" href=\"" + channelPlugin.stylesheetPath + "\">")
+          var pluginStyleLink = $("<link id=\"" + pluginStyleId + "\" rel=\"stylesheet\" href=\"" + channelPlugin.stylesheetPath + "\">");
           if ($("head #" + pluginStyleId).length > 0) {
-            $("head #" + pluginStyleId).remove()
+            $("head #" + pluginStyleId).remove();
           }
           $("head").append(pluginStyleLink);
         }
