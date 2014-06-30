@@ -57,35 +57,15 @@ define([
         server = item.parents(".session").attr("data-id");
       }
 
-      if (Komanda.store.hasOwnProperty(server)) {
-        if (Komanda.store.hasOwnProperty(channel)) {
-          Komanda.store[server][channel] = 0;
-
-          if (Komanda.store[server].hasOwnProperty("count")) {
-            Komanda.store[server].count[channel] = 0;
-          } else {
-            Komanda.store[server].count = {};
-            Komanda.store[server].count[channel] = 0;
-          }
-
-        } else {
-          Komanda.store[server][channel] = 0;
-
-          if (Komanda.store[server].hasOwnProperty("count")) {
-            Komanda.store[server].count[channel] = 0;
-          } else {
-            Komanda.store[server].count = {};
-            Komanda.store[server].count[channel] = 0;
-          }
-        }
-      } else {
-        Komanda.store[server] = {
-          count: {}
-        };
-        Komanda.store[server][channel] = 0;
-        Komanda.store[server].count[channel] = 0;
+      if (!Komanda.store.hasOwnProperty(server)) {
+        Komanda.store[server] = {};
+      }
+        
+      if (!Komanda.store[server].hasOwnProperty("count")) {
+        Komanda.store[server].count = {};
       }
 
+      Komanda.store[server][channel] = 0;
       Komanda.store[server].count[channel] = 0;
       Komanda.vent.trigger("komanda:update:badge");
 

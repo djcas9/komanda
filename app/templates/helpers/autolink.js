@@ -5,18 +5,14 @@ define("templates/helpers/autolink", [
   "jquery",
   "gistembed",
   "hbs!templates/partials/show-more",
-  "autolink",
+  "autolink"
 ], function(Komanda, Handlebars, _, $, GIST, ShowMore) {
 
   Handlebars.registerHelper("autolink", function(text, server, uuid) {
-    var images = [];
-    var code = [];
-    var jsfiddle = [];
 
     var message = Handlebars.Utils.escapeExpression(text).autoLink({
       target: "_blank", rel: "nofollow",
       callback: function (url) {
-        //console.log("handle", url);
         if (Komanda.Embed) Komanda.Embed.handle({ url: url, selector: "#" + server + "-" + uuid });
 
         return "<a href=\"" + url + "\" rel=\"nofollow\" target=\"_BLANK\">" + url + "</a>";
@@ -25,6 +21,4 @@ define("templates/helpers/autolink", [
     
     return new Handlebars.SafeString(message);
   });
-
 });
-
