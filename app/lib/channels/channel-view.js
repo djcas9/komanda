@@ -41,6 +41,9 @@ define([
       });
     },
 
+    /*
+    **  Returns a new instance of the komanda channel API.
+    */
     getChannelAPI: function() {
       var self = this;
 
@@ -85,6 +88,11 @@ define([
       return _.extend({}, channelAPI); // return a new instance every time
     },
 
+    /*
+    **  Instantiates new instances of each loaded channel plugin and adds it to self.plugs.
+    **  If the plugin has a stylesheet specified it gets loaded and added to the page.
+    **  A new instance of the komanda channel API is passed to the plugin's initialize method.
+    */
     loadPlugins: function() {
       // Needs to be called after the view has been rendered [onRender()] to ensure that the attach points have been inserted
       // in the DOM and can be passed safely to the plugins.

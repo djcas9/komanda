@@ -1,5 +1,6 @@
 module.exports = function() {
 
+  // Require all the node packages we depend on.
   var Promise = require("bluebird");
   var hbs = require("hbs");
   var marked = require("marked");
@@ -7,11 +8,13 @@ module.exports = function() {
   var $ = require("jquery");
   var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+  // These settings are required to activate jquery's CORS compatibility for cross-site AJAX requests.
   $.support.cors = true;
   $.ajaxSettings.xhr = function() {
     return new XMLHttpRequest();
   }
 
+  // A template helper to compare github action types.
   function ifGithubType(type, options) {
     if (this.type === type) {
       return options.fn(this); 
@@ -20,6 +23,7 @@ module.exports = function() {
     }
   };
 
+  // Options for the marked plugin.
   marked.setOptions({
     gfm: true,
     tables: true,
@@ -34,10 +38,12 @@ module.exports = function() {
     }
   });
 
+  // A template helper function to format markdown text.
   function markdown(text) {
     return marked(text);
   };
 
+  // Load and compile the plugin's hbs template.
   var feedItemTemplate = require("./templates/feed-item.hbs");
   var GithubFeedItem = hbs.compile(feedItemTemplate);
   
@@ -83,6 +89,8 @@ module.exports = function() {
                   "markdown": markdown
                 }
               });
+
+              // Add the GithubFeedItem html as a channel message.
               self.channelAPI.addChannelMessage(html);
             }
           }
@@ -150,7 +158,6 @@ module.exports = function() {
       if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
     },
 
-    // private - as long as we let plugins control their own refresh rates etc
     pluginReDraw: function(callback) {
       var self = this;
 
@@ -163,7 +170,6 @@ module.exports = function() {
 
     },
 
-    // private
     updateAndRender: function(callback, errorback) {
      var self = this;
 
