@@ -1,0 +1,201 @@
+{{#items}}
+
+<div class="message github-message {{#if highlight}}highlight{{/if}}">
+
+  <div class="body">
+
+    <div class="timestamp">
+      {{../timestamp}}
+    </div>
+
+    <div class="github-wrapper">
+
+      {{#if-github-type "IssuesEvent"}}
+
+      <div class="github-title">
+        <span class="octicon octicon-comment"></span>
+        <a href="https://github.com/{{actor.login}}">
+          <strong>{{actor.login}}</strong> 
+        </a>
+        {{payload.action}}
+        issue
+        <a href="{{payload.issue.html_url}}">{{repo.name}}#{{payload.issue.number}}</a>
+      </div>
+
+      <div class="github-body">
+        {{payload.issue.title}}
+      </div>
+
+      <div class="github-actor-image">
+        <img src="{{actor.avatar_url}}" alt="" width="30px" height="30px">
+      </div>
+
+
+      {{/if-github-type}}
+
+
+
+
+
+
+      {{#if-github-type "IssueCommentEvent"}}
+
+      <div class="github-title">
+        <span class="octicon octicon-comment"></span>
+        <a href="https://github.com/{{actor.login}}">
+          <strong>{{actor.login}}</strong> 
+        </a>
+        commented on on issue
+        <a href="{{payload.comment.html_url}}">{{repo.name}}#{{payload.issue.number}}</a>
+      </div>
+
+      <div class="github-body">
+        {{{markdown payload.comment.body}}}
+      </div>
+
+      <div class="github-actor-image">
+        <img src="{{actor.avatar_url}}" alt="" width="30px" height="30px">
+      </div>
+
+      {{/if-github-type}}
+
+
+
+
+
+
+
+
+      {{#if-github-type "WatchEvent"}}
+
+      <div class="github-title">
+        <span class="octicon octicon-eye"></span>
+
+        <a href="https://github.com/{{actor.login}}">
+          <strong>{{actor.login}}</strong> 
+        </a>
+        starred
+        <a href="https://github.com/{{repo.name}}">{{repo.name}}</a>
+      </div>
+
+      {{/if-github-type}}
+
+
+
+
+
+
+
+      {{#if-github-type "ForkEvent"}}
+
+      <div class="github-title">
+        <span class="octicon octicon-repo-forked"></span>
+        <a href="https://github.com/{{actor.login}}">
+          <strong>{{actor.login}}</strong> 
+        </a>
+        forked
+        <a href="https://github.com/{{repo.name}}">{{repo.name}}</a>
+        to
+        <a href="https://github.com/{{payload.forkee.full_name}}">{{payload.forkee.full_name}}</a>
+      </div>
+
+      {{/if-github-type}}
+
+
+
+
+
+
+      {{#if-github-type "PushEvent"}}
+
+      <div class="github-title">
+        <span class="octicon octicon-repo-push"></span>
+        <a href="https://github.com/{{actor.login}}">
+          <strong>{{actor.login}}</strong> 
+        </a>
+        pushed to 
+        <a href="https://github.com/{{repo.name}}">{{payload.ref}}</a>
+        at
+        <a href="https://github.com/{{repo.name}}">{{repo.name}}</a>
+      </div>
+
+      <div class="github-body">
+        <ul class="commits">
+          {{#payload.commits}}
+          <li>
+            <code style="margin-bottom:5px;"><a href="https://github.com/{{../repo.name}}/commit/{{sha}}">{{sha}}</a></code> {{message}}<br />
+          </li>
+          {{/payload.commits}}
+        </ul>
+      </div>
+
+      <div class="github-actor-image">
+        <img src="{{actor.avatar_url}}" alt="" width="30px" height="30px">
+      </div>
+
+      {{/if-github-type}}
+      
+
+
+      {{#if-github-type "GollumEvent"}}
+
+      <div class="github-title">
+        <span class="octicon octicon-repo-forked"></span>
+
+        <a href="https://github.com/{{actor.login}}">
+          <strong>{{actor.login}}</strong> 
+        </a>
+        edited the
+        <a href="https://github.com/{{repo.name}}">{{repo.name}}</a>
+        wiki
+      </div>
+
+      <div class="github-body">
+        {{#payload.pages}}
+        {{action}} 
+        <a href="{{html_url}}">
+          {{page_name}}
+        </a>
+        {{/payload.pages}}
+      </div>
+
+      <div class="github-actor-image">
+        <img src="{{actor.avatar_url}}" alt="" width="30px" height="30px">
+      </div>
+
+      {{/if-github-type}}
+      
+
+      {{#if-github-type "PullRequestEvent"}}
+
+      <div class="github-title">
+        <span class="octicon octicon-repo-forked"></span>
+
+        <a href="https://github.com/{{actor.login}}">
+          <strong>{{actor.login}}</strong> 
+        </a>
+        {{payload.action}} pull request
+        <a href="https://github.com/{{repo.name}}/pull/{{payload.number}}">{{repo.name}}#{{payload.number}}</a>
+      </div>
+
+      <div class="github-body">
+        Commits: {{payload.pull_request.commits}}
+        Additions: {{payload.pull_request.additions}}
+        Deletions: {{payload.pull_request.deletions}}
+      </div>
+
+      <div class="github-actor-image">
+        <img src="{{actor.avatar_url}}" alt="" width="30px" height="30px">
+      </div>
+
+      {{/if-github-type}}
+    
+    </div>
+
+
+</div>
+
+</div>
+
+{{/items}}
+
