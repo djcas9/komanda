@@ -200,7 +200,6 @@ define([
         var pluginobj = {
           "name": pluginSettings[i].name,
           "channel": pluginSettings[i].channel || false,
-          "topic": pluginSettings[i].topic || false,
           "plugin": plug
         };
 
