@@ -312,6 +312,17 @@ define([
     if (self.binded) return;
     self.binded = true;
 
+    self.sendPingPong = setInterval(function() {
+      if (self.isConnected()) {
+        if (self.socket) {
+          self.socket.send("PING");
+        }
+      } 
+    }, 10000);
+
+    self.socket.addListener("ping", function() {});
+    self.socket.addListener("pong", function() {});
+
     self.offlineCheckFunction = function() {
       self.isConnected();
     };
@@ -347,6 +358,7 @@ define([
     });
 
     self.socket.addListener("connection:end", function() {});
+
 
     self.socket.addListener("connection:abort", function(max, count) {
       self.addMessage("Status", "Komanda Notice: Reconnect has been aborted", true);
