@@ -1226,29 +1226,19 @@ define([
       if (Komanda.current.channel !== (flip ? nick : to)) {
         var server = self.options.uuid;
 
-        if (Komanda.store.hasOwnProperty(server)) {
-
-          if (data.highlight) {
-            Komanda.store[server][(flip ? nick : to)] = 2;
-          } else {
-            if (Komanda.store[server][(flip ? nick : to)] != 2)
-              Komanda.store[server][(flip ? nick : to)] = 1;
-          }
-
-        } else {
+        if (!Komanda.store.hasOwnProperty(server)) {
           Komanda.store[server] = {
             count: {}
           };
-
-          if (data.highlight) {
-            Komanda.store[server][(flip ? nick : to)] = 2;
-          } else {
-            if (Komanda.store[server][(flip ? nick : to)] != 2)
-              Komanda.store[server][(flip ? nick : to)] = 1;
-          }
         }
 
-        if (Komanda.store[server][(flip ? nick : to)] == 1) {
+        if (data.highlight) {
+          Komanda.store[server][(flip ? nick : to)] = 2;
+        } else if (Komanda.store[server][(flip ? nick : to)] !== 2) {
+          Komanda.store[server][(flip ? nick : to)] = 1;
+        }
+
+        if (Komanda.store[server][(flip ? nick : to)] === 1) {
           $("li.channel-item[data-server-id=\"" + server + "\"][data-name=\"" + (flip ? nick : to) + "\"] div.status").addClass("new-messages");
         } else {
           $("li.channel-item[data-server-id=\"" + server + "\"][data-name=\"" + (flip ? nick : to) + "\"] div.status").addClass("highlight");
