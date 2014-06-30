@@ -1,14 +1,18 @@
 module.exports = function() {
 
+  // Require all the node packages we depend on.
+  var Promise = require("bluebird");
   var hbs = require("hbs");
   var $ = require("jquery");
   var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+  // These settings are required to activate jquery's CORS compatibility for cross-site AJAX requests.
   $.support.cors = true;
   $.ajaxSettings.xhr = function() {
     return new XMLHttpRequest();
   }
 
+  // Load and compile the plugin's hbs template.
   var toolbarTemplate = require("./templates/toolbar.hbs");
   var GithubToolbar = hbs.compile(toolbarTemplate);
 
@@ -26,6 +30,7 @@ module.exports = function() {
         metadata: {}
       };
 
+      // hook into the channel's topic change event
       self.channelAPI.onChannelTopicChange(function (topic) {
         self.consumeTopic(topic);
       });
@@ -38,40 +43,32 @@ module.exports = function() {
       if (topic) {
         var match = topic.match(/http(s)?:\/\/.*\.?github.com\/(.[\w|\-|\/]+)/);
 
-        if (match) {
+        if (match && match[2]) {
           var key = match[2];
 
-          if (key) {
-            var newMetadataURL = "";
+          var newMetadataURL = "";
 
-            if (/\/$/.test(key)) {
-              key = key.replace(/\/$/, "");
-            }
+          if (/\/$/.test(key)) {
+            key = key.replace(/\/$/, "");
+          }
 
-            if (/\//.test(key)) {
-              newMetadataURL = "https://api.github.com/repos/" + key;
-            } else {
-              newMetadataURL = "https://api.github.com/orgs/" + key;
-            }
-
-            // if the metadata url has changed, do an ajax call to retrieve new metadata
-            if (self.metadataURL !== newMetadataURL) {
-              self.metadataURL = newMetadataURL;
-              self.updateAndRender();
-            }
-
+          if (/\//.test(key)) {
+            newMetadataURL = "https://api.github.com/repos/" + key;
           } else {
-            // if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
-            self.channelAPI.removeToolbar();
-          } // has match index 3
-        } else {
-          // if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
-          self.channelAPI.removeToolbar();
-        } // has match
-      } else {
-        // if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
+            newMetadataURL = "https://api.github.com/orgs/" + key;
+          }
+
+          // if the metadata url has changed, do an ajax call to retrieve new metadata
+          if (self.metadataURL !== newMetadataURL) {
+            self.metadataURL = newMetadataURL;
+            self.updateAndRender();
+          }
+
+          return;
+          }
+        }
+
         self.channelAPI.removeToolbar();
-      } // has topic
     },
 
     pluginToolbar: function(repo) {
@@ -96,28 +93,25 @@ module.exports = function() {
     updateAndRender: function(callback, errorback) {
       var self = this;
 
-      $.ajax({
+      if (!_.isFunction(callback)) callback = _.noop;
+      if (!_.isFunction(errorback)) errorback = _.noop;
+
+      Promise.resolve($.ajax({
         url: self.metadataURL,
         dataType: "json",
         type: "get",
-        ifModified: true,
-        success: function(metadata) {
-          if (metadata && !_.isEmpty(metadata)) {
-            self.repo.metadata = metadata;
-            self.pluginToolbar(self.repo);
-          }
-
-          if (callback && typeof callback === "function") {
-            return callback(self.repo);
-          }
-        },
-        error: function(a,b,c) {
-          console.log("ERROR:::", a,b,c);
-          if (errorback && typeof errorback === "function") {
-            errorback(a,b,c);
-          }
+        ifModified: true
+      }))
+      .then(function(metadata) {
+        if (metadata && !_.isEmpty(metadata)) {
+          self.repo.metadata = metadata;
+          self.pluginToolbar(self.repo);
         }
-      });
+
+        return self.repo;
+      })
+      .catch(errorback)
+      .then(callback);
     },
 
     close: function() {
