@@ -6,9 +6,10 @@ define([
   "uuid",
   "moment",
   "highlight",
+  "bluebird",
   "hbs!templates/plugins/github/index",
   "hbs!templates/plugins/github/feed-item"
-], function(Marionette, template, _, tab, uuid, moment, hljs, GithubView, GithubFeedItem) {
+], function(Marionette, template, _, tab, uuid, moment, hljs, Promise, GithubView, GithubFeedItem) {
 
   return Marionette.ItemView.extend({
     tagName: "div",
@@ -111,46 +112,36 @@ define([
         if (topic) {
           var match = topic.match(/http(s)?:\/\/.*\.?github.com\/(.[\w|\-|\/]+)/);
 
-          if (match) {
+          if (match && match[2]) {
             var key = match[2];
 
-            if (key) {
-              self.metadataURL = "";
-              self.feedURL = "";
+            self.metadataURL = "";
+            self.feedURL = "";
 
-              if (/\/$/.test(key)) {
-                key = key.replace(/\/$/, "");
-              }
+            if (/\/$/.test(key)) {
+              key = key.replace(/\/$/, "");
+            }
 
-              if (/\//.test(key)) {
-                self.metadataURL = "https://api.github.com/repos/" + key;
-                self.feedURL = "https://api.github.com/repos/" + key + "/events";
-              } else {
-                self.metadataURL = "https://api.github.com/orgs/" + key;
-                self.feedURL = "https://api.github.com/orgs/" + key + "/events";
-              }
-
-              self.pluginReDraw(function() {
-                // set the first feed cache id
-                if (self.repo.feed[0]) self.last_feed_id = self.repo.feed[0].id;
-              });
-
+            if (/\//.test(key)) {
+              self.metadataURL = "https://api.github.com/repos/" + key;
+              self.feedURL = "https://api.github.com/repos/" + key + "/events";
             } else {
-              if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
-              if (self.githubBar) self.githubBar.remove();
-              $(self.el).removeClass("github-plugin");
-            } // has match index 3
-          } else {
-            if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
-            if (self.githubBar) self.githubBar.remove();
-            $(self.el).removeClass("github-plugin");
-          } // has match
-        } else {
-          if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
-          if (self.githubBar) self.githubBar.remove();
-          $(self.el).removeClass("github-plugin");
-        } // has topic
+              self.metadataURL = "https://api.github.com/orgs/" + key;
+              self.feedURL = "https://api.github.com/orgs/" + key + "/events";
+            }
 
+            self.pluginReDraw(function() {
+              // set the first feed cache id
+              if (self.repo.feed[0]) self.last_feed_id = self.repo.feed[0].id;
+            });
+
+            return;
+          }
+        }
+
+        if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
+        if (self.githubBar) self.githubBar.remove();
+        $(self.el).removeClass("github-plugin");
       });
     },
 
@@ -193,7 +184,7 @@ define([
 
         self.githubUpdateCheck = setInterval(self.githubUpdateFunction, 20000);
 
-        if (callback && typeof callback === "function") callback(repo);
+        if (_.isFunction(callback)) callback(repo);
       });
 
     },
@@ -201,48 +192,37 @@ define([
     updateAndRender: function(callback, errorback) {
       var self = this;
 
-      $.ajax({
+      if (!_.isFunction(callback)) callback = _.noop;
+      if (!_.isFunction(errorback)) errorback = _.noop;
+
+      Promise.resolve($.ajax({
         url: self.metadataURL,
         dataType: "json",
         type: "get",
-        ifModified: true,
-        success: function(metadata) {
-
-          $.ajax({
-            url: self.feedURL,
-            dataType: "json",
-            type: "get",
-            ifModified: true,
-            success: function(feed) {
-              if (metadata && !_.isEmpty(metadata)) {
-                self.repo.metadata = metadata;
-                self.pluginToolbar(self.repo);
-              }
-
-              if (feed && feed.length > 0) {
-                self.repo.feed = feed;
-              }
-
-              if (callback && typeof callback === "function") {
-                return callback(self.repo);
-              }
-            },
-            error: function(a,b,c) {
-              console.log("ERROR:::", a,b,c);
-              if (errorback && typeof errorback === "function") {
-                errorback(a,b,c);
-              }
-            }
-          });
-        },
-        error: function(a,b,c) {
-          console.log("ERROR:::", a,b,c);
-          if (errorback && typeof errorback === "function") {
-            errorback(a,b,c);
+        ifModified: true
+      }))
+      .then(function(metadata) {
+        return Promise.resolve($.ajax({
+          url: self.feedURL,
+          dataType: "json",
+          type: "get",
+          ifModified: true
+        }))
+        .then(function(feed) {
+          if (metadata && !_.isEmpty(metadata)) {
+            self.repo.metadata = metadata;
+            self.pluginToolbar(self.repo);
           }
-        }
-      });
 
+          if (feed && feed.length > 0) {
+            self.repo.feed = feed;
+          }
+
+          return self.repo;
+        });
+      })
+      .catch(errorback)
+      .then(callback);
     },
 
     onClose: function() {
@@ -373,11 +353,6 @@ define([
         Komanda.history.add(message);
         Komanda.historyIndex = 0;
 
-        if(message.split(" ")[0] === "/devtools") {
-          Komanda.vent.trigger("komanda:debug");
-          return;
-        }
-
         Komanda.vent.trigger(server + ":send", {
           target: this.model.get("channel"),
           message: message
@@ -385,5 +360,4 @@ define([
       }
     }
   });
-
 });

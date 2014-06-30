@@ -83,37 +83,26 @@ define([
   Client.prototype.isConnected = function() {
     var self = this;
 
-    if (self.socket && self.socket.conn && window.navigator.onLine) {
-      if (self.socket.conn.readable && self.socket.conn.writable) {
-        self.session.set("connectionOpen", true);
-        return true;
-      } else {
-        self.clearViews();
-        Komanda.vent.trigger(self.options.uuid + ":disconnect");
-        self.socket.conn.end();
-        self.session.set("connectionOpen", false);
-
-        if (Komanda.current.channel !== "Status") {
-          $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").click();
-        }
-
-        return false;
-      }
-    } else {
-      self.clearViews();
-      Komanda.vent.trigger(self.options.uuid + ":disconnect");
-
-      if (self.socket && self.socket.conn) {
-        self.socket.conn.end();
-      }
-
-      self.session.set("connectionOpen", false);
-
-      if (Komanda.current.channel !== "Status") {
-        $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").click();
-      }
-      return false;
+    if (self.socket && self.socket.conn && window.navigator.onLine &&
+        self.socket.conn.readable && self.socket.conn.writable) {
+      self.session.set("connectionOpen", true);
+      return true;
     }
+
+    self.clearViews();
+    Komanda.vent.trigger(self.options.uuid + ":disconnect");
+
+    if (self.socket && self.socket.conn) {
+      self.socket.conn.end();
+    }
+
+    self.session.set("connectionOpen", false);
+
+    if (Komanda.current.channel !== "Status") {
+      $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").click();
+    }
+
+    return false;
   };
 
   Client.prototype.connect = function(callback) {
@@ -126,7 +115,7 @@ define([
     self.bind();
 
     self.socket.connect(options.retryCount || 50, function() {
-      if (callback && typeof callback === "function") callback(self);
+      if (_.isFunction(callback)) callback(self);
 
       self.session.set("connectionOpen", true);
 
@@ -163,7 +152,7 @@ define([
       self.clearViews();
       self.socket.conn.end();
 
-      if (callback && typeof callback === "function") callback(self);
+      if (_.isFunction(callback)) callback(self);
 
       Komanda.vent.trigger("disconnect", {
         server: self.options.uuid,
@@ -682,6 +671,10 @@ define([
     Komanda.cmd("quit", function(client, data, args) {
       client.socket.disconnect(args.join(" "));
     });
+
+    Komanda.cmd("devtools", function(client, data, args) {
+      Komanda.vent.trigger("komanda:debug");
+    }, 4);
 
     // aliases
     Komanda.cmd("q", "query", 4);
@@ -1316,7 +1309,7 @@ define([
       $(".channel-holder").append(view.render().el);
     }
 
-    if (callback && typeof callback === "function") {
+    if (_.isFunction(callback)) {
       if (nick === "Status") return callback(true);
       return callback(false);
     }
@@ -1326,31 +1319,22 @@ define([
     var self = this;
     var server = self.options.uuid;
 
-    if (Komanda.store.hasOwnProperty(server)) {
-
-      if (Komanda.store[server].hasOwnProperty("count")) {
-        if (Komanda.store[server].count.hasOwnProperty(key)) {
-          Komanda.store[server].count[key]++;
-        } else {
-          Komanda.store[server].count[key] = 1;
-        }
-      } else {
-        Komanda.store[server].count = {};
-        Komanda.store[server].count[key] = 1;
-      }
-
-    } else {
-      Komanda.store[server] = {
-        count: {}
-      };
-
-      Komanda.store[server].count[key] = 1;
+    if (!Komanda.store.hasOwnProperty(server)) {
+      Komanda.store[server] = {};
     }
 
+    if (!Komanda.store[server].hasOwnProperty("count")) {
+      Komanda.store[server].count = {};
+    }
+
+    if (!Komanda.store[server].count.hasOwnProperty(key)) {
+      Komanda.store[server].count[key] = 0;
+    }
+    
+    Komanda.store[server].count[key]++;
+
     // $("li.channel-item[data-server-id=\"" + server + "\"][data-name=""+key+""] span.notification-count").html(Komanda.store[server].count[key]);
-    return;
   };
 
   return Client;
 });
-

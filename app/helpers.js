@@ -1,6 +1,6 @@
 define([
   "jquery",
-  "limp",
+  "underscore",
   "highlight"
 ], function($, _, hljs) {
   
@@ -11,26 +11,10 @@ define([
       if (objDiv) {
         var value = (channel.scrollTop() + channel.innerHeight() > objDiv.scrollHeight - 100);
 
-        if (value) {
-
-          if (objDiv) {
-            setTimeout(function() {
-              objDiv.scrollTop = objDiv.scrollHeight;
-            }, (delay || 100));
-          } 
-
-        } else {
-
-          if (force) {
-            if (objDiv) {
-              setTimeout(function() {
-                objDiv.scrollTop = objDiv.scrollHeight;
-              }, (delay || 100));
-            } 
-          } else {
-            // ...
-          }
-
+        if (value || force) {
+          setTimeout(function() {
+            objDiv.scrollTop = objDiv.scrollHeight;
+          }, _.isNumber(delay) ? delay : 100);
         }
       }
     },
@@ -80,10 +64,8 @@ define([
         var css = "<link id=\"theme\" rel=\"stylesheet\" href=\"" + path + "\">";
         $("head").append(css);
 
-        if (callback && typeof callback === "function") {
-          setTimeout(function() {
-            callback();
-          }, 300);
+        if (_.isFunction(callback)) {
+          setTimeout(callback, 300);
         }
       }
     },
@@ -91,10 +73,8 @@ define([
       box: function(template, data, args) {
         var self = this;
 
-        if (args && args.hasOwnProperty("width")) {
-          if (args.width) {
-            Helpers.limp.options.style.width = args.width;
-          }
+        if (args && args.width) {
+          Helpers.limp.options.style.width = args.width;
         }
 
         Helpers.limp.options.afterDestory = args.afterDestory;
