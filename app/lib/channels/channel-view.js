@@ -41,6 +41,50 @@ define([
       });
     },
 
+    getChannelAPI: function() {
+      var self = this;
+
+      var channelAPI = {
+        getTimestamp: function(timeToStamp) {
+          return timestamp(timeToStamp);
+        },
+
+        addChannelMessage: function(html) {
+          if (html) {
+            self.messageAttachPoint.append(html);
+
+            // Not sure why this wont scroll the window down
+            setTimeout(function() {
+              Komanda.helpers.scrollUpdate(self.messageAttachPoint);
+            }, 100);
+          }
+        },
+
+        setToolbar: function(html) {
+          if (html) {
+            // if we already have an attached toolbar clear it before adding the new one.
+            this.removeToolbar();
+            self.toolbarElement = $(html).prependTo(self.toolbarAttachPoint);
+            self.toolbarAttachPoint.addClass("toolbar-attached");
+          }
+        },
+
+        removeToolbar: function() {
+          if (self.toolbarElement) {
+            self.toolbarAttachPoint.removeClass("toolbar-attached");
+            self.toolbarElement.remove();
+            self.toolbarElement = null;
+          }
+        },
+
+        onChannelTopicChange: function(topicChangeCallback) {
+          self.topicChangeCallbacks.push(topicChangeCallback);
+        }
+      };
+
+      return _.extend({}, channelAPI); // return a new instance every time
+    },
+
     loadPlugins: function() {
       // Needs to be called after the view has been rendered [onRender()] to ensure that the attach points have been inserted
       // in the DOM and can be passed safely to the plugins.
@@ -68,8 +112,29 @@ define([
           $("head").append(pluginStyleLink);
         }
 
+        // Get a new instance of the channel API for this plugin.
+        var pluginChannelAPI = self.getChannelAPI();
         // Initialize the plugin.
-        thePlugin.initialize();
+        thePlugin.initialize({ channelAPI: pluginChannelAPI });
+      });
+
+      // Now that all the plugins are loaded, hook in to topic changes.
+      self.addTopicHooks();
+    },
+
+    addTopicHooks: function() {
+      var self = this;
+
+      // Listen for topic changes.
+      Komanda.vent.on(self.model.get("server") + ":" + self.model.get("channel") + ":topic", function(topic) {
+          // Call all registered topic change callbacks.
+          if (!_.isEmpty(self.topicChangeCallbacks)) {
+            _.each(self.topicChangeCallbacks, function(topicChangeCallback) {
+              if (_.isFunction(topicChangeCallback)) {
+                topicChangeCallback(topic);
+              }
+            });
+          }
       });
     },
 
