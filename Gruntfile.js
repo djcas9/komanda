@@ -1,6 +1,6 @@
-var rimraf = require('rimraf');
-var fs = require('fs-extra');
-var util = require('util')
+var rimraf = require("rimraf");
+var fs = require("fs-extra");
+var util = require("util");
 
 util._extend({
   encoding: "utf8",
@@ -35,27 +35,27 @@ var parseBuildPlatforms = function(argumentPlatform) {
 module.exports = function(grunt) {
   "use strict";
 
-  var buildPlatforms = parseBuildPlatforms(grunt.option('platforms'));
-  var currentVersion = grunt.file.readJSON('package.json').version;
+  var buildPlatforms = parseBuildPlatforms(grunt.option("platforms"));
+  var currentVersion = grunt.file.readJSON("package.json").version;
 
-  // buildPlatforms = parseBuildPlatforms(grunt.option('platforms'))
-  var packageJson = grunt.file.readJSON('package.json');
+  // buildPlatforms = parseBuildPlatforms(grunt.option("platforms"))
+  var packageJson = grunt.file.readJSON("package.json");
   var _VERSION = packageJson.version;
 
-  grunt.log.writeln('Building ' + packageJson.version);
+  grunt.log.writeln("Building " + packageJson.version);
 
   grunt.initConfig({
     // Wipe out previous builds and test reporting.
     clean: {
       all: [
         "build/komanda-source",
-        'build/releases/**',
-        'node_modules',
-        'vendor'
+        "build/releases/**",
+        "node_modules",
+        "vendor"
       ],
       some: [
         "build/komanda-source",
-        'build/releases/**'
+        "build/releases/**"
       ]
     },
 
@@ -63,21 +63,22 @@ module.exports = function(grunt) {
       compile: {
         options: {
           amd: true,
-          namespace: 'Templates',
+          namespace: "Templates",
           partialsUseNamespace: true,
           processName: function(filePath) {
-            var file = filePath.replace(/.*\/(\w+)\.hbs/, '$1');
+            var file = filePath.replace(/.*\/(\w+)\.hbs/, "$1");
             return file;
           }
         },
         files:{
-          'app/templates.js': ['app/templates/*.hbs']
+          "app/templates.js": ["app/templates/*.hbs"]
         }
       }
     },
 
-    // Run your source code through JSHint's defaults.
+    // Run your source code through JSHint"s defaults.
     jshint: {
+      jshintrc: ".jshint",
       options: {
         smarttabs: true,
         proto: true,
@@ -91,7 +92,7 @@ module.exports = function(grunt) {
       ]
     },
 
-    // This task uses James Burke's excellent r.js AMD builder to take all
+    // This task uses James Burke"s excellent r.js AMD builder to take all
     // modules and concatenate them into a single file.
     requirejs: {
       release: {
@@ -207,46 +208,46 @@ module.exports = function(grunt) {
 
     nodewebkit: {
       options: {
-        version: '0.9.2',
+        version: "0.9.2",
         app_name: "Komanda",
-        app_version: '1.0.0.beta',
-        build_dir: './build',
+        app_version: "1.0.0.beta",
+        build_dir: "./build",
         mac: true,
         win: true,
         linux32: true,
         linux64: true,
         mac_icns: "app/styles/images/logo/komanda.icns",
         credits: "credits.html",
-        download_url: 'http://komanda.io/nw/'
+        download_url: "http://komanda.io/nw/"
       },
-      // src: ['./**/*'],
+      // src: ["./**/*"],
       src: [
-        './build/komanda-source/**/*',
-        // './node_modules/irc/**/*',
+        "./build/komanda-source/**/*",
+        // "./node_modules/irc/**/*",
       ]
     },
 
     exec: {
       win: {
-        cmd: '"build/cache/win/<%= nodewebkit.options.version %>/nw.exe" .'
+        cmd: "build/cache/win/<%= nodewebkit.options.version %>/nw.exed ."
       },
       mac: {
-        cmd: 'build/cache/mac/<%= nodewebkit.options.version %>/node-webkit.app/Contents/MacOS/node-webkit .'
+        cmd: "build/cache/mac/<%= nodewebkit.options.version %>/node-webkit.app/Contents/MacOS/node-webkit ."
       },
       linux32: {
-        cmd: '"build/cache/linux32/<%= nodewebkit.options.version %>/nw" .'
+        cmd: "build/cache/linux32/<%= nodewebkit.options.version %>/nw ."
       },
       linux64: {
-        cmd: '"build/cache/linux64/<%= nodewebkit.options.version %>/nw" .'
+        cmd: "build/cache/linux64/<%= nodewebkit.options.version %>/nw ."
       },
       createDmg: {
-        cmd: 'dist/mac/yoursway-create-dmg/create-dmg --volname "Komanda ' + currentVersion + '" --background ./dist/mac/background.png --window-size 480 540 --icon-size 128 --app-drop-link 240 370 --icon "Komanda" 240 110 ./build/releases/Komanda/mac/Komanda-' + currentVersion + '-Mac.dmg ./build/releases/Komanda/mac/'
+        cmd: "dist/mac/yoursway-create-dmg/create-dmg --volname \"Komanda " + currentVersion + "\" --background ./dist/mac/background.png --window-size 480 540 --icon-size 128 --app-drop-link 240 370 --icon \"Komanda\" 240 110 ./build/releases/Komanda/mac/Komanda-" + currentVersion + "-Mac.dmg ./build/releases/Komanda/mac/"
       },
       createWinInstall: {
-        cmd: 'makensis dist/windows/installer.nsi'
+        cmd: "makensis dist/windows/installer.nsi"
       },
       createWinUpdate: {
-        cmd: 'makensis dist/windows/updater.nsi'
+        cmd: "makensis dist/windows/updater.nsi"
       }
     },
 
@@ -290,18 +291,18 @@ module.exports = function(grunt) {
         options: {
           stdout: true
         },
-        command: './dist/mac/yoursway-create-dmg/create-dmg --volname "Komanda ' + _VERSION + '" --background ./dist/mac/background.png --window-size 480 540 --icon-size 128 --app-drop-link 240 370 --icon "Komanda" 240 110 ./build/releases/Komanda/mac/Komanda-' + _VERSION + '.dmg ./build/releases/Komanda/mac/'
+        command: "./dist/mac/yoursway-create-dmg/create-dmg --volname \"Komanda " + _VERSION + "\" --background ./dist/mac/background.png --window-size 480 540 --icon-size 128 --app-drop-link 240 370 --icon \"Komanda\" 240 110 ./build/releases/Komanda/mac/Komanda-" + _VERSION + ".dmg ./build/releases/Komanda/mac/"
       }
 
     }
 
   });
 
-  grunt.registerTask('cleanBuildDir', 'remove unneeded files from the build dir.', function() {
-    fs.mkdirSync('build/komanda-source/images');
-    fs.mkdirSync('build/komanda-source/fonts');
+  grunt.registerTask("cleanBuildDir", "remove unneeded files from the build dir.", function() {
+    fs.mkdirSync("build/komanda-source/images");
+    fs.mkdirSync("build/komanda-source/fonts");
 
-    fs.copySync("build/komanda-source/app/styles/images", "build/komanda-source/images")
+    fs.copySync("build/komanda-source/app/styles/images", "build/komanda-source/images");
     fs.copySync("build/komanda-source/app/styles/fonts", "build/komanda-source/fonts");
     fs.copySync("build/komanda-source/app/sounds", "build/komanda-source/sounds");
     fs.copySync("build/komanda-source/vendor/bower/octicons/octicons", "build/komanda-source/fonts/octicons/");
@@ -327,18 +328,18 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-compress");
 
   // Third-party tasks.
-  grunt.loadNpmTasks('grunt-exec');
-  grunt.loadNpmTasks('grunt-npm-install');
-  grunt.loadNpmTasks('grunt-open');
+  grunt.loadNpmTasks("grunt-exec");
+  grunt.loadNpmTasks("grunt-npm-install");
+  grunt.loadNpmTasks("grunt-open");
   grunt.loadNpmTasks("grunt-node-webkit-builder");
   grunt.loadNpmTasks("grunt-bbb-server");
   grunt.loadNpmTasks("grunt-processhtml");
-  grunt.loadNpmTasks('grunt-contrib-handlebars');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks("grunt-contrib-handlebars");
+  grunt.loadNpmTasks("grunt-contrib-requirejs");
   grunt.loadNpmTasks("grunt-bbb-styles");
   grunt.loadNpmTasks("grunt-shell");
 
-  grunt.registerTask('default', [
+  grunt.registerTask("default", [
 
   ]);
 
@@ -367,15 +368,15 @@ module.exports = function(grunt) {
   grunt.registerTask("run", function() {
     var start = parseBuildPlatforms();
     if(start.win){
-      grunt.task.run('run:win');
+      grunt.task.run("run:win");
     }else if(start.mac){
-      grunt.task.run('run:mac');
+      grunt.task.run("run:mac");
     }else if(start.linux32){
-      grunt.task.run('run:linux32');
+      grunt.task.run("run:linux32");
     }else if(start.linux64){
-      grunt.task.run('run:linux64');
+      grunt.task.run("run:linux64");
     }else{
-      grunt.log.writeln('OS not supported.');
+      grunt.log.writeln("OS not supported.");
     }
   });
 
