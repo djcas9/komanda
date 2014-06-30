@@ -608,7 +608,7 @@ define([
 
     Komanda.cmd("me", function(client, data, args) {
       client.socket.action(data.target, args.join(" "));
-      //client.addMessage(data.target, args.join(" "), true);
+      client.addMessage(data.target, args.join(" "), true);
     }, 4);
 
     Komanda.cmd("whois", function(client, data, args) {
