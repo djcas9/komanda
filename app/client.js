@@ -679,6 +679,10 @@ define([
       }
     }, 4);
 
+    Komanda.cmd("quit", function(client, data, args) {
+      client.socket.disconnect(args.join(" "));
+    });
+
     // aliases
     Komanda.cmd("q", "query", 4);
     Komanda.cmd("pm", "query", 4);
