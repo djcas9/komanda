@@ -684,9 +684,8 @@ define([
     Komanda.cmd("m", "msg", 4);
 
     Komanda.vent.on(self.options.uuid + ":pm", function(nick) {
-      self.buildPM(nick, function() {
-        $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + nick + "\"]").click();
-      });
+      self.buildPM(nick);
+      $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + nick + "\"]").click();
     });
 
     Komanda.vent.on(self.options.uuid + ":whois", function(data) {
@@ -766,45 +765,17 @@ define([
           // this is a server status message
           self.addMessage("Status", message.args.join(" "));
         } else {
-          self.buildPM(nick, function(status) {
-            if (status) {
-              self.addMessage("Status", text);
-            } else {
-              self.sendMessage(nick, to, text, message, true, true);
+          var isStatus = self.buildPM(nick);
 
-              if (window.Notification && Komanda.settings.get("notifications.highlight")) {
-                var n = new Notification("Notice From " + nick, {
-                  tag: "Komanda",
-                  body: "->" + nick + "<- " + text
-                });
-
-                n.onClick = function() {
-                  alert("word");
-                };
-              }
-            }
-          });
-        }
-      }
-    });
-
-    self.socket.addListener("message", function(nick, to, text, message) {
-
-      if (to.match(/^[#&]/)) {
-        self.sendMessage(nick, to, text, message);
-      } else {
-        // PM
-
-        self.buildPM(nick, function(status) {
-          if (status) {
+          if (isStatus) {
             self.addMessage("Status", text);
           } else {
-            self.sendMessage(nick, to, text, message, true);
+            self.sendMessage(nick, to, text, message, true, true);
 
             if (window.Notification && Komanda.settings.get("notifications.highlight")) {
-              var n = new Notification("Private Message From " + nick, {
+              var n = new Notification("Notice From " + nick, {
                 tag: "Komanda",
-                body: "<" + nick + "> " + text
+                body: "->" + nick + "<- " + text
               });
 
               n.onClick = function() {
@@ -812,9 +783,34 @@ define([
               };
             }
           }
-        });
+        }
       }
+    });
 
+    self.socket.addListener("message", function(nick, to, text, message) {
+      if (to.match(/^[#&]/)) {
+        self.sendMessage(nick, to, text, message);
+      } else {
+        // PM
+        var isStatus = self.buildPM(nick);
+
+        if (isStatus) {
+          self.addMessage("Status", text);
+        } else {
+          self.sendMessage(nick, to, text, message, true);
+
+          if (window.Notification && Komanda.settings.get("notifications.highlight")) {
+            var n = new Notification("Private Message From " + nick, {
+              tag: "Komanda",
+              body: "<" + nick + "> " + text
+            });
+
+            n.onClick = function() {
+              alert("word");
+            };
+          }
+        }
+      }
     });
 
     self.socket.addListener("action", function(nick, to, text, message) {
@@ -823,25 +819,21 @@ define([
         self.sendMessage(nick, to, text, message, false, false, true);
       } else {
         // PM
+        self.buildPM(nick);
+        self.sendMessage(nick, to, text, message, true, false, true);
 
-        self.buildPM(nick, function() {
-          self.sendMessage(nick, to, text, message, true, false, true);
+        if (window.Notification && Komanda.settings.get("notifications.highlight")) {
+          var n = new Notification("Private Message From " + nick, {
+            tag: "Komanda",
+            body: nick + text
+          });
 
-          if (window.Notification && Komanda.settings.get("notifications.highlight")) {
-            var n = new Notification("Private Message From " + nick, {
-              tag: "Komanda",
-              body: nick + text
-            });
-
-            n.onClick = function() {
-              alert("word");
-            };
-          }
-        });
+          n.onClick = function() {
+            alert("word");
+          };
+        }
       }
-
     });
-
 
     self.socket.addListener("registered", function(message) {
       Komanda.vent.trigger("registered", {
@@ -1270,7 +1262,7 @@ define([
     self.channels.remove(channel);
   };
 
-  Client.prototype.buildPM = function(nick, callback) {
+  Client.prototype.buildPM = function(nick) {
     var self = this;
 
     if (!nick) {
@@ -1299,10 +1291,7 @@ define([
       $(".channel-holder").append(view.render().el);
     }
 
-    if (_.isFunction(callback)) {
-      if (nick === "Status") return callback(true);
-      return callback(false);
-    }
+    return nick === "Status";
   };
 
   Client.prototype.updateBadgeCount = function(key) {
