@@ -138,6 +138,83 @@ define([
 
         }
       } // limp options
+    },
+
+    loadPlugins: function() {
+      /*
+      ** 1- Looks in the plugin directory for a plugins.json file
+      ** 2- Parses it out and looks for valid plugins defined within
+      ** 3- Loads the plugin via node's require() module
+      ** 4- Adds the plugin and its settings to the Komanda.settings.plugins array.
+      */
+
+      // Load the fs and path node modules we will be needing.
+      var fs = requireNode("fs");
+      var path = requireNode("path");
+      
+      // Clear all plugins if any:
+      Komanda.settings.plugins = [];
+
+      // For now we consider the app dataPath as the root of the plugins folder.
+      var appDataPath = process._nw_app.dataPath; // TODO: replace with a path stored in Komanda.settings: settings.get('pluginsFolder');
+
+      // Construct the path to the plugins configuration file at <appdata>/plugins/plugins.json.
+      var pluginRoot = path.join(appDataPath, "plugins");
+      var pluginJSONPath = path.join(pluginRoot, "plugins.json");
+
+      // Check that the plugins.json file exists where it should be.
+      if (!fs.existsSync(pluginJSONPath)) {
+        return;
+      }
+
+      // Read the plugins.json file from the provided path.
+      var pluginSettings = JSON.parse(fs.readFileSync(pluginJSONPath, "utf8"));
+
+      // Check that it isn't empty.
+      if (pluginSettings.length < 1) {
+        return;
+      }
+
+      // Load each plugin:
+      for (var i = 0; i < pluginSettings.length; i++) {
+        // The only required field is the plugin name.
+        if (!pluginSettings[i].name) {
+          continue;
+        }
+
+        // if the plugin is disabled don't load it
+        if (pluginSettings[i].disabled) {
+          continue;
+        }
+
+        // Build the path to this plugin and verify it exists.
+        var pluginpath = path.join(pluginRoot, pluginSettings[i].location, pluginSettings[i].main);
+        if (!fs.existsSync(pluginpath)) {
+          return;
+        }
+
+        // use node's require module to acquire the plugin module.
+        var plug = requireNode(pluginpath);
+        
+        // Add the plugin info that we need to Komanda settings.
+        var pluginobj = {
+          "name": pluginSettings[i].name,
+          "channel": pluginSettings[i].channel || false,
+          "topic": pluginSettings[i].topic || false,
+          "plugin": plug
+        };
+
+        // if a stylesheet path was provided verify it exists before adding it to the plugin info.
+        if (pluginSettings[i].stylesheet) {
+          var stylesheetpath = path.join(pluginRoot, pluginSettings[i].location, pluginSettings[i].stylesheet);
+          if (fs.existsSync(stylesheetpath)) {
+            pluginobj["stylesheetPath"] = stylesheetpath;
+          }
+        }
+
+        Komanda.settings.addPlugin(pluginobj);
+      }
+
     }
   };
 
