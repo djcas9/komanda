@@ -5,8 +5,6 @@ define([
 ], function($, _, hljs) {
   
   var Helpers = {
-    version: "0.1.1-beta",
-
     scrollUpdate: function(channel, force, delay) {
       var objDiv = channel.get(0);
 

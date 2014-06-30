@@ -2,10 +2,10 @@ define("templates/helpers/version", [
   "hbs/handlebars",
   "underscore",
   "helpers"
-], function(Handlebars, _, Helpers) {
+], function(Handlebars) {
 
   Handlebars.registerHelper("version", function(obj) {
-    return Helpers.version;
+    return Komanda.version;
   });
 
 });

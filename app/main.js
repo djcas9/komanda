@@ -27,6 +27,8 @@ requirejs(["config"], function(require) {
         console.log("Caught exception: " + err);
       });
 
+      Komanda.version = requireNode("./package.json").version;
+
       Komanda.helpers = Helpers;
 
       Komanda.settings = new Setting({
