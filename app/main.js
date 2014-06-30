@@ -160,7 +160,7 @@ requirejs(["config"], function(require) {
         Komanda.window.on("resize", function(e) {
           if (Komanda.current) {
             var chan = $(".channel[data-server-id=\"" + Komanda.current.server + "\"][data-name=\"" + Komanda.current.channel + "\"] .messages");
-            Komanda.helpers.scrollUpdate(chan, true, 0);
+            Komanda.helpers.scrollUpdate(chan, true, 1);
           }
         });
 

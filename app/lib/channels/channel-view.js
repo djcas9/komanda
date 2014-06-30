@@ -259,7 +259,7 @@ define([
 
       if ($("body").hasClass("zenmode")) {
         $("body").removeClass("zenmode");
-        Komanda.helpers.scrollUpdate($(self.el).find(".messages"), true, 0);
+        Komanda.helpers.scrollUpdate($(self.el).find(".messages"), true, 1);
       } else {
         $("body").addClass("zenmode");
       }
