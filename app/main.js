@@ -44,6 +44,8 @@ requirejs(["config"], function(require) {
 
       Embed(Komanda);
 
+      Helpers.loadPlugins();
+
       if (!Komanda.settings.attributes.notifications.hasOwnProperty("badge")) {
         Komanda.settings.set("notifications.badge", true);
       }

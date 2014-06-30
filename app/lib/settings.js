@@ -6,6 +6,7 @@ define([
   var Settings = Backbone.NestedModel.extend({
     localStorage: new Backbone.LocalStorage("komanda.settings"),
     store: "settings",
+    plugins: [],
 
     defaults: {
       themes: {
@@ -73,6 +74,10 @@ define([
       this.bind("change:display.system", function(model, newValue) {
         Helpers.toggleSystemMessage(newValue);
       });
+    },
+
+    addPlugin: function(plugin) {
+      this.plugins.push(plugin);
     }
   });
 
