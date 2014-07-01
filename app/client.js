@@ -479,7 +479,7 @@ define([
 
       self.channelsView.render();
 
-      self.addMessage(channel, nick + " has joined the room. [" + message.prefix + "]");
+      self.addMessage(channel, nick + " [" + message.prefix + "] has joined the room.");
 
       Komanda.vent.trigger("join", data);
     });
@@ -975,7 +975,7 @@ define([
 
       self.removeUser(channel, nick);
 
-      self.addMessage(channel, nick + " has left the room. " + (reason ? "[" + reason + "]" : "") + "");
+      self.addMessage(channel, nick + " [" + message.prefix + "] has left the room. " + (reason ? "[" + reason + "]" : "") + "");
 
       Komanda.vent.trigger("part", data);
     });
@@ -1006,7 +1006,7 @@ define([
       _.each(self.channels.models, function(channel) {
         if (channel.get("names").hasOwnProperty(nick)) {
           self.removeUser(channel.get("channel"), nick);
-          self.addMessage(channel.get("channel"), nick + " has left IRC. " + (reason ? "[" + reason + "]" : "") + "");
+          self.addMessage(channel.get("channel"), nick + " [" + message.prefix + "] has left IRC. " + (reason ? "[" + reason + "]" : "") + "");
         }
       });
 
