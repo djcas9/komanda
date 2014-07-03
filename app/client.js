@@ -681,7 +681,16 @@ define([
     }, 4);
 
     Komanda.cmd("quit", function(client, data, args) {
-      client.socket.disconnect(args.join(" "));
+      var quitMessage;
+      if (!_.isEmpty(args)) { // if a quit message was provided, use it.
+        quitMessage = args.join(" ");
+      } else if (!_.isEmpty(Komanda.settings.get("messages.quit"))) { // if a quit message was set in the settings, use it.
+        quitMessage = Komanda.settings.get("messages.quit");
+      } else { // if there still isn't a quit message then use the defaultQuit message [not exposed in the GUI]
+        quitMessage = Komanda.settings.get("messages.defaultQuit");
+      }
+
+      client.socket.disconnect(quitMessage);
     });
 
     Komanda.cmd("devtools", function(client, data, args) {
