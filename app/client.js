@@ -28,6 +28,7 @@ define([
     self.retryCountCurrent = 0;
     self.retryFunction = null;
     self.attemptingReconnect = false;
+    self.allowReconnect = true;
 
     self.topics = {};
 
@@ -115,7 +116,9 @@ define([
     self.bind();
 
     self.socket.connect(options.retryCount || 50, function() {
-      if (_.isFunction(callback)) callback(self);
+      if (_.isFunction(callback)) {
+        callback(self);
+      }
 
       self.session.set("connectionOpen", true);
 
@@ -152,7 +155,9 @@ define([
       self.clearViews();
       self.socket.conn.end();
 
-      if (_.isFunction(callback)) callback(self);
+      if (_.isFunction(callback)) {
+        callback(self);
+      } 
 
       Komanda.vent.trigger("disconnect", {
         server: self.options.uuid,
@@ -243,7 +248,16 @@ define([
   Client.prototype.bindReconnect = function() {
     var self = this;
 
+    console.log("SET BIND RECONNECT");
+
     self.reconnectFunction = function() {
+
+      if (!self.allowReconnect) {
+        return;
+      }
+
+      console.log("in reconnect loop");
+
       if (!self.isConnected()) {
 
         if (self.socket && self.socket.conn) {
@@ -258,7 +272,7 @@ define([
           if (self.retryCountCurrent < self.retryCount) {
             Komanda.connections[self.options.uuid].inReconnect = true;
 
-            if (!self.attemptingReconnect) {
+            if (!self.attemptingReconnect && self.allowReconnect) {
               self.retryCountCurrent++;
               self.socket.emit("connection:reconnect", self.retryCountCurrent);
 
@@ -292,7 +306,9 @@ define([
       clearInterval(self.reconnectCheck);
     }
 
-    self.reconnectCheck = setInterval(self.reconnectFunction, 10000);
+    if (self.allowReconnect) {
+      self.reconnectCheck = setInterval(self.reconnectFunction, 10000);
+    }
   };
 
   Client.prototype.bind = function() {
@@ -351,7 +367,6 @@ define([
     });
 
     self.socket.addListener("connection:end", function() {});
-
 
     self.socket.addListener("connection:abort", function(max, count) {
       self.addMessage("Status", "Komanda Notice: Reconnect has been aborted", true);
@@ -619,12 +634,17 @@ define([
     }, 4);
 
     Komanda.cmd("quit", function(client, data, args) {
+      self.allowReconnect = false;
+
       Komanda.vent.trigger(client.options.uuid + ":disconnect", function() {
-        Komanda.connections[client.options.uuid].inReconnect = false;
-        clearInterval(client.reconnectCheck);
-        client.socket.emit("connection:abort", client.retryCount, client.retryCountCurrent);
-      });  
-    }, 4);
+        self.attemptingReconnect = true;
+        self.session.set("connectionOpen", false);
+
+        Komanda.connections[self.options.uuid].inReconnect = false;
+        clearInterval(self.reconnectCheck);
+        self.socket.emit("connection:abort", client.retryCount, client.retryCountCurrent);
+      });
+    }, null, 4);
 
     Komanda.cmd("query", function(client, data, args) {
       Komanda.vent.trigger(client.options.uuid + ":pm", args[0]);
@@ -743,8 +763,8 @@ define([
       }
       if (data.idleDuration) {
         var idleParts = [];
-        if ((data.idleDuration.asHours() | 0) > 0) {
-          idleParts.push((data.idleDuration.asHours() | 0) + "h");
+        if ((data.idleDuration.asHours() || 0) > 0) {
+          idleParts.push((data.idleDuration.asHours() || 0) + "h");
         }
         if (data.idleDuration.minutes() > 0) {
           idleParts.push(data.idleDuration.minutes() + "m");
@@ -950,7 +970,10 @@ define([
         });
         box.open();
       } else if (_.contains(codes, message.rawCommand) || message.commandType === "error") {
-        if (self.me(message.args[0])) message.args.shift();
+        if (self.me(message.args[0])) {
+          message.args.shift();
+        }
+          
         self.addMessage("Status", message.args.join(" "));
       }
       // Komanda.vent.trigger("raw", {
