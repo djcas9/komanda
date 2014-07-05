@@ -126,7 +126,7 @@ define([
         Komanda.connections[self.options.uuid].hasClient = true;
       }
 
-      self.bindReconnect();
+      // self.bindReconnect();
 
       Komanda.vent.trigger("connect", {
         server: self.options.uuid,
@@ -159,10 +159,10 @@ define([
         callback(self);
       } 
 
-      Komanda.vent.trigger("disconnect", {
-        server: self.options.uuid,
-        name: self.options.name
-      });
+      // Komanda.vent.trigger("disconnect", {
+        // server: self.options.uuid,
+        // name: self.options.name
+      // });
     });
   };
 
@@ -347,7 +347,7 @@ define([
 
     Komanda.vent.on("disconnect", function() {
       self.session.set("connectionOpen", false);
-      self.bindReconnect();
+      // self.bindReconnect();
     });
 
     Komanda.vent.on("connect", function() {
@@ -362,7 +362,7 @@ define([
         }
       }
 
-      self.bindReconnect();
+      // self.bindReconnect();
       $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").removeClass("offline");
     });
 
@@ -406,7 +406,8 @@ define([
 
     self.socket.addListener("connection:connect", function() {
       self.session.set("connectionOpen", true);
-      self.bindReconnect();
+      console.log(self.reconnectCheck, self.allowReconnect);
+      // self.bindReconnect();
       $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").removeClass("offline");
     });
 
