@@ -10,11 +10,6 @@
     </select>
   </div>
 
-  <div class="form-box">
-    <label for="komanda-settings-quit-message">Quit Message</label>
-    <input id="komanda-settings-quit-message" type="text" name="messages.quit">
-  </div>
-
 </div>
 
 <div class="settings-section-holder" id="komanda-settings-notifications" style="display:none;">
@@ -68,4 +63,10 @@
     <label for="komanda-settings-display-timestamp">Timestamp Format</label>
     <input id="komanda-settings-display-timestamp" type="text" name="display.timestamp">
   </div>
+
+  <div class="form-box">
+    <label for="komanda-settings-quit-message">Quit Message</label>
+    <input id="komanda-settings-quit-message" type="text" name="messages.quit" value="{{messages.quit}}" placeholder="Komanda - The IRC Client For Developers http://komanda.io">
+  </div>
+
 </div>
