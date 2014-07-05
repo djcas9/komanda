@@ -46,6 +46,10 @@ define([
         chat: false,
         pm: true,
         hightlight: true
+      },
+      messages: {
+        quit: "",
+        defaultQuit: "Komanda - The IRC Client For Developers http://komanda.io"
       }
     },
 
