@@ -3,7 +3,8 @@
   "version": "0.1.1-beta",
   "main": "app://host/index.html",
   "webkit": {
-    "page-cache": false
+    "page-cache": false,
+    "plugin": true
   },
   "window": {
     "toolbar": false,

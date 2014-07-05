@@ -6,7 +6,9 @@ define(function(require) {
   var Vent = require("vent");
   var Setting = require("lib/settings");
 
-  if (window.Komanda) return window.Komanda;
+  if (window.Komanda) {
+    return window.Komanda;
+  }
 
   window.Komanda = new Marionette.Application();
 

@@ -298,13 +298,17 @@ define([
   Client.prototype.bind = function() {
     var self = this;
 
-    if (self.binded) return;
+    if (self.binded) {
+      return; 
+    }
+
     self.binded = true;
 
     self.sendPingPong = setInterval(function() {
       if (self.isConnected()) {
         if (self.socket) {
-          self.socket.send("PING");
+          // this is hacky
+          self.socket.send("");
         }
       } 
     }, 10000);
@@ -614,6 +618,14 @@ define([
       Komanda.vent.trigger(client.options.uuid + ":pm", args[0]);
     }, 4);
 
+    Komanda.cmd("quit", function(client, data, args) {
+      Komanda.vent.trigger(client.options.uuid + ":disconnect", function() {
+        Komanda.connections[client.options.uuid].inReconnect = false;
+        clearInterval(client.reconnectCheck);
+        client.socket.emit("connection:abort", client.retryCount, client.retryCountCurrent);
+      });  
+    }, 4);
+
     Komanda.cmd("query", function(client, data, args) {
       Komanda.vent.trigger(client.options.uuid + ":pm", args[0]);
     }, 4);
@@ -636,12 +648,16 @@ define([
 
       _.each(channels, function(channel) {
         // TODO: central channel name validation
-        if (!channel.match(/^[#&]/)) return;
+        if (!channel.match(/^[#&]/)) {
+         return;
+        }
 
         client.socket.part(channel, msg, function() {
           var chan = client.findChannel(channel);
 
-          if (chan) client.removeAndCleanChannel(chan, client.options.uuid);
+          if (chan) {
+            client.removeAndCleanChannel(chan, client.options.uuid);
+          } 
 
           Komanda.vent.trigger("channel/part", client.options.uuid, channel);
         });
