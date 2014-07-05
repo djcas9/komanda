@@ -248,15 +248,11 @@ define([
   Client.prototype.bindReconnect = function() {
     var self = this;
 
-    console.log("SET BIND RECONNECT");
-
     self.reconnectFunction = function() {
 
       if (!self.allowReconnect) {
         return;
       }
-
-      console.log("in reconnect loop");
 
       if (!self.isConnected()) {
 
@@ -406,7 +402,6 @@ define([
 
     self.socket.addListener("connection:connect", function() {
       self.session.set("connectionOpen", true);
-      console.log(self.reconnectCheck, self.allowReconnect);
       // self.bindReconnect();
       $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").removeClass("offline");
     });
