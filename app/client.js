@@ -157,7 +157,7 @@ define([
 
       if (_.isFunction(callback)) {
         callback(self);
-      } 
+      }
 
       // Komanda.vent.trigger("disconnect", {
         // server: self.options.uuid,
@@ -311,7 +311,7 @@ define([
     var self = this;
 
     if (self.binded) {
-      return; 
+      return;
     }
 
     self.binded = true;
@@ -322,7 +322,7 @@ define([
           // this is hacky
           self.socket.send("");
         }
-      } 
+      }
     }, 10000);
 
     self.socket.addListener("ping", function() {});
@@ -622,11 +622,14 @@ define([
     // RegExp: 5
     // Function: 6
     Komanda.cmd("msg", function(client, data, args) {
-      Komanda.vent.trigger(client.options.uuid + ":send", {
-        target: args[0],
-        message: args.slice(1).join(" ")
+      var msg = args.slice(1).join(" ");
+      _.each(args[0].split(","), function(target) {
+        Komanda.vent.trigger(client.options.uuid + ":send", {
+          target: target,
+          message: msg
+        });
+        Komanda.vent.trigger(client.options.uuid + ":pm", target);
       });
-      Komanda.vent.trigger(client.options.uuid + ":pm", args[0]);
     }, 4);
 
     Komanda.cmd("quit", function(client, data, args) {
@@ -673,7 +676,7 @@ define([
 
           if (chan) {
             client.removeAndCleanChannel(chan, client.options.uuid);
-          } 
+          }
 
           Komanda.vent.trigger("channel/part", client.options.uuid, channel);
         });
@@ -969,7 +972,7 @@ define([
         if (self.me(message.args[0])) {
           message.args.shift();
         }
-          
+
         self.addMessage("Status", message.args.join(" "));
       }
       // Komanda.vent.trigger("raw", {
@@ -1365,7 +1368,7 @@ define([
     if (!Komanda.store[server].count.hasOwnProperty(key)) {
       Komanda.store[server].count[key] = 0;
     }
-    
+
     Komanda.store[server].count[key]++;
 
     // $("li.channel-item[data-server-id=\"" + server + "\"][data-name=""+key+""] span.notification-count").html(Komanda.store[server].count[key]);
