@@ -662,11 +662,14 @@ define([
     // RegExp: 5
     // Function: 6
     Komanda.cmd("msg", function(client, data, args) {
-      Komanda.vent.trigger(client.options.uuid + ":send", {
-        target: args[0],
-        message: args.slice(1).join(" ")
+      var msg = args.slice(1).join(" ");
+      _.each(args[0].split(","), function(target) {
+        Komanda.vent.trigger(client.options.uuid + ":send", {
+          target: target,
+          message: msg
+        });
+        Komanda.vent.trigger(client.options.uuid + ":pm", target);
       });
-      Komanda.vent.trigger(client.options.uuid + ":pm", args[0]);
     }, 4);
 
     Komanda.cmd("quit", function(client, data, args) {
