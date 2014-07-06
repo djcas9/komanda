@@ -729,6 +729,28 @@ define([
       //render(true); // is this needed?
     }, 4);
 
+    Komanda.cmd("mode", function(client, data, args) {
+      var curChan = data.target, modes;
+      if(args.length === 0) {
+        // want modes for current channel
+        client.socket.send("MODE", curChan);
+        return;
+      }
+      if(args[0].match(/^[#&]/)) {
+        // first arg is a channel, so we want that channel
+        curChan = args[0];
+        modes = args[1];
+      } else {
+        modes = args[0];
+      }
+      if(modes) {
+        // We are setting modes
+        client.socket.send("MODE", curChan, modes);
+      } else {
+        client.socket.send("MODE", curChan);
+      }
+    });
+
     Komanda.cmd("set", function(client, data, args) {
       var setting;
 
