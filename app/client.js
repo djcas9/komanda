@@ -157,13 +157,42 @@ define([
 
       if (_.isFunction(callback)) {
         callback(self);
-      } 
+      }
 
       // Komanda.vent.trigger("disconnect", {
         // server: self.options.uuid,
         // name: self.options.name
       // });
     });
+  };
+
+  Client.prototype.onMode = function(channel, by, mode, argument, message, added) {
+    var self = this;
+
+    var modeToPrefix = {
+      "o": "@",
+      "h": "%",
+      "v": "+"
+    };
+    var modePriority = { "o": 3, "h": 2, "v": 1 };
+
+    /*
+     * Note for future: Is there a way to do this without sending another names
+     * command and ensure we get the correct data afterwards? It is possible to
+     * set both +v and +o on someone, but NAMES does not (appear to) show both
+     * prefixes.
+     */
+    // set user to op/halfop/etc.
+    if(argument && "ohv".indexOf(mode) > -1) {
+      self.socket.send("NAMES", channel);
+    } else if(argument) {
+      // TODO: other cases here. what are these?
+    } else {
+      /*
+       * TODO: Do this without sending another mode command.
+       */
+      self.socket.send("MODE", channel);
+    }
   };
 
   Client.prototype.processWhois = function(message) {
@@ -311,7 +340,7 @@ define([
     var self = this;
 
     if (self.binded) {
-      return; 
+      return;
     }
 
     self.binded = true;
@@ -322,7 +351,7 @@ define([
           // this is hacky
           self.socket.send("");
         }
-      } 
+      }
     }, 10000);
 
     self.socket.addListener("ping", function() {});
@@ -407,6 +436,17 @@ define([
     });
 
     self.socket.addListener("names", function(channel, names) {
+      /*
+       * If the channel already exists, that means we got another NAMES event as
+       * a result of someone changing modes. Therefore, we simply update the
+       * view and return.
+       */
+      if(channel && self.findChannel(channel)) {
+        chan = self.findChannel(channel);
+        chan.set("names", names);
+        self.updateNames(chan);
+        return;
+      }
       var channelTopic = "";
 
       if (self.topics.hasOwnProperty(self.options.uuid)) {
@@ -673,7 +713,7 @@ define([
 
           if (chan) {
             client.removeAndCleanChannel(chan, client.options.uuid);
-          } 
+          }
 
           Komanda.vent.trigger("channel/part", client.options.uuid, channel);
         });
@@ -913,6 +953,13 @@ define([
       });
     });
 
+    self.socket.addListener("+mode", function(channel, by, mode, argument, message) {
+      self.onMode(channel, by, mode, argument, message, true);
+    });
+    self.socket.addListener("-mode", function(channel, by, mode, argument, message) {
+      self.onMode(channel, by, mode, argument, message, false);
+    });
+
     self.socket.addListener("raw", function(message) {
       var codes = [
         "001", "002", "003", "004", "005", "006", "007",
@@ -969,7 +1016,7 @@ define([
         if (self.me(message.args[0])) {
           message.args.shift();
         }
-          
+
         self.addMessage("Status", message.args.join(" "));
       }
       // Komanda.vent.trigger("raw", {
@@ -1365,7 +1412,7 @@ define([
     if (!Komanda.store[server].count.hasOwnProperty(key)) {
       Komanda.store[server].count[key] = 0;
     }
-    
+
     Komanda.store[server].count[key]++;
 
     // $("li.channel-item[data-server-id=\"" + server + "\"][data-name=""+key+""] span.notification-count").html(Komanda.store[server].count[key]);
