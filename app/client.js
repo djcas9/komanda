@@ -183,7 +183,7 @@ define([
      * prefixes.
      */
     // set user to op/halfop/etc.
-    if(argument && "ohv".indexOf(mode) > -1) {
+    if(argument && "ohvqa".indexOf(mode) > -1) {
       self.socket.send("NAMES", channel);
     } else if(argument) {
       // TODO: other cases here. what are these?
