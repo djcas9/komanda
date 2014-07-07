@@ -229,7 +229,7 @@ module.exports = function(grunt) {
 
     exec: {
       win: {
-        cmd: "build/cache/win/<%= nodewebkit.options.version %>/nw.exed ."
+        cmd: '"build/cache/win/<%= nodewebkit.options.version %>/nw.exe" .'
       },
       mac: {
         cmd: "build/cache/mac/<%= nodewebkit.options.version %>/node-webkit.app/Contents/MacOS/node-webkit ."
