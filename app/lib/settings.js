@@ -6,6 +6,7 @@ define([
   var Settings = Backbone.NestedModel.extend({
     localStorage: new Backbone.LocalStorage("komanda.settings"),
     store: "settings",
+    plugins: [],
 
     defaults: {
       themes: {
@@ -64,6 +65,10 @@ define([
 
         if (a.changed.hasOwnProperty("themes")) Helpers.loadTheme(a.attributes);
       });
+    },
+
+    addPlugin: function(plugin) {
+      this.plugins.push(plugin);
     }
   });
 

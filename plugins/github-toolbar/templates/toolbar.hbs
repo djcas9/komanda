@@ -1,4 +1,4 @@
-<div class="github-plugin-bar plugin" data-server-id="{{server}}" data-name="{{channel}}">
+<div class="github-plugin-bar plugin">
   <div class="plugin-logo">
     <span class="octicon octicon-octoface"></span>
   </div>
@@ -14,11 +14,11 @@
     </span>
     {{else}}
 
-    {{#if repo.metadata.description}}
-    <span class="description">
-      {{repo.metadata.description}}
-    </span>
-    {{/if}}
+      {{#if repo.metadata.description}}
+      <span class="description">
+        {{repo.metadata.description}}
+      </span>
+      {{/if}}
     {{/if}}
   </div>
 

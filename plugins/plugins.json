@@ -1,0 +1,17 @@
+[
+  {
+    "name": "github-feed",
+    "location": "github-feed",
+    "main": "main.js",
+    "channel": true,
+    "stylesheet": "/styles/github-feed.css"
+  },
+
+  {
+    "name": "github-toolbar",
+    "location": "github-toolbar",
+    "main": "main.js",
+    "channel": true,
+    "stylesheet": "/styles/github-toolbar.css"
+  }
+]
