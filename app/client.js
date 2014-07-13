@@ -396,7 +396,7 @@ define([
     self.socket.addListener("connection:end", function() {});
 
     self.socket.addListener("connection:abort", function(max, count) {
-      self.addMessage("Status", "Komanda Notice: Reconnect has been aborted", true);
+      self.statusMessage("Komanda Notice: Reconnect has been aborted");
     });
 
     self.socket.addListener("connection:timeout", function() {});
@@ -414,7 +414,7 @@ define([
         message = "Komanda Error: You are not connected to the internet. Komanda will attempt to reconnect.";
       }
 
-      self.addMessage("Status", message, true);
+      self.statusMessage(message);
     });
 
     self.socket.addListener("connection:close", function() {
@@ -422,7 +422,7 @@ define([
     });
 
     self.socket.addListener("connection:reconnect", function(retry) {
-      self.addMessage("Status", "Komanda Notice: Attempting To Reconnect. (" + self.retryCountCurrent + "/" + self.retryCount + ")" , true);
+      self.statusMessage("Komanda Notice: Attempting To Reconnect. (" + self.retryCountCurrent + "/" + self.retryCount + ")");
     });
 
     self.socket.addListener("connection:disconnect", function(retry) {
@@ -760,10 +760,10 @@ define([
       var setting;
 
       if (args.length === 0) {
-        client.addMessage("Status", JSON.stringify(Komanda.settings.toJSON()));
+        client.statusMessage(JSON.stringify(Komanda.settings.toJSON()));
       } else if (args.length === 1) {
         setting = Komanda.settings.get(args[0]);
-        client.addMessage("Status", args[0] + " = " + _.isObject(setting) || _.isArray(setting) ? JSON.stringify(setting) : setting);
+        client.statusMessage(args[0] + " = " + _.isObject(setting) || _.isArray(setting) ? JSON.stringify(setting) : setting);
       } else if (args.length === 2) {
         var val;
 
@@ -775,7 +775,7 @@ define([
 
         Komanda.settings.set(args[0], val);
         setting = Komanda.settings.get(args[0]);
-        client.addMessage("Status", args[0] + " = " + _.isObject(setting) || _.isArray(setting) ? JSON.stringify(setting) : setting);
+        client.statusMessage(args[0] + " = " + _.isObject(setting) || _.isArray(setting) ? JSON.stringify(setting) : setting);
       }
     }, 4);
 
@@ -871,7 +871,7 @@ define([
         if (channel.topic) {
           msg += " || " + channel.topic;
         }
-        self.addMessage("Status", msg);
+        self.statusMessage(msg);
       });
     });
 
@@ -883,12 +883,12 @@ define([
 
         if (!nick) {
           // this is a server status message
-          self.addMessage("Status", message.args.join(" "));
+          self.statusMessage(message.args.join(" "));
         } else {
           var isStatus = self.buildPM(nick);
 
           if (isStatus) {
-            self.addMessage("Status", text);
+            self.statusMessage(text);
           } else {
             self.sendMessage(nick, to, text, message, true, true);
 
@@ -915,7 +915,7 @@ define([
         var isStatus = self.buildPM(nick);
 
         if (isStatus) {
-          self.addMessage("Status", text);
+          self.statusMessage(text);
         } else {
           self.sendMessage(nick, to, text, message, true);
 
@@ -1044,7 +1044,7 @@ define([
           message.args.shift();
         }
 
-        self.addMessage("Status", message.args.join(" "));
+        self.statusMessage(message.args.join(" "));
       }
       // Komanda.vent.trigger("raw", {
       // message: message,
@@ -1279,7 +1279,12 @@ define([
 
       Helpers.scrollUpdate(chan, isNotice);
     }
+  };
 
+  Client.prototype.statusMessage = function (text) {
+    var self = this;
+
+    self.addMessage("Status", text, true);
   };
 
   Client.prototype.sendMessage = function(nick, to, text, message, flip, isNotice, isAction) {
