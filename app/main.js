@@ -18,9 +18,10 @@ requirejs(["config"], function(require) {
     "window-state",
     "lib/embed/index",
     "command",
-    "lib/deps/ion.sound"
+    "lib/deps/ion.sound",
+    "lib/channels/channel",
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
-    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, Command, ionSound) {
+    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, Command, ionSound, Channel) {
 
       // We should use domains instead
       window.process.on("uncaughtException", function(err) {
@@ -110,8 +111,7 @@ requirejs(["config"], function(require) {
         var msg = args.slice(1).join(" ") || "Bye!";
 
         _.each(channels, function(channel) {
-          // TODO: central channel name validation
-          if (!channel.match(/^[#&]/)) {
+          if (!Channel.isChannel(channel)) {
            return;
           }
 
@@ -138,12 +138,12 @@ requirejs(["config"], function(require) {
 
       Komanda.cmd("mode", function(client, data, args) {
         var curChan = data.target, modes;
-        if(args.length === 0) {
+        if (args.length === 0) {
           // want modes for current channel
           client.socket.send("MODE", curChan);
           return;
         }
-        if(args[0].match(/^[#&]/)) {
+        if (Channel.isChannel(args[0])) {
           // first arg is a channel, so we want that channel
           curChan = args[0];
           modes = args[1];

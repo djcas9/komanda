@@ -628,7 +628,7 @@ define([
           dd.text = cmd.slice(2).join(" ");
           dd.to = cmd[1];
           dd.sender = true;
-          dd.toChannel = !!data.target.match(/^[#&]/);
+          dd.toChannel = Channel.isChannel(data.target);
         }
 
         var channel = $("div.channel[data-server-id=\"" + self.options.uuid + "\"][data-name=\"" + dd.to + "\"] div.messages");
@@ -732,7 +732,7 @@ define([
     });
 
     self.socket.addListener("notice", function(nick, to, text, message) {
-      if (to.match(/^[#&]/)) {
+      if (Channel.isChannel(to)) {
         self.sendMessage(nick, to, text, message, undefined, true);
       } else {
         // PM
@@ -764,7 +764,7 @@ define([
     });
 
     self.socket.addListener("message", function(nick, to, text, message) {
-      if (to.match(/^[#&]/)) {
+      if (Channel.isChannel(to)) {
         self.sendMessage(nick, to, text, message);
       } else {
         // PM
@@ -790,8 +790,7 @@ define([
     });
 
     self.socket.addListener("action", function(nick, to, text, message) {
-
-      if (to.match(/^[#&]/)) {
+      if (Channel.isChannel(to)) {
         self.sendMessage(nick, to, text, message, false, false, true);
       } else {
         // PM
@@ -1172,7 +1171,7 @@ define([
     var html;
     if (isNotice) {
       data.sender = self.me(nick);
-      data.toChannel = !!to.match(/^[#&]/);
+      data.toChannel = Channel.isChannel(to);
       html = Notice(data);
     } else {
       html = Message(data);

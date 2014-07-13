@@ -5,7 +5,7 @@ define([
   "uuid"
 ], function(Komanda, _, Backbone, uuid) {
 
-  var channel = Backbone.Model.extend({
+  var Channel = Backbone.Model.extend({
     idAttribute: "channel",
 
     defaults: {
@@ -52,8 +52,11 @@ define([
       chan.remove();
       $(".channel-holder div.channel[data-server-id=\"" + server + "\"][data-name=\"" + channel + "\"]").remove();
     }
-
   });
 
-  return channel;
+  Channel.isChannel = function(chan) {
+    return _.isString(chan) && /^[#&]/.test(chan);
+  };
+
+  return Channel;
 });
