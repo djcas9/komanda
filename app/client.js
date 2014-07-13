@@ -763,22 +763,61 @@ define([
       }
     });
 
+    // TODO: move to plugin
+    var handleZNCBufferPlaybackTimestamp = function (context) {
+      if (!context.channel) return;
+      
+      if (context.message.prefix === "***!znc@znc.in") {
+        if (context.text === "Buffer Playback...") {
+          context.channel.zncbuffer = true;
+        }
+        else if (context.text === "Playback Complete.") {
+          delete context.channel.zncbuffer;
+        }
+
+        return;
+      }
+
+      if (context.channel.zncbuffer) {
+        var timestamp = /^\[(\d{2}:\d{2}:\d{2})\]\s/.exec(context.text);
+
+        if (timestamp) {
+          context.text = context.text.split(" ").splice(1).join(" ");
+          context.message.timestamp = moment(timestamp, "HH:mm:ss").valueOf();
+        }
+      }
+    };
+
     self.socket.addListener("message", function(nick, to, text, message) {
-      if (Channel.isChannel(to)) {
-        self.sendMessage(nick, to, text, message);
+      message.timestamp = Date.now();
+
+      var context = {
+        client: self,
+        channel: self.findChannel(to),
+        nick: nick,
+        to: to,
+        text: text,
+        message: message,
+        toChannel: Channel.isChannel(to)
+      };
+
+      handleZNCBufferPlaybackTimestamp(context);
+
+      if (context.toChannel) {
+        self.sendMessage(context.nick, context.to, context.text, context.message);
       } else {
         // PM
-        var isStatus = self.buildPM(nick);
+        var isStatus = self.buildPM(context.nick);
 
         if (isStatus) {
-          self.statusMessage(text);
+          self.statusMessage(context.text);
         } else {
-          self.sendMessage(nick, to, text, message, true);
+          self.sendMessage(context.nick, context.to, context.text, context.message, true);
 
           if (window.Notification && Komanda.settings.get("notifications.highlight")) {
-            var n = new Notification("Private Message From " + nick, {
+            var n = new Notification("Private Message From " + context.nick, {
               tag: "Komanda",
-              body: "<" + nick + "> " + text
+              body: "<" + context.nick + "> " + context.text
             });
 
             n.onClick = function() {
