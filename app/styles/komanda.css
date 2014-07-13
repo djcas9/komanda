@@ -1442,49 +1442,151 @@ display: list-item;
 text-align: -webkit-match-parent;
 }
 
+.irc-text-bold {
+	font-weight: bold;
+}
+
+.irc-text-italic {
+	font-style: italic;
+}
+
+.irc-text-underline {
+	text-decoration: underline;
+}
+
+.irc-text-normal {
+	font-weight: normal;
+	font-style: normal;
+	text-decoration: none;
+
+}
+
+.irc-text-foreground-0 {
+	color: white;
+}
+
+.irc-text-foreground-1 {
+	color: black;
+}
+
+.irc-text-foreground-2 {
+	color: navy;
+}
+
+.irc-text-foreground-3 {
+	color: green;
+}
+
+.irc-text-foreground-4 {
+	color: red;
+}
+
+.irc-text-foreground-5 {
+	color: brown;
+}
+
+.irc-text-foreground-6 {
+	color: purple;
+}
+
+.irc-text-foreground-7 {
+	color: olive;
+}
+
+.irc-text-foreground-8 {
+	color: yellow;
+}
+
+.irc-text-foreground-9 {
+	color: lightgreen;
+}
+
+.irc-text-foreground-10 {
+	color: teal;
+}
+
+.irc-text-foreground-11 {
+	color: cyan;
+}
+
+.irc-text-foreground-12 {
+	color: blue;
+}
+
+.irc-text-foreground-13 {
+	color: magenta;
+}
+
+.irc-text-foreground-14 {
+	color: gray;
+}
+
+.irc-text-foreground-15 {
+	color: lightgray;
+}
+
+.irc-text-background-0 {
+	background-color: white;
+}
+
+.irc-text-background-1 {
+	background-color: black;
+}
+
+.irc-text-background-2 {
+	background-color: navy;
+}
+
+.irc-text-background-3 {
+	background-color: green;
+}
+
+.irc-text-background-4 {
+	background-color: red;
+}
+
+.irc-text-background-5 {
+	background-color: brown;
+}
+
+.irc-text-background-6 {
+	background-color: purple;
+}
+
+.irc-text-background-7 {
+	background-color: olive;
+}
+
+.irc-text-background-8 {
+	background-color: yellow;
+}
+
+.irc-text-background-9 {
+	background-color: lightgreen;
+}
+
+.irc-text-background-10 {
+	background-color: teal;
+}
+
+.irc-text-background-11 {
+	background-color: cyan;
+}
+
+.irc-text-background-12 {
+	background-color: blue;
+}
+
+.irc-text-background-13 {
+	background-color: magenta;
+}
+
+.irc-text-background-14 {
+	background-color: gray;
+}
+
+.irc-text-background-15 {
+	background-color: lightgray;
+}
+
 /* @end */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

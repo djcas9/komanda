@@ -31,7 +31,7 @@ define([
       floodProtection: false,
       floodProtectionDelay: 1000,
       sasl: false,
-      stripColors: true,
+      stripColors: false,
       channelPrefixes: "&#",
       messageSplit: 512,
       connectionOpen: false

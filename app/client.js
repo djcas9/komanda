@@ -19,6 +19,7 @@ define([
 
     self.irc = window.requireNode("irc");
     self.options = session.attributes;
+    self.options.stripColors = false;
     self.nick = session.attributes.nick;
     self.socket = null;
 
