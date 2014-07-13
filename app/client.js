@@ -170,11 +170,13 @@ define([
     var self = this;
 
     var modeToPrefix = {
+      "q": "~",
+      "a": "&",
       "o": "@",
       "h": "%",
       "v": "+"
     };
-    var modePriority = { "o": 3, "h": 2, "v": 1 };
+    var modePriority = { "q": 5, "a": 4, "o": 3, "h": 2, "v": 1 };
 
     /*
      * Note for future: Is there a way to do this without sending another names
@@ -183,7 +185,7 @@ define([
      * prefixes.
      */
     // set user to op/halfop/etc.
-    if(argument && "ohvqa".indexOf(mode) > -1) {
+    if(argument && "qaohv".indexOf(mode) > -1) {
       self.socket.send("NAMES", channel);
     } else if(argument) {
       // TODO: other cases here. what are these?
