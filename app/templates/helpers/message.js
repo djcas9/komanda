@@ -95,7 +95,6 @@ define("templates/helpers/message", [
         }
         // color
         else if (c === 3) {
-          console.log(message.substr(i + 1, 5));
           var parts = message.substr(i + 1, 5).split(",");
           var fg, bg;
 
