@@ -73,6 +73,149 @@ requirejs(["config"], function(require) {
         channel: null
       };
 
+      // internal commands go here
+      // make sure to set priority on internal functions so plugins have to explicity set priority to override
+      // String: 4
+      // RegExp: 5
+      // Function: 6
+      Komanda.cmd("msg", function(client, data, args) {
+        var msg = args.slice(1).join(" ");
+        _.each(args[0].split(","), function(target) {
+          Komanda.vent.trigger(client.options.uuid + ":send", {
+            target: target,
+            message: msg
+          });
+          Komanda.vent.trigger(client.options.uuid + ":pm", target);
+        });
+      }, 4);
+
+      Komanda.cmd("query", function(client, data, args) {
+        Komanda.vent.trigger(client.options.uuid + ":pm", args[0]);
+      }, 4);
+
+      Komanda.cmd("me", function(client, data, args) {
+        client.socket.action(data.target, args.join(" "));
+        client.addMessage(data.target, args.join(" "), true);
+      }, 4);
+
+      Komanda.cmd("whois", function(client, data, args) {
+        if (args.length > 0) {
+          client._whois[args[0].toLowerCase()] = {};
+          client.socket.send("WHOIS", args[0]);
+        }
+      }, 4);
+
+      Komanda.cmd("part", function(client, data, args) {
+        var channels = (args[0]) ? args[0].split(",") : [data.target];
+        var msg = args.slice(1).join(" ") || "Bye!";
+
+        _.each(channels, function(channel) {
+          // TODO: central channel name validation
+          if (!channel.match(/^[#&]/)) {
+           return;
+          }
+
+          client.socket.part(channel, msg, function() {
+            var chan = client.findChannel(channel);
+
+            if (chan) {
+              client.removeAndCleanChannel(chan, client.options.uuid);
+            }
+
+            Komanda.vent.trigger("channel/part", client.options.uuid, channel);
+          });
+        });
+      }, 4);
+
+      Komanda.cmd("clear", function(client, data, args) {
+        $("div.channel[data-server-id=\"" + client.options.uuid + "\"][data-name=\"" + data.target + "\"] div.messages").html("");
+      }, 4);
+
+      Komanda.cmd("notice", function(client, data, args) {
+        client.socket.notice(args[0], args.slice(1).join(" "));
+        //render(true); // is this needed?
+      }, 4);
+
+      Komanda.cmd("mode", function(client, data, args) {
+        var curChan = data.target, modes;
+        if(args.length === 0) {
+          // want modes for current channel
+          client.socket.send("MODE", curChan);
+          return;
+        }
+        if(args[0].match(/^[#&]/)) {
+          // first arg is a channel, so we want that channel
+          curChan = args[0];
+          modes = args[1];
+        } else {
+          modes = args[0];
+        }
+        if(modes) {
+          // We are setting modes
+          client.socket.send("MODE", curChan, modes);
+        } else {
+          client.socket.send("MODE", curChan);
+        }
+      });
+
+      Komanda.cmd("set", function(client, data, args) {
+        var setting;
+
+        if (args.length === 0) {
+          client.statusMessage(JSON.stringify(Komanda.settings.toJSON()));
+        } else if (args.length === 1) {
+          setting = Komanda.settings.get(args[0]);
+          client.statusMessage(args[0] + " = " + _.isObject(setting) || _.isArray(setting) ? JSON.stringify(setting) : setting);
+        } else if (args.length === 2) {
+          var val;
+
+          try {
+            val = JSON.parse(args[1]);
+          } catch (e) {
+            val = args[1];
+          }
+
+          Komanda.settings.set(args[0], val);
+          setting = Komanda.settings.get(args[0]);
+          client.statusMessage(args[0] + " = " + _.isObject(setting) || _.isArray(setting) ? JSON.stringify(setting) : setting);
+        }
+      }, 4);
+
+      Komanda.cmd("quit", function(client, data, args) {
+        var quitMessage;
+        if (!_.isEmpty(args)) { // if a quit message was provided, use it.
+          quitMessage = args.join(" ");
+        } else if (!_.isEmpty(Komanda.settings.get("messages.quit"))) { // if a quit message was set in the settings, use it.
+          quitMessage = Komanda.settings.get("messages.quit");
+        } else { // if there still isn't a quit message then use the defaultQuit message [not exposed in the GUI]
+          quitMessage = Komanda.settings.get("messages.defaultQuit");
+        }
+
+        client.allowReconnect = false;
+
+        client.socket.disconnect(quitMessage);
+
+         Komanda.vent.trigger(client.options.uuid + ":disconnect", function() {
+          client.attemptingReconnect = true;
+          client.session.set("connectionOpen", false);
+
+          Komanda.connections[client.options.uuid].inReconnect = false;
+          clearInterval(client.reconnectCheck);
+          client.socket.emit("connection:abort", client.retryCount, client.retryCountCurrent);
+        });
+      }, 4);
+
+      Komanda.cmd("devtools", function(client, data, args) {
+        Komanda.vent.trigger("komanda:debug");
+      }, 4);
+
+      // aliases
+      Komanda.cmd("q", "query", 4);
+      Komanda.cmd("pm", "query", 4);
+      Komanda.cmd("m", "msg", 4);
+      Komanda.cmd("j", "join", 4);
+      Komanda.cmd("m", "msg", 4);
+
       /**
        * This event gets triggered by client.js when a message, a highlight, or a pm is received.
        * The function receives the type of notification as a parameter.
