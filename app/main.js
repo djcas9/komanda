@@ -56,8 +56,11 @@ requirejs(["config"], function(require) {
       Komanda.history = new History(50);
       Komanda.historyIndex = 0;
 
-      if (window.Notification) {
-        Komanda.notification = window.Notification;
+      // Currently Notification crashes on Windows. It does not crash
+      // node-webkit on construction, but rather later on in its
+      // deferred execution.
+      if (window.Notification && !/win/.exec(process.platform)) {
+        Komanda.Notification = window.Notification;
       }
 
       Komanda.command = Command;
