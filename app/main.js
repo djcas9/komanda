@@ -59,7 +59,7 @@ requirejs(["config"], function(require) {
       // Currently Notification crashes on Windows. It does not crash
       // node-webkit on construction, but rather later on in its
       // deferred execution.
-      if (window.Notification && !/win/.exec(process.platform)) {
+      if (window.Notification && !/win/.test(process.platform)) {
         Komanda.Notification = window.Notification;
       }
 
