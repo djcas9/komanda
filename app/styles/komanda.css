@@ -1525,6 +1525,70 @@ text-align: -webkit-match-parent;
 	color: lightgray;
 }
 
+.irc-text-foreground-0 a, .irc-text-foreground-0 a:hover {
+	color: white !important;
+}
+
+.irc-text-foreground-1 a, .irc-text-foreground-1 a:hover {
+	color: black !important;
+}
+
+.irc-text-foreground-2 a, .irc-text-foreground-2 a:hover {
+	color: navy !important;
+}
+
+.irc-text-foreground-3 a, .irc-text-foreground-3 a:hover {
+	color: green !important;
+}
+
+.irc-text-foreground-4 a, .irc-text-foreground-4 a:hover {
+	color: red !important;
+}
+
+.irc-text-foreground-5 a, .irc-text-foreground-5 a:hover {
+	color: brown !important;
+}
+
+.irc-text-foreground-6 a, .irc-text-foreground-6 a:hover {
+	color: purple !important;
+}
+
+.irc-text-foreground-7 a, .irc-text-foreground-7 a:hover {
+	color: olive !important;
+}
+
+.irc-text-foreground-8 a, .irc-text-foreground-8 a:hover {
+	color: yellow !important;
+}
+
+.irc-text-foreground-9 a, .irc-text-foreground-9 a:hover {
+	color: lightgreen !important;
+}
+
+.irc-text-foreground-10 a, .irc-text-foreground-10 a:hover {
+	color: teal !important;
+}
+
+.irc-text-foreground-11 a, .irc-text-foreground-11 a:hover {
+	color: cyan !important;
+}
+
+.irc-text-foreground-12 a, .irc-text-foreground-12 a:hover {
+	color: blue !important;
+}
+
+.irc-text-foreground-13 a, .irc-text-foreground-13 a:hover {
+	color: magenta !important;
+}
+
+.irc-text-foreground-14 a, .irc-text-foreground-14 a:hover {
+	color: gray !important;
+}
+
+.irc-text-foreground-15 a, .irc-text-foreground-15 a:hover {
+	color: lightgray !important;
+}
+
 .irc-text-background-0 {
 	background-color: white;
 }
