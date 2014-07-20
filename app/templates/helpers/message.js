@@ -1,8 +1,9 @@
 define("templates/helpers/message", [
   "app",
   "hbs/handlebars",
+  "underscore",
   "autolink"
-], function(Komanda, Handlebars) {
+], function(Komanda, Handlebars, _) {
 
   // TODO: move formatting code stuff to separate file which is referenced here
   var styles = {
@@ -28,13 +29,13 @@ define("templates/helpers/message", [
     },
 
     setColor: function (fg, bg) {
-      if (!fg) return;
+      if (_.isNaN(fg)) return;
 
       this.removeClass("irc-text-foreground-" + this.foreground);
       this.addClass("irc-text-foreground-" + fg);
       this.foreground = fg;
 
-      if (bg) {
+      if (!_.isNaN(bg)) {
         this.removeClass("irc-text-background-" + this.background);
         this.addClass("irc-text-background-" + bg);
         this.background = bg;
@@ -105,7 +106,7 @@ define("templates/helpers/message", [
           if (parts.length > 1) {
             bg = parseInt(parts[1], 10);
 
-            if (bg) {
+            if (!_.isNaN(bg)) {
               i += String(bg).length + 1;
             }
           }
