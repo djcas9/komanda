@@ -7,7 +7,7 @@
     var k, linkAttributes, option, options, pattern, v;
     options = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
 
-    pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-\u00C0-\u1FFF\u2C00-\uD7FFA-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-\u00C0-\u1FFF\u2C00-\uD7FFA-Z0-9+\u0026@#\/%=~()_|])/gi;
+    pattern = /(^|[\s\n]|>)((?:https?|ftp):\/\/[\-\u00C0-\u1FFF\u2C00-\uD7FFA-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-\u00C0-\u1FFF\u2C00-\uD7FFA-Z0-9+\u0026@#\/%=~()_|])/gi;
     if (!(options.length > 0)) {
       return this.replace(pattern, "$1<a href='$2'>$2</a>");
     }
