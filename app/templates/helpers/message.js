@@ -122,7 +122,7 @@ define("templates/helpers/message", [
       parsed += "</span>";
 
       return new Handlebars.SafeString(parsed);
-    })(message);
+    })(Handlebars.Utils.escapeExpression(message));
 
     message = Handlebars.Utils.escapeExpression(message).autoLink({
       target: "_blank", rel: "nofollow",
