@@ -748,8 +748,8 @@ define([
           } else {
             self.sendMessage(nick, to, text, message, true, true);
 
-            if (window.Notification && Komanda.settings.get("notifications.highlight")) {
-              var n = new Notification("Notice From " + nick, {
+            if (Komanda.Notification && Komanda.settings.get("notifications.highlight")) {
+              var n = new Komanda.Notification("Notice From " + nick, {
                 tag: "Komanda",
                 body: "->" + nick + "<- " + text
               });
@@ -814,8 +814,8 @@ define([
         } else {
           self.sendMessage(context.nick, context.to, context.text, context.message, true);
 
-          if (window.Notification && Komanda.settings.get("notifications.highlight")) {
-            var n = new Notification("Private Message From " + context.nick, {
+          if (Komanda.Notification && Komanda.settings.get("notifications.highlight")) {
+            var n = new Komanda.Notification("Private Message From " + context.nick, {
               tag: "Komanda",
               body: "<" + context.nick + "> " + context.text
             });
@@ -836,8 +836,8 @@ define([
         self.buildPM(nick);
         self.sendMessage(nick, to, text, message, true, false, true);
 
-        if (window.Notification && Komanda.settings.get("notifications.highlight")) {
-          var n = new Notification("Private Message From " + nick, {
+        if (Komanda.Notification && Komanda.settings.get("notifications.highlight")) {
+          var n = new Komanda.Notification("Private Message From " + nick, {
             tag: "Komanda",
             body: nick + text
           });
@@ -1228,8 +1228,8 @@ define([
         channel.append(html);
 
         if (data.highlight) {
-          if (window.Notification && Komanda.settings.get("notifications.pm")) {
-            var n = new Notification("Highlight: " + to, {
+          if (Komanda.Notification && Komanda.settings.get("notifications.pm")) {
+            var n = new Komanda.Notification("Highlight: " + to, {
               tag: "Komanda",
               body: "<" + nick + "> " + text
             });
