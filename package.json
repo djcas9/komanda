@@ -46,7 +46,7 @@
     "grunt-cli": "*"
   },
   "scripts": {
-    "postinstall": "node_modules/.bin/bower install"
+    "postinstall": "bower install"
   },
   "dependencies": {
     "grunt": "^0.4.5",

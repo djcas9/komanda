@@ -352,16 +352,16 @@ module.exports = function(grunt) {
     });
 
     grunt.task.run([
-    "clean:some",
-    "npm-install",
-    "jshint",
-    "processhtml",
-    "copy",
-    "requirejs",
-    "styles",
-    "cssmin",
-    "cleanBuildDir",
-    "nodewebkit"
+      "clean:some",
+      "npm-install",
+      "jshint",
+      "processhtml",
+      "copy",
+      "requirejs",
+      "styles",
+      "cssmin",
+      "cleanBuildDir",
+      "nodewebkit"
     ]);
   });
 

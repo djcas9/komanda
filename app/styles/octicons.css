@@ -1,9 +1,6 @@
 @font-face {
   font-family: 'octicons';
-  src: url('fonts/octicons/octicons.eot?#iefix') format('embedded-opentype'),
-       url('fonts/octicons/octicons.woff') format('woff'),
-       url('fonts/octicons/octicons.ttf') format('truetype'),
-       url('fonts/octicons/octicons.svg#octicons') format('svg');
+  src: url('fonts/octicons/octicons.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -20,10 +17,7 @@
   display: inline-block;
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   cursor: default;
 }
@@ -33,10 +27,7 @@
   display: inline-block;
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   cursor: default;
 }
