@@ -445,6 +445,10 @@ user-select: none;
 	position: relative;
 }
 
+#sidebar .session:not(.channel-list-hidden) .server-metadata {
+	display: none;
+}
+
 #sidebar .session .server i.show-hide-icon,
 div.header-box i.show-hide-icon{
 	margin: 0;
@@ -460,6 +464,10 @@ div.header-box i.show-hide-icon{
 	display: block;
 	position: relative;
 	overflow: hidden;
+}
+
+#sidebar .session.channel-list-hidden .channel-list {
+	display: none;
 }
 
 #sidebar .session .channel-list ul.channels{

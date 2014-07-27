@@ -29,8 +29,7 @@ define([
       e.stopImmediatePropagation();
 
       var parent = $(e.currentTarget).parents(".session");
-      parent.find(".channel-list").toggle();
-      parent.find(".server-metadata").toggle();
+      parent.toggleClass("channel-list-hidden");
     },
 
     onRender: function() {
