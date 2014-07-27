@@ -50,9 +50,9 @@ define([
 
         if (Komanda.store[server].hasOwnProperty(channel)) {
           if (Komanda.store[server][channel] == 1) {
-            $this.find("div.status").addClass("new-messages");
+            $this.addClass("new-messages");
           } else if (Komanda.store[server][channel] == 2) {
-            $this.find("div.status").addClass("highlight");
+            $this.addClass("highlight");
           }
         }
 
