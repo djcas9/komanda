@@ -27,6 +27,10 @@ define([
           "pitch-black": {
             name: "Pitch Black",
             css: "themes/pitch-black/pitch-black.css"
+          },
+          "squelch": {
+            name: "Squelch",
+            css: "themes/squelch/squelch.css"
           }
         }
       },
