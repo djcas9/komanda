@@ -773,8 +773,6 @@ div.message .body .nickname{
 	position: relative;
 	display: inline-block;
 	text-align: right;
-	margin-left: 5px;
-	margin-right: 5px;
 }
 
 div.message .body .text{
