@@ -1260,9 +1260,9 @@ define([
         }
 
         if (Komanda.store[server][(flip ? nick : to)] === 1) {
-          $("li.channel-item[data-server-id=\"" + server + "\"][data-name=\"" + (flip ? nick : to) + "\"] div.status").addClass("new-messages");
+          $("li.channel-item[data-server-id=\"" + server + "\"][data-name=\"" + (flip ? nick : to) + "\"]").addClass("new-messages");
         } else {
-          $("li.channel-item[data-server-id=\"" + server + "\"][data-name=\"" + (flip ? nick : to) + "\"] div.status").addClass("highlight");
+          $("li.channel-item[data-server-id=\"" + server + "\"][data-name=\"" + (flip ? nick : to) + "\"]").addClass("highlight");
         }
       }
 

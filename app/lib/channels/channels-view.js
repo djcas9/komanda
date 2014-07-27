@@ -69,8 +69,8 @@ define([
       Komanda.store[server].count[channel] = 0;
       Komanda.vent.trigger("komanda:update:badge");
 
-      item.find("div.status").removeClass("new-messages");
-      item.find("div.status").removeClass("highlight");
+      item.removeClass("new-messages");
+      item.removeClass("highlight");
       $("li.channel-item").removeClass("selected");
       item.addClass("selected");
 

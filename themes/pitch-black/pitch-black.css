@@ -170,14 +170,13 @@ border-radius: 100px 100px 100px 100px;
 	background-color: #000;	
 }
 
-#sidebar .session .channel-list ul.channels li div.status.new-messages{
-	background-color: #d8bc13;
+#sidebar .session .channel-list ul.channels li.new-messages div.status{
+	background-color: #ff2a1d;
 }
 
-#sidebar .session .channel-list ul.channels li div.status.highlight{
-	background-color: #a31300;
+#sidebar .session .channel-list ul.channels li.highlight div.status{
+	background-color: #fcd900;
 }
-
 /* @end */
 
 
