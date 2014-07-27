@@ -789,7 +789,7 @@ define([
     };
 
     self.socket.addListener("message", function(nick, to, text, message) {
-      message.timestamp = Date.now();
+      if (!message.timestamp) message.timestamp = Date.now();
 
       var context = {
         client: self,
@@ -829,17 +829,31 @@ define([
     });
 
     self.socket.addListener("action", function(nick, to, text, message) {
+      if (!message.timestamp) message.timestamp = Date.now();
+
+      var context = {
+        client: self,
+        channel: self.findChannel(to),
+        nick: nick,
+        to: to,
+        text: text,
+        message: message,
+        toChannel: Channel.isChannel(to)
+      };
+
+      handleZNCBufferPlaybackTimestamp(context);
+
       if (Channel.isChannel(to)) {
-        self.sendMessage(nick, to, text, message, false, false, true);
+        self.sendMessage(context.nick, context.to, context.text, context.message, false, false, true);
       } else {
         // PM
-        self.buildPM(nick);
-        self.sendMessage(nick, to, text, message, true, false, true);
+        self.buildPM(context.nick);
+        self.sendMessage(context.nick, context.to, context.text, context.message, true, false, true);
 
         if (Komanda.Notification && Komanda.settings.get("notifications.highlight")) {
-          var n = new Komanda.Notification("Private Message From " + nick, {
+          var n = new Komanda.Notification("Private Message From " + context.nick, {
             tag: "Komanda",
-            body: nick + text
+            body: context.nick + context.text
           });
 
           n.onClick = function() {
