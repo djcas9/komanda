@@ -25,7 +25,7 @@ html, body{
 	background-image: linear-gradient(top, rgba(59, 59, 67, 0.80), rgba(38, 39, 44, 0.80));
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#3b3b43', EndColorStr='#26272c');
 	border-bottom: 1px solid #000;
-	
+
 }
 
 #header .title{
@@ -62,7 +62,7 @@ html, body{
 	padding-top: 3px;
 }
 #sidebar:before {
-	content: "SERVERS"	
+	content: "SERVERS"
 }
 
 #sidebar .session:first-child {
@@ -146,7 +146,7 @@ div.break{
 }
 
 #sidebar .session .channel-list ul.channels li:hover{
-	background-color: #333;	
+	background-color: #333;
 	color: #eeeeee;
 }
 
@@ -170,7 +170,7 @@ div.break{
 }
 
 #sidebar .session .channel-list ul.channels li.offline div.status{
-	background-color: #ff2a1d !important;	
+	background-color: #ff2a1d !important;
 }
 
 #sidebar .session .channel-list ul.channels li.new-messages{
@@ -245,7 +245,7 @@ div.header-box {
 
 .channel .names div.user:hover,
 .channel .names div.user.selected:hover{
-	background-color: #454545;	
+	background-color: #454545;
 	color: #eeeeee;
 }
 
@@ -258,7 +258,7 @@ div.header-box {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-	background-color: #171717;	
+	background-color: #171717;
 	border-bottom: 1px solid black;
 	font-size: 0.8em;
 	color: #777;
@@ -383,7 +383,7 @@ box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.0
 }
 
 #master-control .master-control-button{
-	
+
 	/* cursor: pointer; */
 	vertical-align: middle;
 	text-align: center;
@@ -416,11 +416,11 @@ box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.0
 }
 
 #master-control .add-server{
-	
+
 }
 
 #master-control .settings{
-	
+
 }
 
 /* @end */
@@ -456,7 +456,7 @@ box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.0
 	border-radius: 5px;
 	border: 1px solid rgba(0,0,0,0.51);
 	box-shadow: 0px 0px 0px rgba( 255,255,255,0.05 ), inset 0px 1px 0px rgba( 255,255,255,0.12);
-	background: #2f2f2f;	
+	background: #2f2f2f;
 	top: -5px;
 	color: #777;
 	text-shadow: 0px 1px 1px black;
@@ -476,7 +476,8 @@ div.form-box label{
 }
 
 div.form-box input[type='text'],
-div.form-box input[type='password']{
+div.form-box input[type='password'],
+div.form-box textarea {
 	width: 300px;
 	resize: none;
 	outline: none;
@@ -505,8 +506,8 @@ div.form-box input[type='password']{
 	-moz-transition: background 0.3s ease;
 	-o-transition: background 0.3s ease;
 	transition: background 0.3s ease;
-	
-	
+
+
 	font-size: 13px;
 	color: #2e2e2e;
 	font-weight: bold;
@@ -549,7 +550,7 @@ body.zenmode #sidebar{
 body.zenmode #sidebar,
 body.zenmode .channel button.zen-button,
 body.zenmode .channel .input,
-body.zenmode .channel .messages, 
+body.zenmode .channel .messages,
 body.zenmode .channel .topic{
 	right: 0 !important;
 }

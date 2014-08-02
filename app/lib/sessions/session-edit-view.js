@@ -25,8 +25,16 @@ define([
       this._modelBinder.unbind();
     },
 
+    onTextareaKeyDown: function(e) {
+      if(e.keyCode === 13) {
+        // enter key should allow a new line, not close limpbox
+        e.stopPropagation();
+      }
+    },
+
     events: {
-      "click button.save-new-session": "saveSession"
+      "click button.save-new-session": "saveSession",
+      "keydown #server-commands": "onTextareaKeyDown"
     },
 
     cancel: function(e) {

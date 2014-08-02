@@ -476,7 +476,8 @@ div.form-box label{
 }
 
 div.form-box input[type='text'],
-div.form-box input[type='password']{
+div.form-box input[type='password'],
+div.form-box textarea {
 	width: 300px;
 	resize: none;
 	outline: none;

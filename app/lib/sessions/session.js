@@ -23,6 +23,7 @@ define([
       channels: [
         "#komanda"
       ],
+      connectCommands: [],
       retryCount: 20,
       retryDelay: 5000,
       secure: false,
@@ -123,6 +124,12 @@ define([
        if (data.hasOwnProperty("channels")) {
          if (typeof data.channels === "string") {
            data.channels = data.channels.split(",");
+         }
+       }
+
+       if (data.hasOwnProperty("connectCommands")) {
+         if (typeof data.connectCommands === "string") {
+           data.connectCommands = data.connectCommands.replace(/\r/g, "").split("\n");
          }
        }
 
