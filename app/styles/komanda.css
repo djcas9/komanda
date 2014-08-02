@@ -130,21 +130,21 @@ code, pre {
 
 .scrollbar::-webkit-scrollbar-track,
 .scrollbar-hide::-webkit-scrollbar-track {
-  background-color: #30333c;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
+    background-color: #30333c;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb,
 .scrollbar-hide::-webkit-scrollbar-thumb {
-  background-color: #83888c;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
+    background-color: #83888c;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb:hover,
 .scrollbar-hide::-webkit-scrollbar-thumb:hover {
-  background-color: #93989c;
+    background-color: #93989c;
 }
 
 .scrollbar::-webkit-resizer,
@@ -156,7 +156,7 @@ code, pre {
 .scrollbar-hide::-webkit-scrollbar-corner,
 .scrollbar-hide::-webkit-scrollbar-button,
 .scrollbar-hide::-webkit-scrollbar-track-piece {
-  display: none;
+    display: none;
 }
 
 /* @end */
@@ -189,7 +189,6 @@ html, body{
 #header{
     -webkit-touch-callout: none;
     user-select: none;
-
     height: 30px;
     display: block; 
 }
@@ -237,7 +236,7 @@ html, body{
     display: inline-block;
     float: right;
     margin-right: 5px;
-    color: #000000;
+    color: #000;
     -webkit-transform: rotate(90deg);
     -webkit-app-region: no-drag;
 }
@@ -248,8 +247,7 @@ html, body{
 
 #header .window-controls .window-button{
     cursor: pointer;
-    background-color: #000000;
-    
+    background-color: #000;
     border-radius: 100px 100px 100px 100px;
     width: 13px;
     height: 13px;
@@ -329,14 +327,12 @@ div.header-box{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-    
     height: 40px;
     line-height: 40px;
     display: block;
     position: relative;
     padding-left: 10px;
     padding-right: 10px;
-    
     overflow: hidden;
     font-size: 0.9em;
 }
@@ -348,7 +344,6 @@ div.header-box{
     right: 30px;
     bottom: 0;
     left: 10px;
-    
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -379,7 +374,6 @@ div.break{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-
     cursor: pointer;
     height: 4px;
     padding-left: 10px;
@@ -423,7 +417,6 @@ div.header-box i.show-hide-icon{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-
     cursor: pointer;
     height: 35px;
     line-height: 35px;
@@ -494,7 +487,6 @@ div.header-box i.show-hide-icon{
     height: 20px;
     line-height: 15px;
     text-align: center;
-    
     padding: 8px 10px;
     margin: 15px 5px 0 0;
     right: 180px;
@@ -535,11 +527,9 @@ div.header-box i.show-hide-icon{
     padding-left: 10px;
     padding-right: 10px;
     cursor: pointer;
-    
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-    
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -575,7 +565,6 @@ div.header-box i.show-hide-icon{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  
     height: 40px;
     display: block;
     position: absolute;
@@ -601,7 +590,6 @@ div.header-box i.show-hide-icon{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  
     height: 39px;
     display: block;
     position: absolute;
@@ -613,7 +601,6 @@ div.header-box i.show-hide-icon{
     padding-right: 45px;
     background-color: #495561;
     font-size: 0.9em;   
-    
     box-shadow: 0px 0px 0px 1px rgba( 0,0,0,1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
 }
 
@@ -722,7 +709,6 @@ div.message .body .text .embed-items .show-more{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-
     cursor: pointer;
     display: inline-block;
     position: relative;
@@ -770,7 +756,6 @@ div.message .body .text img{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-    
     overflow: hidden;
     padding-left: 10px;
     display: block;
@@ -849,9 +834,7 @@ span.komanda-box-title-other{
     overflow: hidden;
     padding-left: 20px;
     width: auto;
-
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
-
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
     background-color: #151a1f;
@@ -973,7 +956,6 @@ span.komanda-box-title-other{
     padding-left: 20px;
     padding-right: 20px;
     height: 60px;
-
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
     position: relative;
@@ -1163,10 +1145,11 @@ div.message.github-message .body{
 }
 
 .plugin-button{
-    background: #1d1e21;
     border: none;
     outline: none;
     border-radius: 5px;
+    background-color: #d5d6d9;
+    background-image: linear-gradient(to bottom, #d5d6d9, #afb0b7);
     box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
     text-shadow: rgba(255,255,255,0.5) 0 1px 0;
     padding-right: 8px;
@@ -1194,7 +1177,6 @@ div.message.github-message .body{
     width: 300px;
     color: #949494;
     font-size: 0.8em;
-    
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1296,6 +1278,7 @@ div.github-wrapper .github-body ul{
 }
 
 div.github-wrapper .github-body ul.commits{
+
     margin-top: 5px;
     margin-bottom: 5px;
     list-style-type: none;
