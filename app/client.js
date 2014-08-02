@@ -390,6 +390,11 @@ define([
         }
       }
 
+      // execute commands called on connection
+      _.each(self.session.get("connectCommands"), function(cmd) {
+        self.socket.send.apply(self.socket, cmd.split(" "));
+      });
+
       // self.bindReconnect();
       $("li.channel-item[data-server-id=\"" + self.options.uuid + "\"][data-name=\"Status\"]").removeClass("offline");
     });
@@ -766,7 +771,7 @@ define([
     // TODO: move to plugin
     var handleZNCBufferPlaybackTimestamp = function (context) {
       if (!context.channel) return;
-      
+
       if (context.message.prefix === "***!znc@znc.in") {
         if (context.text === "Buffer Playback...") {
           context.channel.zncbuffer = true;

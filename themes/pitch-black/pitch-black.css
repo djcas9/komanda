@@ -18,7 +18,7 @@ html, body{
 #header{
 	background-color: #171717;
 	border-bottom: 1px solid #000;
-	
+
 }
 
 #header .title{
@@ -32,7 +32,7 @@ html, body{
 #header .window-controls .window-button{
 	cursor: pointer;
 	background-color: #383838;
-	
+
 -webkit-border-radius: 100px 100px 100px 100px;
 -moz-border-radius: 100px 100px 100px 100px;
 border-radius: 100px 100px 100px 100px;
@@ -141,7 +141,7 @@ div.header-box:hover i.show-hide-icon{
 #sidebar .session .channel-list ul.channels li div.status{
 	cursor: pointer;
 	background-color: #262626;
-	
+
 -webkit-border-radius: 100px 100px 100px 100px;
 -moz-border-radius: 100px 100px 100px 100px;
 border-radius: 100px 100px 100px 100px;
@@ -163,11 +163,11 @@ border-radius: 100px 100px 100px 100px;
 }
 
 #sidebar .session .channel-list ul.channels li.offline div.status{
-	background-color: #ff2600;	
+	background-color: #ff2600;
 }
 
 #sidebar .session .channel-list ul.channels li.selected div.status{
-	background-color: #000;	
+	background-color: #000;
 }
 
 #sidebar .session .channel-list ul.channels li.new-messages div.status{
@@ -219,7 +219,7 @@ border-radius: 100px 100px 100px 100px;
 
 .channel .names div.user:hover,
 .channel .names div.user.selected:hover{
-	background-color: #000;	
+	background-color: #000;
 }
 
 .full{
@@ -234,14 +234,14 @@ border-radius: 100px 100px 100px 100px;
 
 	background-color: #000;
 	border-bottom: 1px solid #000;
-	font-size: 0.9em;	
+	font-size: 0.9em;
 	-webkit-box-shadow: 0px 6px 8px -4px rgba(0,0,0,0.5);
 	box-shadow: 0px 6px 8px -4px rgba(0,0,0,0.5);
 }
 
 .channel .input{
 	background-color: #000;
-	
+
 -webkit-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
 -moz-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
 -o-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
@@ -285,7 +285,7 @@ div.message .body .text{
 
 div.message .body .nickname.system-message,
 div.message .body .text.system-message{
-	color: #717171;	
+	color: #717171;
 }
 
 div.message .body .text a{
@@ -293,7 +293,7 @@ div.message .body .text a{
 }
 
 div.message .body .text a:hover{
-	color: #abcddf;	
+	color: #abcddf;
 }
 
 div.message .body .text .embed-items .show-more{
@@ -331,7 +331,7 @@ div.message .body .text .embed-items .show-more{
 #master-control{
 	background-color: #000;
 	font-size: 0.9em;
-	
+
 -webkit-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
 -moz-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
 -o-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
@@ -343,10 +343,10 @@ box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.0
 	cursor: pointer;
 	vertical-align: middle;
 	text-align: center;
-	
+
 	font-size: 0.8em;
-	
-	
+
+
 	border-radius: 5px;
 	border: 1px solid rgba(0,0,0,0.51);
 	box-shadow: 0px 1px 0px rgba( 255,255,255,0.05 ), inset 0px 1px 0px rgba( 255,255,255,0.12);
@@ -372,11 +372,11 @@ box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 0.7), 0px 2px 0px rgba( 255,255,255,0.0
 }
 
 #master-control .add-server{
-	
+
 }
 
 #master-control .settings{
-	
+
 }
 
 /* @end */
@@ -395,7 +395,8 @@ div.form-box label{
 }
 
 div.form-box input[type='text'],
-div.form-box input[type='password']{
+div.form-box input[type='password'],
+div.form-box textarea {
 	width: 300px;
 	resize: none;
 	outline: none;
@@ -424,8 +425,8 @@ div.form-box input[type='password']{
 	-moz-transition: background 0.3s ease;
 	-o-transition: background 0.3s ease;
 	transition: background 0.3s ease;
-	
-	
+
+
 	font-size: 13px;
 	color: #2e2e2e;
 	font-weight: bold;
@@ -468,7 +469,7 @@ body.zenmode #sidebar{
 body.zenmode #sidebar,
 body.zenmode .channel button.zen-button,
 body.zenmode .channel .input,
-body.zenmode .channel .messages, 
+body.zenmode .channel .messages,
 body.zenmode .channel .topic{
 	right: 0 !important;
 }
