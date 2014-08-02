@@ -13,35 +13,30 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 body {
-	line-height: 1;
+    line-height: 1;
 }
 ol, ul {
-	list-style: none;
+    list-style: none;
 }
 blockquote, q {
-	quotes: none;
+    quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+    content: '';
+    content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 /**
@@ -63,80 +58,47 @@ table {
     clear: both;
 }
 
-/**
- * For IE 6/7 only
- * Include this rule to trigger hasLayout and contain floats.
- */
-.cf {
-    *zoom: 1;
-}
-
 /* @end */
 
 /* @group fonts */
 
 @font-face {
     font-family: 'Lato';
-    src: url('fonts/lato-hai-webfont.eot');
-    src: url('fonts/lato-hai-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/lato-hai-webfont.woff') format('woff'),
-         url('fonts/lato-hai-webfont.ttf') format('truetype'),
-         url('fonts/lato-hai-webfont.svg#latohairline') format('svg');
+    src: url('fonts/lato-hairline.ttf') format('truetype');
     font-weight: 100;
     font-style: normal;
-
 }
 
 @font-face {
     font-family: 'Lato';
-    src: url('fonts/lato-lig-webfont.eot');
-    src: url('fonts/lato-lig-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/lato-lig-webfont.woff') format('woff'),
-         url('fonts/lato-lig-webfont.ttf') format('truetype'),
-         url('fonts/lato-lig-webfont.svg#latolight') format('svg');
+    src: url('fonts/lato-light.ttf') format('truetype');
     font-weight: 300;
     font-style: normal;
-
 }
 
 @font-face {
     font-family: 'Lato';
-    src: url('fonts/lato-reg-webfont.eot');
-    src: url('fonts/lato-reg-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/lato-reg-webfont.woff') format('woff'),
-         url('fonts/lato-reg-webfont.ttf') format('truetype'),
-         url('fonts/lato-reg-webfont.svg#latoregular') format('svg');
+    src: url('fonts/lato-regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
-
 }
 
 @font-face {
     font-family: 'Lato';
-    src: url('fonts/lato-bol-webfont.eot');
-    src: url('fonts/lato-bol-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/lato-bol-webfont.woff') format('woff'),
-         url('fonts/lato-bol-webfont.ttf') format('truetype'),
-         url('fonts/lato-bol-webfont.svg#latobold') format('svg');
+    src: url('fonts/lato-bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
-
 }
 
 @font-face {
     font-family: 'Lato';
-    src: url('fonts/lato-bla-webfont.eot');
-    src: url('fonts/lato-bla-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/lato-bla-webfont.woff') format('woff'),
-         url('fonts/lato-bla-webfont.ttf') format('truetype'),
-         url('fonts/lato-bla-webfont.svg#latoblack') format('svg');
+    src: url('fonts/lato-black-regular.ttf') format('truetype');
     font-weight: 900;
     font-style: normal;
-
 }
 
 code, pre {
-	font-family: "Courier New", Courier, mono;
+    font-family: "Courier New", Courier, mono;
 }
 
 /* @end */
@@ -145,44 +107,44 @@ code, pre {
 
 .scrollbar,
 .scrollbar-hide {
-	-webkit-overflow-scrolling: touch !important;
-	overflow-y: overlay !important;
-	overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overflow-y: overlay !important;
+    overflow-x: hidden !important;
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: 5px;
+    width: 5px;
 }
 
 .scrollbar-hide::-webkit-scrollbar{
-	opacity: 0 !important;
-	display: none !important;
-  width: 5px;	
+    opacity: 0 !important;
+    display: none !important;
+    width: 5px;   
 }
 
 .scrollbar-hide:hover::-webkit-scrollbar{
-	opacity: 1 !important;
-	display: block !important;
-  width: 5px;	
+    opacity: 1 !important;
+    display: block !important;
+    width: 5px;   
 }
 
 .scrollbar::-webkit-scrollbar-track,
 .scrollbar-hide::-webkit-scrollbar-track {
-  background-color: #30333c;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
+    background-color: #30333c;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb,
 .scrollbar-hide::-webkit-scrollbar-thumb {
-  background-color: #83888c;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
+    background-color: #83888c;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb:hover,
 .scrollbar-hide::-webkit-scrollbar-thumb:hover {
-  background-color: #93989c;
+    background-color: #93989c;
 }
 
 .scrollbar::-webkit-resizer,
@@ -194,7 +156,7 @@ code, pre {
 .scrollbar-hide::-webkit-scrollbar-corner,
 .scrollbar-hide::-webkit-scrollbar-button,
 .scrollbar-hide::-webkit-scrollbar-track-piece {
-  display: none;
+    display: none;
 }
 
 /* @end */
@@ -202,21 +164,22 @@ code, pre {
 /* @group Main */
 
 *, *:before, *:after {
-  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
- }
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
 html, body{
- 	-webkit-font-smoothing: antialiased;
-	overflow: hidden;	
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;   
 }
 
 #wrapper{
-	display: block;
-	position: absolute;
-	top: 30px;
-	right: 0;
-	bottom: 0;
-	left: 0;
+    display: block;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 /* @end */
@@ -224,97 +187,89 @@ html, body{
 /* @group Header */
 
 #header{
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-
-	height: 30px;
-	display: block;	
+    -webkit-touch-callout: none;
+    user-select: none;
+    height: 30px;
+    display: block; 
 }
 
 #header .title{
-	height: 30px;
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	line-height: 30px;
+    height: 30px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    line-height: 30px;
 }
 
 #header .window-controls{
-	height: 30px;
-	z-index: 9999;
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	margin-left: 10px;
-	margin-top: 9px;
+    height: 30px;
+    z-index: 9999;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin-left: 10px;
+    margin-top: 9px;
 }
 
 #header .window-fullscreen-controls{
-	height: 30px;
-	z-index: 9999;
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	margin-right: 10px;
-	margin-top: 7px;
+    height: 30px;
+    z-index: 9999;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin-right: 10px;
+    margin-top: 7px;
 }
 
 #header .window-button-fullscreen {
-	cursor: pointer;
-	width: 13px;
-	height: 13px;
-	display: inline-block;
-	float: right;
-	margin-right: 5px;
-	color: #000000;
-	-webkit-transform: rotate(90deg);
-	-webkit-app-region: no-drag;
+    cursor: pointer;
+    width: 13px;
+    height: 13px;
+    display: inline-block;
+    float: right;
+    margin-right: 5px;
+    color: #000;
+    -webkit-transform: rotate(90deg);
+    -webkit-app-region: no-drag;
 }
 
 #header .window-button-fullscreen:hover{
-	color: #f7f7f7;
+    color: #f7f7f7;
 }
 
 #header .window-controls .window-button{
-	cursor: pointer;
-	background-color: #000000;
-	
--webkit-border-radius: 100px 100px 100px 100px;
--moz-border-radius: 100px 100px 100px 100px;
-border-radius: 100px 100px 100px 100px;
-	width: 13px;
-	height: 13px;
-	display: inline-block;
-	float: left;
-	margin-right: 5px;
+    cursor: pointer;
+    background-color: #000;
+    border-radius: 100px 100px 100px 100px;
+    width: 13px;
+    height: 13px;
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
     -webkit-app-region: no-drag;
 }
 
 /*#header .window-controls .window-button.close,*/
 #header .window-controls .window-button.close:hover{
-	background-color: #ff2600;
+    background-color: #ff2600;
 }
 
 /*#header .window-controls .window-button.minimize,*/
 #header .window-controls .window-button.minimize:hover{
-	background-color: #ffe900;
+    background-color: #ffe900;
 }
 
 /*#header .window-controls .window-button.maximize,*/
 #header .window-controls .window-button.maximize:hover{
-	background-color: #10cf00;
+    background-color: #10cf00;
 }
 
 
@@ -323,12 +278,12 @@ border-radius: 100px 100px 100px 100px;
 /* @group Content  */
 
 #content{
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 200px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 200px;
 }
 
 /* @end */
@@ -336,113 +291,95 @@ border-radius: 100px 100px 100px 100px;
 /* @group Sidebar */
 
 #sidebar{
-	width: 200px;
-	position: absolute;
-	display: block;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	padding: 0;
-	overflow-x: hidden;
-	overflow-y: hidden;
+    width: 200px;
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 #sidebar .sessions-wrapper{
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 49px;
-	left: 0;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 49px;
+    left: 0;
 }
 
 #sidebar .session{
-	display: block;
-	position: relative;
-	overflow: hidden;
+    display: block;
+    position: relative;
+    overflow: hidden;
 }
 
 #sidebar .session.ui-sortable-helper{
-	border-top: 1px solid rgba(0,0,0,0.5);
-	border-bottom: 1px solid rgba(0,0,0,0.4);
+    border-top: 1px solid rgba(0,0,0,0.5);
+    border-bottom: 1px solid rgba(0,0,0,0.4);
 
 }
 
 #sidebar .session .server,
 div.header-box{
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-	
-	
-	height: 40px;
-	line-height: 40px;
-	display: block;
-	position: relative;
-	padding-left: 10px;
-	padding-right: 10px;
-	
-	overflow: hidden;
-	font-size: 0.9em;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow: hidden;
+    font-size: 0.9em;
 }
 
 #sidebar .session .server .server-inside{
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 30px;
-	bottom: 0;
-	left: 10px;
-	
-	  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 30px;
+    bottom: 0;
+    left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #sidebar .session .server{
-	cursor: pointer !important;
-	padding-right: 30px;
+    cursor: pointer !important;
+    padding-right: 30px;
 }
 
 #sidebar .session .server i,
 div.header-box i{
-	margin-right: 10px;
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
+    margin-right: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 #sidebar .session .server i{
-	z-index: 99999;
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
+    z-index: 99999;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 #sidebar .session .server-metadata,
 div.break{
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-
-	cursor: pointer;
-	height: 4px;
-	padding-left: 10px;
-	padding-right: 10px;
-	display: block;
-	position: relative;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    height: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: block;
+    position: relative;
 }
 
 #sidebar .session:not(.channel-list-hidden) .server-metadata {
@@ -451,19 +388,19 @@ user-select: none;
 
 #sidebar .session .server i.show-hide-icon,
 div.header-box i.show-hide-icon{
-	margin: 0;
-	display: block;
-	position: absolute;
-	top: 1px;
-	width: 30px;
-	height: 30px;
-	right: -10px;
+    margin: 0;
+    display: block;
+    position: absolute;
+    top: 1px;
+    width: 30px;
+    height: 30px;
+    right: -10px;
 }
 
 #sidebar .session .channel-list{
-	display: block;
-	position: relative;
-	overflow: hidden;
+    display: block;
+    position: relative;
+    overflow: hidden;
 }
 
 #sidebar .session.channel-list-hidden .channel-list {
@@ -471,58 +408,54 @@ div.header-box i.show-hide-icon{
 }
 
 #sidebar .session .channel-list ul.channels{
-	position: relative;
-	display: block;
-	overflow: hidden;
+    position: relative;
+    display: block;
+    overflow: hidden;
 }
 
 #sidebar .session .channel-list ul.channels li{
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-
-	cursor: pointer;
-	height: 35px;
-	line-height: 35px;
-	padding-left: 10px;
-	padding-right: 20px;
-	display: block;
-	position: relative;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+    padding-right: 20px;
+    display: block;
+    position: relative;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
 #sidebar .session .channel-list ul.channels li span.user-count{
-	height: 15px;
-	line-height: 15px;
-	position: relative;
-	display: inline-block;
-	overflow: hidden;
-	padding-right: 5px;
-	padding-left: 5px;
-	top: -4px;
+    height: 15px;
+    line-height: 15px;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    padding-right: 5px;
+    padding-left: 5px;
+    top: -4px;
 }
 
 #sidebar .session .channel-list ul.channels li i{
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 10px;
-	font-size: 0.7em;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 0.7em;
 }
 
 #sidebar .session .channel-list ul.channels li div.status{
-	cursor: pointer;
-	width: 10px;
-	height: 10px;
-	display: inline-block;
-	float: left;
-	margin-right: 10px;
-	margin-top: 11px;
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+    margin-top: 11px;
 }
 
 /* @end */
@@ -530,91 +463,80 @@ user-select: none;
 /* @group Channel */
 
 .channel{
-	display: none;
-	position: absolute;
-	overflow: hidden;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+    display: none;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .channel[data-name="Status"]{
-	display: block;
+    display: block;
 }
 
 .channel button.zen-button{
-	outline: none;
-	border: none;
-	z-index: 99999;
-	cursor: pointer;
-	vertical-align: middle;
-	display: inline-block;
-	position: absolute;
-	height: 20px;
-	line-height: 15px;
-	text-align: center;
-	margin-right: 6px;
-	
-	
-	outline: none;
-padding: 8px 10px;
-margin: 15px 5px 0 0;
-display: inline-block;
-	right: 180px;
-	padding-right: 10px;
-	padding-left: 10px;
-	top: -9px;
+    outline: none;
+    border: none;
+    z-index: 99999;
+    cursor: pointer;
+    vertical-align: middle;
+    display: inline-block;
+    position: absolute;
+    height: 20px;
+    line-height: 15px;
+    text-align: center;
+    padding: 8px 10px;
+    margin: 15px 5px 0 0;
+    right: 180px;
+    padding-right: 10px;
+    padding-left: 10px;
+    top: -9px;
 }
 
 .channel button.zen-button.full{
-	right: 0 !important;
+    right: 0 !important;
 }
 
-.channel .channel-names-holder{
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	width: 180px;
+.channel .channel-names-holder,
+.channel .names{
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 180px;
 }
 
 .channel .names{
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	width: 180px;
 }
 
 .channel .names .user-list{
-	display: block;
-	position: absolute;
-	top: 45px;
-	right: 0;
-	bottom: 0;
-	left: 0;
+    display: block;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .channel .names div.user{
-	height: 34px;
-	line-height: 34px;
-	padding-left: 10px;
-	padding-right: 10px;
-	cursor: pointer;
-	
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
+    height: 34px;
+    line-height: 34px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .channel .names div.user i {
-	margin-right: 5px;
+    margin-right: 5px;
 }
 
 .channel .names div.user[data-value="@"] i{
@@ -624,97 +546,83 @@ user-select: none;
 }
 
 .channel .messages{
-	display: block;
-	position: absolute;
-	top: 40px;
-	right: 180px;
-	bottom: 51px;
-	left: 0;
-	overflow-x: hidden;
-	overflow-y: scroll;
+    display: block;
+    position: absolute;
+    top: 40px;
+    right: 180px;
+    bottom: 51px;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .full{
-	right: 0 !important;
+    right: 0 !important;
 }
 
 .channel .topic{
-	z-index: 999;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-	height: 40px;
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 180px;
-	left: 0;
-	line-height: 40px;
-	padding-left: 10px;
-	padding-right: 45px;
+    z-index: 999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 40px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 180px;
+    left: 0;
+    line-height: 40px;
+    padding-left: 10px;
+    padding-right: 45px;
 }
 
 .channel.github-plugin .messages{
-	top: 80px;	
+    top: 80px;  
 }
 
 .channel.github-plugin .topic{
-	-webkit-box-shadow: none;
-	box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 .channel .github-plugin-bar{
-	z-index: 999;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-	height: 39px;
-	display: block;
-	position: absolute;
-	top: 40px;
-	right: 180px;
-	left: 0;
-	line-height: 39px;
-	padding-left: 10px;
-	padding-right: 45px;	
-	
-	z-index: 999;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-	background-color: #495561;
-
-	font-size: 0.9em;	
-	
--webkit-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
--moz-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
--o-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
--ms-box-shadow: 0px 0px 0px 1px rgba( 0,0,0, 1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
-box-shadow: 0px 0px 0px 1px rgba( 0,0,0,1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+    z-index: 999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 39px;
+    display: block;
+    position: absolute;
+    top: 40px;
+    right: 180px;
+    left: 0;
+    line-height: 39px;
+    padding-left: 10px;
+    padding-right: 45px;
+    background-color: #495561;
+    font-size: 0.9em;   
+    box-shadow: 0px 0px 0px 1px rgba( 0,0,0,1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
 }
 
 .channel .input{
-	left: 0;
-	bottom: 0;
-	right: 180px;
-	display: -webkit-flex;
-	position: absolute;
-	height: 50px;
-	overflow: hidden;
+    left: 0;
+    bottom: 0;
+    right: 180px;
+    display: -webkit-flex;
+    position: absolute;
+    height: 50px;
+    overflow: hidden;
 }
 
 .channel .input input,
 .channel .input textarea{
-	resize: none;
-	outline: none;
-	-webkit-flex: 1;
-	clear: both;
-	position: relative;
-	padding: 7px;
-	margin: 4px 3px;
+    resize: none;
+    outline: none;
+    -webkit-flex: 1;
+    clear: both;
+    position: relative;
+    padding: 7px;
+    margin: 4px 3px;
 }
 
 /* @end */
@@ -722,111 +630,107 @@ box-shadow: 0px 0px 0px 1px rgba( 0,0,0,1), 0px 2px 0px rgba( 255,255,255,0.03 )
 /* @group Message */
 
 div.message{
-	display: block;
-	position: relative;
-	margin-bottom: 4px;
-	margin-top: 4px;
-	padding-left: 5px;
-	padding-right: 5px;
-	word-wrap:break-word;
+    display: block;
+    position: relative;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    word-wrap: break-word;
 }
 
 div.message code{
-	margin: 0;
-	border: 1px solid #282e37;
-	background-color: #293038;
-	border-radius: 3px;
-	padding: 0 3px;
-	font-size: 1em;
-	color: #e8e8e8;
+    margin: 0;
+    border: 1px solid #282e37;
+    background-color: #293038;
+    border-radius: 3px;
+    padding: 0 3px;
+    font-size: 1em;
+    color: #e8e8e8;
 }
 
 div.message code a{
-	text-decoration: none;
-	font-weight: normal;
-	font-style: normal;
-	font-variant: normal;
+    text-decoration: none;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
 }
 
 div.message pre{
-	background-color: #293038;
-	border: 1px solid #0d1014;
-	font-size: 13px;
-	line-height: 19px;
-	overflow: auto;
-	padding: 6px 10px;
-	border-radius: 3px
+    background-color: #293038;
+    border: 1px solid #0d1014;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+    border-radius: 3px
 }
 
 div.message pre code{
-	background-color: transparent;
-	border: none;
-	padding-left: 0;
-	padding-right: 0;
+    background-color: transparent;
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 div.message .body{
-	position: relative;
-	display: inline-block;
-	word-wrap:break-word;
-	padding-right: 10px;
+    position: relative;
+    display: inline-block;
+    word-wrap: break-word;
+    padding-right: 10px;
 }
 
 div.message .body .timestamp{
-	position: relative;
-	display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 div.message .body .nickname{
-	position: relative;
-	display: inline-block;
-	text-align: right;
+    position: relative;
+    display: inline-block;
+    text-align: right;
 }
 
 div.message .body .text{
-	word-break: break-word;
-	word-wrap:break-word;
-	line-height: 18px;
-	padding-right: 10px;
+    word-break: break-word;
+    word-wrap: break-word;
+    line-height: 18px;
+    padding-right: 10px;
 }
 
 div.message .body .text .embed-items{
-	display: inline-block;
-	position: relative;
-	margin-left: 10px;
-	margin-top: 10px;
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
 div.message .body .text .embed-items .show-more{
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-
-	cursor: pointer;
-	display: inline-block;
-	position: relative;
-	padding: 5px 15px;
-	margin-top: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    padding: 5px 15px;
+    margin-top: 10px;
 }
 
 div.message .body .text .embed-items .show-more i{
-	margin-right: 5px;
+    margin-right: 5px;
 }
 
 div.message .body .text .embed-items .gist,
 div.message .body .text .embed-items .jsfiddle-holder{
-	display: none;
-	margin-top: 10px;
+    display: none;
+    margin-top: 10px;
 }
 
 div.message .body .text img{
-	max-width: 200px;
-	max-height: 200px;
-	margin-top: 10px;
-	margin-left: 120px;
+    max-width: 200px;
+    max-height: 200px;
+    margin-top: 10px;
+    margin-left: 120px;
 }
 
 /* @end */
@@ -834,65 +738,59 @@ div.message .body .text img{
 /* @group Master Control */
 
 #master-control-wrapper{
-	z-index: 9999;
-	height: 50px;
-	line-height: 50px;
-	display: block;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
+    z-index: 9999;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 #master-control-wrapper div.break{
-	z-index: 99999;
+    z-index: 99999;
 }
 
 #master-control{
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	
-	overflow: hidden;
-	padding-left: 10px;
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    overflow: hidden;
+    padding-left: 10px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 #master-control .master-control-button{
-	display: inline-block;
-	position: relative;
-	height: 30px;
-	line-height: 30px;
-	width: 30px;
-	margin-right: 6px;
-	float: left;
+    display: inline-block;
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    margin-right: 6px;
+    float: left;
 }
 
 #master-control .master-control-button i{
-	display: block;
-	position: relative;
-	top: 1px;
-	left: -0.7px;
+    display: block;
+    position: relative;
+    top: 1px;
+    left: -0.7px;
 }
 
 #master-control .master-control-button:hover i{
-	opacity: 1;
+    opacity: 1;
 }
 
 #master-control .add-server{
-	
 }
 
 #master-control .settings{
-	
 }
 
 /* @end */
@@ -900,213 +798,172 @@ div.message .body .text img{
 /* @group Komanda Box */
 
 .komanda-box{
-	font: 0.6em;
-
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
+    font: 0.6em;
     border-radius: 3px;
-	overflow: auto;
-	display: block;
-	position: relative;
+    overflow: auto;
+    display: block;
+    position: relative;
 }
 
 span.komanda-box-title-other{
-	color: #c0b5ba;
-	text-shadow: #000 0 1px 0;
-	font-weight: normal;
-	text-decoration: none;
-	font-variant: normal;
-	font-style: normal;
+    color: #c0b5ba;
+    text-shadow: #000 0 1px 0;
+    font-weight: normal;
+    text-decoration: none;
+    font-variant: normal;
+    font-style: normal;
 }
 
 .komanda-box-title{
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-	
-	display: inline-block;
-	height: 50px;
-	line-height: 50px;
-	color: #fff;
-	font-weight: normal;
-	text-decoration: none;
-	font-variant: normal;
-	border-bottom: 1px solid #000;
-	font-style: normal;
-	text-shadow: #000 0 -2px 0;
-	display: block;
-	position: relative;
-	overflow: hidden;
-	padding-left: 20px;
-	width: auto;
-
-	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
-	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
-
-   -moz-border-radius-topright: 3px;
-   -moz-border-radius-topleft: 3px;
-   -webkit-border-top-right-radius: 3px;
-    -webkit-border-top-left-radius: 3px;
-	background-color: #151a1f;
-	font-size: 1.4em;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+    font-weight: normal;
+    text-decoration: none;
+    font-variant: normal;
+    border-bottom: 1px solid #000;
+    font-style: normal;
+    text-shadow: #000 0 -2px 0;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    padding-left: 20px;
+    width: auto;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    background-color: #151a1f;
+    font-size: 1.4em;
 }
 
 .komanda-box-title i{
-	position: relative;
-	top: 4px;
-	margin-right: 5px;
+    position: relative;
+    top: 4px;
+    margin-right: 5px;
 }
 
 .limp-box-close{
-	background: #323339;
-	background: -moz-linear-gradient(top, #323339 0%, #242529 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#323339), color-stop(100%,#242529));
-	background: -webkit-linear-gradient(top, #323339 0%,#242529 100%);
-	background: -o-linear-gradient(top, #323339 0%,#242529 100%);
-	background: -ms-linear-gradient(top, #323339 0%,#242529 1040%);
-	background: linear-gradient(top, #323339 0%,#242529 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#323339', endColorstr='#242529',GradientType=0 );
-	-webkit-box-shadow: 0 0 0 1px rgba( 0,0,0,0.5), 0px 2px 0px rgba( 255,255,255,0.05 ), inset 0 1px 0 rgba( 255,255,255,0.12);
-	-o-box-shadow: 0 0 0 1px rgba( 0,0,0,0.5), 0px 2px 0px rgba( 255,255,255,0.05 ), inset 0 1px 0 rgba( 255,255,255,0.12);
-	-ms-box-shadow: 0 0 0 1px rgba( 0,0,0,0.5), 0px 2px 0px rgba( 255,255,255,0.05 ), inset 0 1px 0 rgba( 255,255,255,0.12);
-	-moz-box-shadow: 0 0 0 1px rgba( 0,0,0,0.5), 0px 2px 0px rgba( 255,255,255,0.05 ), inset 0 1px 0 rgba( 255,255,255,0.12);
-	box-shadow: 0 0 0 1px rgba( 0,0,0,0.5), 0px 2px 0px rgba( 255,255,255,0.05 ), inset 0 1px 0 rgba( 255,255,255,0.12);
-  -o-border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-  border-radius: 3px;
-	vertical-align: middle;
-	display: block;
-	position: relative;
-	overflow: hidden;
+    background: linear-gradient(top, #323339 0%,#242529 100%);
+    box-shadow: 0 0 0 1px rgba( 0,0,0,0.5), 0px 2px 0px rgba( 255,255,255,0.05 ), inset 0 1px 0 rgba( 255,255,255,0.12);
+    border-radius: 3px;
+    vertical-align: middle;
+    display: block;
+    position: relative;
+    overflow: hidden;
 }
 
 
 .limp-box-close:active{
-	background: #24252a;
-	-webkit-box-shadow: 0 0 0 1px rgba( 0,0,0,1), 0 0 0 1px rgba( 167,167,167,0.1 ), inset 0 0px 5px rgba( 255,255,255,0.3);
-	-o-box-shadow: 0 0 0 1px rgba( 0,0,0,1), 0 0 0 1px rgba( 167,167,167,0.1 ), inset 0 0px 5px rgba( 255,255,255,0.3);
-	-ms-box-shadow: 0 0 0 1px rgba( 0,0,0,1), 0 0 0 1px rgba( 167,167,167,0.1 ), inset 0 0px 5px rgba( 255,255,255,0.3);
-	-moz-box-shadow: 0 0 0 1px rgba( 0,0,0,1), 0 0 0 1px rgba( 167,167,167,0.1 ), inset 0 0px 5px rgba( 255,255,255,0.3);
-	box-shadow: 0 0 0 1px rgba( 0,0,0,1), inset 0 0 0 1px rgba(167,167,167,0.1), inset 0px 0px 5px rgba( 0,0,0,0.3);
-	text-shadow: #000 0 1px 0;
+    background: #24252a;
+    box-shadow: 0 0 0 1px rgba( 0,0,0,1), inset 0 0 0 1px rgba(167,167,167,0.1), inset 0px 0px 5px rgba( 0,0,0,0.3);
+    text-shadow: #000 0 1px 0;
 
-    background-color: #24252a;
-    background-image: -moz-linear-gradient(top, #1a1a1a 0%, #24252a 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1a1a1a), color-stop(100%,#24252a));
-    background-image: -webkit-linear-gradient(top, #1a1a1a 0%,#24252a 100%);
-    background-image: -o-linear-gradient(top, #1a1a1a 0%,#24252a 100%);
-    background-image: -ms-linear-gradient(top, #1a1a1a 0%,#24252a 100%);
     background-image: linear-gradient(top, #1a1a1a 0%,#24252a 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a1a1a', endColorstr='#24252a',GradientType=0 );
-
 }
 
 .limp-box-close .limp-box-close-icon {
-	display: inline-block;
-	width: 10px;
-	height: 10px;
-	display: block;
-	position: relative;
-	left: 6px;
-	top: 6px;
-	text-align: center;
-	line-height: 10px;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    display: block;
+    position: relative;
+    left: 6px;
+    top: 6px;
+    text-align: center;
+    line-height: 10px;
 }
 
 .limp-box-close i{
-	opacity: 0.3;
-	font-size: 0.55em;
-	display: block;
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	width: 10px;
-	height: 10px;
-	color: #fff;
-	top: 7px;
-	left: 6px;
+    opacity: 0.3;
+    font-size: 0.55em;
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 10px;
+    height: 10px;
+    color: #fff;
+    top: 7px;
+    left: 6px;
 }
 
 .limp-box-close:hover i{
-	opacity: 1;
+    opacity: 1;
 }
 
 .komanda-box-content{
-  background: #333c44;
-	padding: 20px 20px 5px;
-	font-size: 0.9em;
-	border-top: 1px solid rgba(255,255,255,0.1);
-	display: block;
-	position: relative;
-	overflow: visible;
+    background: #333c44;
+    padding: 20px 20px 5px;
+    font-size: 0.9em;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: block;
+    position: relative;
+    overflow: visible;
 }
 
 .komanda-box-content.no-padding{
-	padding: 0 0 20px;
+    padding: 0 0 20px;
 }
 
 .komanda-box-content ul.komanda-box-menu{
-	height: 35px;
-	line-height: 35px;
-	display: block;
-	position: relative;
-	background-color: rgba(0,0,0,0.5);
-	top: -1px;
-	margin-bottom: 20px;
+    height: 35px;
+    line-height: 35px;
+    display: block;
+    position: relative;
+    background-color: rgba(0,0,0,0.5);
+    top: -1px;
+    margin-bottom: 20px;
 }
 
 .komanda-box-content ul.komanda-box-menu li{
-	cursor: pointer;
-	opacity: 0.5;
-	float: left;
-	display: block;
-	position: relative;
-	padding-left: 10px;
-	padding-right: 10px;
-	color: #fff;
+    cursor: pointer;
+    opacity: 0.5;
+    float: left;
+    display: block;
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #fff;
 }
 
 .komanda-box-content ul.komanda-box-menu li.selected{
-	opacity: 1;
+    opacity: 1;
 }
 
 .komanda-box-content p.komanda-box-text{
-	font-size: 1.1em;
-	color: #fff;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	text-shadow: #000 0 1px 0;
-	line-height: 20px;
+    font-size: 1.1em;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-shadow: #000 0 1px 0;
+    line-height: 20px;
 }
 
 .komanda-box .form-button{
-	margin-top: -5px;
+    margin-top: -5px;
 }
 
 .komanda-box-footer{
-  background: #333c44;
-	line-height: 60px;
-	display: block;
-	overflow: visible;
-	padding-left: 20px;
-	padding-right: 20px;
-	height: 60px;
-
-    -moz-border-radius-bottomright: 3px;
-    -moz-border-radius-bottomleft: 3px;
-    -webkit-border-bottom-right-radius: 3px;
-    -webkit-border-bottom-left-radius: 3px;
-	position: relative;
+    background: #333c44;
+    line-height: 60px;
+    display: block;
+    overflow: visible;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 60px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    position: relative;
 }
 
 .komanda-box-footer .form-actions{
-	position: relative;
-	display: block;
+    position: relative;
+    display: block;
 }
 
 /* @end */
@@ -1114,39 +971,39 @@ user-select: none;
 /* @group Forms */
 
 div.form-box{
-	display: block;
-	position: relative;
-	margin-top: 3px;
-	margin-bottom: 3px;
+    display: block;
+    position: relative;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 div.form-box span.note{
-	color: #fff;
-	margin-left: 10px;
-	font-size: 0.8em;
+    color: #fff;
+    margin-left: 10px;
+    font-size: 0.8em;
 }
 
 div.form-box.inline{
-	display: inline-block;
+    display: inline-block;
 }
 
 div.form-box label{
-	width: 160px;
-	display: inline-block;
-	position: relative;
-	text-align: right;
-	margin-right: 10px;
+    width: 160px;
+    display: inline-block;
+    position: relative;
+    text-align: right;
+    margin-right: 10px;
 }
 
 div.form-box input[type='text'],
 div.form-box input[type='password']{
-	width: 300px;
-	resize: none;
-	outline: none;
-	clear: both;
-	position: relative;
-	padding: 7px;
-	margin: 4px 3px;
+    width: 300px;
+    resize: none;
+    outline: none;
+    clear: both;
+    position: relative;
+    padding: 7px;
+    margin: 4px 3px;
 }
 
 /* @end */
@@ -1154,18 +1011,18 @@ div.form-box input[type='password']{
 /* @group Buttons */
 
 .button{
-	outline: none;
-width: 425px;
-padding: 8px 10px;
-margin: 15px 5px 0 0;
-display: inline-block;
-	padding: 5px;
-	max-width: 120px;
-	cursor: pointer;
+    outline: none;
+    width: 425px;
+    padding: 8px 10px;
+    margin: 15px 5px 0 0;
+    display: inline-block;
+    padding: 5px;
+    max-width: 120px;
+    cursor: pointer;
 }
 
 .button.right{
-	float: right;
+    float: right;
 }
 
 /* @end */
@@ -1173,12 +1030,12 @@ display: inline-block;
 /* @group Zenmode */
 
 body.zenmode #content{
-	left:  0 !important;
+    left: 0 !important;
 }
 
 body.zenmode .channel .channel-names-holder,
 body.zenmode #sidebar{
-	left: -200px !important;
+    left: -200px !important;
 }
 
 body.zenmode #sidebar,
@@ -1187,7 +1044,7 @@ body.zenmode .channel .input,
 body.zenmode .channel .messages, 
 body.zenmode .channel .topic,
 body.zenmode .channel .plugin{
-	right: 0 !important;
+    right: 0 !important;
 }
 
 /* @end */
@@ -1211,29 +1068,29 @@ body.zenmode .channel .plugin{
 
 .logo-holder,
 .logo-holder svg{
-	display: inline-block;
-	margin-bottom: 5px;
+    display: inline-block;
+    margin-bottom: 5px;
 }
 
 .komanda-information{
-display: block;
-position: absolute;
-top: 40px;
-left: 250px;
-width: 400px;
-	color: #dadada;
+    display: block;
+    position: absolute;
+    top: 40px;
+    left: 250px;
+    width: 400px;
+    color: #dadada;
 }
 
 .komanda-information a{
-	color: #ff3a24;
+    color: #ff3a24;
 }
 
 .komanda-information span.komanda-information-name{
-	color: #fff;
-	font-size: 1.4em;
-	margin-bottom: 20px;
-	display: block;
-	position: relative;
+    color: #fff;
+    font-size: 1.4em;
+    margin-bottom: 20px;
+    display: block;
+    position: relative;
 }
 
 /* @end */
@@ -1241,422 +1098,430 @@ width: 400px;
 /* @group Github */
 
 div.message.github-message{
-	margin-top: 0;
-	margin-bottom: 0;
-	padding-top: 0;
-	padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 div.message.github-message .body{
-	display: block;
-	margin-top: 0;
-	margin-bottom: 0;
-	padding-top: 0;
-	padding-bottom: 0;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .plugin{
-	
 }
 
 .plugin .plugin-logo{
-	display: block;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 10px;
-	width: 100px;
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    width: 100px;
 }
 
 .plugin .plugin-logo span{
-	vertical-align: middle;	
-	cursor: pointer !important;
+    vertical-align: middle; 
+    cursor: pointer !important;
 }
 
 .plugin .plugin-options{
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 5px;
-	bottom: 0;
-	width: 350px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 5px;
+    bottom: 0;
+    width: 350px;
 }
 
 .plugin .plugin-options button{
-	margin-top: 10px;
-	float: right;
-	margin-right: 5px;
+    margin-top: 10px;
+    float: right;
+    margin-right: 5px;
 }
 
 .plugin-button{
-	background: #1d1e21;
-	border: none;
-	outline: none;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-o-border-radius: 5px;
-	background-image: -moz-linear-gradient( top, #d5d6d9 0%, #afb0b7);
-	background-image: -webkit-gradient( linear, left top, left bottom, from(#d5d6d9), to(#afb0b7));
-	-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
-	-moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
-	-o-box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
-	box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
-	text-shadow: rgba(255,255,255,0.5) 0 1px 0;
-	padding-right: 8px;
-	padding-left: 8px;
-	display: block;
-	position: relative;
-	overflow: hidden;
-	font-size: 0.8em;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #d5d6d9;
+    background-image: linear-gradient(to bottom, #d5d6d9, #afb0b7);
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
+    text-shadow: rgba(255,255,255,0.5) 0 1px 0;
+    padding-right: 8px;
+    padding-left: 8px;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    font-size: 0.8em;
 }
 
 .plugin-button span{
-	padding-right: 3px;
-	padding-left: 3px;
-	font-size: 1.0em;
-	cursor: pointer; 
+    padding-right: 3px;
+    padding-left: 3px;
+    font-size: 1.0em;
+    cursor: pointer; 
 }
 
 .plugin .title{
-	display: block;
-	position: absolute;
-	overflow: hidden;
-	top: 0;
-	bottom: 0;
-	left: 36px;
-	width: 300px;
- 	color: #949494;
-	font-size: 0.8em;
-	
-	
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    bottom: 0;
+    left: 36px;
+    width: 300px;
+    color: #949494;
+    font-size: 0.8em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .plugin .title span.name{
-	font-weight: bold;
-	color: #fff;
-	padding-right: 5px;
-	font-size: 1.3em;
+    font-weight: bold;
+    color: #fff;
+    padding-right: 5px;
+    font-size: 1.3em;
 }
 
 .plugin .title span.description{
-	color: #949494;
+    color: #949494;
 }
 
 div.github-wrapper{
-display: block;
-position: relative;
-left: 130px;
-top: -16px;
-padding-right: 150px;
-	overflow: hidden;
+    display: block;
+    position: relative;
+    left: 130px;
+    top: -16px;
+    padding-right: 150px;
+    overflow: hidden;
 }
 
 div.github-wrapper .github-title{
-	display: block;
+    display: block;
 }
 
 div.github-wrapper a{
-	color: #D0DAF5;
-	margin-right: 3px;
-	margin-left: 3px;
+    color: #D0DAF5;
+    margin-right: 3px;
+    margin-left: 3px;
 }
 
 div.github-wrapper .github-title strong{
-	font-weight: bold;
-	text-decoration: none;
-	font-variant: normal;
+    font-weight: bold;
+    text-decoration: none;
+    font-variant: normal;
 }
 
 div.github-wrapper .github-title span{
-	margin-right: 5px;
-	vertical-align: middle;
+    margin-right: 5px;
+    vertical-align: middle;
 }
 
 div.github-wrapper .github-actor-image {
-float: left;
-margin-right: 10px;
-top: 25px;
-position: absolute;
+    float: left;
+    margin-right: 10px;
+    top: 25px;
+    position: absolute;
 }
 
 div.github-wrapper .github-actor-image img {
-	vertical-align: middle;
-	border-radius: 3px;
-	width: 30px;
-	height: 30px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+    vertical-align: middle;
+    border-radius: 3px;
+    width: 30px;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 div.github-wrapper .github-body{
-min-height: 35px;
-margin-top: 10px;
-display: block;
-margin-left: 40px;
-	color: #afafaf;
+    min-height: 35px;
+    margin-top: 10px;
+    display: block;
+    margin-left: 40px;
+    color: #afafaf;
 }
 
 div.github-wrapper .github-body hr{
-background: rgba(41, 43, 46, 1);
-border: 0 none;
-color: #3389E7;
-height: 2px;
-padding: 0;
-margin: 15px 0;
+    background: rgba(41, 43, 46, 1);
+    border: 0 none;
+    color: #3389E7;
+    height: 2px;
+    padding: 0;
+    margin: 15px 0;
 }
 
 div.github-wrapper .github-body img{
-max-width: 100%;
--moz-box-sizing: border-box;
-box-sizing: border-box;
+    max-width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 div.github-wrapper .github-body p {
-display: block;
--webkit-margin-before: 0.5em;
--webkit-margin-after: 0.5em;
--webkit-margin-start: 0px;
--webkit-margin-end: 0px;
+    display: block;
+    -webkit-margin-before: 0.5em;
+    -webkit-margin-after: 0.5em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
 }
 
 div.github-wrapper .github-body ul{
-	padding-left: 30px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	list-style-type: disc;
+    padding-left: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    list-style-type: disc;
 }
 
 div.github-wrapper .github-body ul.commits{
-	margin-top: 5px;
-	margin-bottom: 5px;
-	list-style-type: none;
-	padding: 0;
+
+    margin-top: 5px;
+    margin-bottom: 5px;
+    list-style-type: none;
+    padding: 0;
 }
 
 div.github-wrapper .github-body ul.commits li{
-	margin-top: 7px;
-	list-style-type: none;
-	color: #b2b2b2;
-	line-height: 22px;
+    margin-top: 7px;
+    list-style-type: none;
+    color: #b2b2b2;
+    line-height: 22px;
 }
 
 div.github-wrapper .github-body ul li{
-display: list-item;
-text-align: -webkit-match-parent;
+    display: list-item;
+    text-align: -webkit-match-parent;
 }
 
 .irc-text-bold {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .irc-text-italic {
-	font-style: italic;
+    font-style: italic;
 }
 
 .irc-text-underline {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .irc-text-normal {
-	font-weight: normal;
-	font-style: normal;
-	text-decoration: none;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
 
 }
 
 .irc-text-foreground-0 {
-	color: white;
+    color: white;
 }
 
 .irc-text-foreground-1 {
-	color: black;
+    color: black;
 }
 
 .irc-text-foreground-2 {
-	color: navy;
+    color: navy;
 }
 
 .irc-text-foreground-3 {
-	color: green;
+    color: green;
 }
 
 .irc-text-foreground-4 {
-	color: red;
+    color: red;
 }
 
 .irc-text-foreground-5 {
-	color: brown;
+    color: brown;
 }
 
 .irc-text-foreground-6 {
-	color: purple;
+    color: purple;
 }
 
 .irc-text-foreground-7 {
-	color: olive;
+    color: olive;
 }
 
 .irc-text-foreground-8 {
-	color: yellow;
+    color: yellow;
 }
 
 .irc-text-foreground-9 {
-	color: lightgreen;
+    color: lightgreen;
 }
 
 .irc-text-foreground-10 {
-	color: teal;
+    color: teal;
 }
 
 .irc-text-foreground-11 {
-	color: cyan;
+    color: cyan;
 }
 
 .irc-text-foreground-12 {
-	color: blue;
+    color: blue;
 }
 
 .irc-text-foreground-13 {
-	color: magenta;
+    color: magenta;
 }
 
 .irc-text-foreground-14 {
-	color: gray;
+    color: gray;
 }
 
 .irc-text-foreground-15 {
-	color: lightgray;
+    color: lightgray;
 }
 
-.irc-text-foreground-0 a, .irc-text-foreground-0 a:hover {
-	color: white !important;
+.irc-text-foreground-0 a,
+.irc-text-foreground-0 a:hover {
+    color: white !important;
 }
 
-.irc-text-foreground-1 a, .irc-text-foreground-1 a:hover {
-	color: black !important;
+.irc-text-foreground-1 a,
+.irc-text-foreground-1 a:hover {
+    color: black !important;
 }
 
-.irc-text-foreground-2 a, .irc-text-foreground-2 a:hover {
-	color: navy !important;
+.irc-text-foreground-2 a,
+.irc-text-foreground-2 a:hover {
+    color: navy !important;
 }
 
-.irc-text-foreground-3 a, .irc-text-foreground-3 a:hover {
-	color: green !important;
+.irc-text-foreground-3 a,
+.irc-text-foreground-3 a:hover {
+    color: green !important;
 }
 
-.irc-text-foreground-4 a, .irc-text-foreground-4 a:hover {
-	color: red !important;
+.irc-text-foreground-4 a,
+.irc-text-foreground-4 a:hover {
+    color: red !important;
 }
 
-.irc-text-foreground-5 a, .irc-text-foreground-5 a:hover {
-	color: brown !important;
+.irc-text-foreground-5 a,
+.irc-text-foreground-5 a:hover {
+    color: brown !important;
 }
 
-.irc-text-foreground-6 a, .irc-text-foreground-6 a:hover {
-	color: purple !important;
+.irc-text-foreground-6 a,
+.irc-text-foreground-6 a:hover {
+    color: purple !important;
 }
 
-.irc-text-foreground-7 a, .irc-text-foreground-7 a:hover {
-	color: olive !important;
+.irc-text-foreground-7 a,
+.irc-text-foreground-7 a:hover {
+    color: olive !important;
 }
 
-.irc-text-foreground-8 a, .irc-text-foreground-8 a:hover {
-	color: yellow !important;
+.irc-text-foreground-8 a,
+.irc-text-foreground-8 a:hover {
+    color: yellow !important;
 }
 
-.irc-text-foreground-9 a, .irc-text-foreground-9 a:hover {
-	color: lightgreen !important;
+.irc-text-foreground-9 a,
+.irc-text-foreground-9 a:hover {
+    color: lightgreen !important;
 }
 
-.irc-text-foreground-10 a, .irc-text-foreground-10 a:hover {
-	color: teal !important;
+.irc-text-foreground-10 a,
+.irc-text-foreground-10 a:hover {
+    color: teal !important;
 }
 
-.irc-text-foreground-11 a, .irc-text-foreground-11 a:hover {
-	color: cyan !important;
+.irc-text-foreground-11 a,
+.irc-text-foreground-11 a:hover {
+    color: cyan !important;
 }
 
-.irc-text-foreground-12 a, .irc-text-foreground-12 a:hover {
-	color: blue !important;
+.irc-text-foreground-12 a,
+.irc-text-foreground-12 a:hover {
+    color: blue !important;
 }
 
-.irc-text-foreground-13 a, .irc-text-foreground-13 a:hover {
-	color: magenta !important;
+.irc-text-foreground-13 a,
+.irc-text-foreground-13 a:hover {
+    color: magenta !important;
 }
 
-.irc-text-foreground-14 a, .irc-text-foreground-14 a:hover {
-	color: gray !important;
+.irc-text-foreground-14 a,
+.irc-text-foreground-14 a:hover {
+    color: gray !important;
 }
 
-.irc-text-foreground-15 a, .irc-text-foreground-15 a:hover {
-	color: lightgray !important;
+.irc-text-foreground-15 a,
+.irc-text-foreground-15 a:hover {
+    color: lightgray !important;
 }
 
 .irc-text-background-0 {
-	background-color: white;
+    background-color: white;
 }
 
 .irc-text-background-1 {
-	background-color: black;
+    background-color: black;
 }
 
 .irc-text-background-2 {
-	background-color: navy;
+    background-color: navy;
 }
 
 .irc-text-background-3 {
-	background-color: green;
+    background-color: green;
 }
 
 .irc-text-background-4 {
-	background-color: red;
+    background-color: red;
 }
 
 .irc-text-background-5 {
-	background-color: brown;
+    background-color: brown;
 }
 
 .irc-text-background-6 {
-	background-color: purple;
+    background-color: purple;
 }
 
 .irc-text-background-7 {
-	background-color: olive;
+    background-color: olive;
 }
 
 .irc-text-background-8 {
-	background-color: yellow;
+    background-color: yellow;
 }
 
 .irc-text-background-9 {
-	background-color: lightgreen;
+    background-color: lightgreen;
 }
 
 .irc-text-background-10 {
-	background-color: teal;
+    background-color: teal;
 }
 
 .irc-text-background-11 {
-	background-color: cyan;
+    background-color: cyan;
 }
 
 .irc-text-background-12 {
-	background-color: blue;
+    background-color: blue;
 }
 
 .irc-text-background-13 {
-	background-color: magenta;
+    background-color: magenta;
 }
 
 .irc-text-background-14 {
-	background-color: gray;
+    background-color: gray;
 }
 
 .irc-text-background-15 {
-	background-color: lightgray;
+    background-color: lightgray;
 }
 
 /* @end */
