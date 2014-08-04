@@ -44,7 +44,8 @@ define([
         badge: true
       },
       display: {
-        timestamp: "MM/DD/YY hh:mm:ss"
+        timestamp: "MM/DD/YY hh:mm:ss",
+        system: true
       },
       sounds: {
         chat: false,
@@ -67,6 +68,10 @@ define([
         // Komanda.settings.save(null);
 
         if (a.changed.hasOwnProperty("themes")) Helpers.loadTheme(a.attributes);
+      });
+
+      this.bind("change:display.system", function(model, newValue) {
+        Helpers.toggleSystemMessage(newValue);
       });
     }
   });
