@@ -55,6 +55,15 @@ define([
       });
     },
 
+    toggleSystemMessage: function (show) {
+      $("head style#display-system").remove();
+      if (!show) {
+        var style = $("<style id=\"display-system\" type=\"text/css\">");
+        $("head").append(style);
+        style[0].sheet.insertRule("div.message.system-message { display: none; }", 0);
+      }
+    },
+
     loadTheme: function(settings, callback) {
       var key = settings.themes.current; 
 
