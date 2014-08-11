@@ -208,17 +208,14 @@ module.exports = function(grunt) {
 
     nodewebkit: {
       options: {
-        version: "0.9.2",
-        app_name: "Komanda",
-        app_version: "1.0.0.beta",
-        build_dir: "./build",
-        mac: true,
-        win: true,
-        linux32: true,
-        linux64: true,
-        mac_icns: "app/styles/images/logo/komanda.icns",
-        credits: "credits.html",
-        download_url: "http://komanda.io/nw/"
+        version: "0.10.2",
+        appName: "Komanda",
+        appVersion: "1.0.0.beta",
+        buildDir: "./build",
+        cacheDir: "./build/cache",
+        platforms: ["osx", "win", "linux32", "linux64"],
+        macIcns: "app/styles/images/logo/komanda.icns",
+        macCredits: "credits.html"
       },
       // src: ["./**/*"],
       src: [
@@ -229,16 +226,16 @@ module.exports = function(grunt) {
 
     exec: {
       win: {
-        cmd: '"build/cache/win/<%= nodewebkit.options.version %>/nw.exe" .'
+        cmd: '"build/cache/<%= nodewebkit.options.version %>/win/nw.exe" .'
       },
       mac: {
-        cmd: "build/cache/mac/<%= nodewebkit.options.version %>/node-webkit.app/Contents/MacOS/node-webkit ."
+        cmd: "build/cache/<%= nodewebkit.options.version %>/osx/node-webkit.app/Contents/MacOS/node-webkit ."
       },
       linux32: {
-        cmd: "build/cache/linux32/<%= nodewebkit.options.version %>/nw ."
+        cmd: "build/cache/<%= nodewebkit.options.version %>/linux32/nw ."
       },
       linux64: {
-        cmd: "build/cache/linux64/<%= nodewebkit.options.version %>/nw ."
+        cmd: "build/cache/<%= nodewebkit.options.version %>/linux64/nw ."
       },
       createDmg: {
         cmd: "dist/mac/yoursway-create-dmg/create-dmg --volname \"Komanda " + currentVersion + "\" --background ./dist/mac/background.png --window-size 480 540 --icon-size 128 --app-drop-link 240 370 --icon \"Komanda\" 240 110 ./build/releases/Komanda/mac/Komanda-" + currentVersion + "-Mac.dmg ./build/releases/Komanda/mac/"
@@ -266,7 +263,7 @@ module.exports = function(grunt) {
           stderr: false,
           stdin: false
         },
-        command: "./build/cache/mac/0.9.2/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
+        command: "./build/cache/0.10.2/osx/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
       },
 
       linux64: {
@@ -275,7 +272,7 @@ module.exports = function(grunt) {
           stderr: false,
           stdin: false,
         },
-        command: "./build/cache/linux64/0.9.2/nw ./build/komanda-source/"
+        command: "./build/cache/0.10.2/linux64/nw ./build/komanda-source/"
       },
 
       linux32: {
@@ -284,7 +281,7 @@ module.exports = function(grunt) {
           stderr: false,
           stdin: false,
         },
-        command: "./build/cache/linux32/0.9.2/nw ./build/komanda-source/"
+        command: "./build/cache/0.10.2/linux32/nw ./build/komanda-source/"
       },
 
       create_dmg: {

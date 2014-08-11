@@ -33,7 +33,7 @@
     "grunt-contrib-handlebars": "^0.8.0",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-requirejs": "^0.4.4",
-    "grunt-node-webkit-builder": "^0.1.21",
+    "grunt-node-webkit-builder": "^0.2.2",
     "grunt-npm-install": "^0.1.0",
     "grunt-open": "^0.2.3",
     "grunt-processhtml": "~0.3.0",
