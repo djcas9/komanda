@@ -279,6 +279,16 @@ requirejs(["config"], function(require) {
         Komanda.gui = requireNode("nw.gui");
         Komanda.window = Komanda.gui.Window.get();
 
+        // Create default menus in OSX for copy/paste support.
+        // https://github.com/rogerwang/node-webkit/wiki/Menu#menucreatemacbuiltinappname
+        if (requireNode("os").platform() === "darwin") {
+            var mb = new Komanda.gui.Menu({ type: "menubar" });
+            if (mb.createMacBuiltin) {
+                mb.createMacBuiltin("Komanda");
+                Komanda.window.menu = mb;
+            }
+        }
+
         // When komanda is ready, we use this function to register the sounds we will use.
         // An explanation of how to add them can be found on this pull request: https://github.com/mephux/komanda/pull/136
         $.ionSound({
