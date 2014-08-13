@@ -307,7 +307,7 @@ module.exports = function(grunt) {
     fs.copySync("build/komanda-source/app/sounds", "build/komanda-source/sounds");
     fs.copySync("build/komanda-source/vendor/bower/octicons/octicons", "build/komanda-source/fonts/octicons/");
     fs.copySync("node_modules/irc/", "build/komanda-source/node_modules/irc/");
-    fs.copySync("node_modules/marked/", "build/komanda-source/node_modules/marked/");
+    fs.copySync("node_modules/gitter-marked/", "build/komanda-source/node_modules/marked/");
     fs.copySync("node_modules/highlight.js/", "build/komanda-source/node_modules/highlight.js/");
 
     rimraf.sync("build/komanda-source/app", function(error) {
