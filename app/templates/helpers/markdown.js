@@ -3,7 +3,7 @@ define("templates/helpers/markdown", [
   "underscore"
 ], function(Handlebars, _) {
 
-  var marked = requireNode("marked");
+  var marked = requireNode("gitter-marked");
 
   marked.setOptions({
     gfm: true,
