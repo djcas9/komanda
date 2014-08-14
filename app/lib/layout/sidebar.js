@@ -106,11 +106,12 @@ define([
               var connect = Komanda.connections[uuid];
 
               if (connect.hasClient) {
-
                 connect.client.socket.conn.requestedDisconnect = true;
                 connect.client.socket.conn.end();
                 connect.inReconnect = true;
 
+                // update options in irc lib
+                _.extend(connect.client.socket.opt, connect.session.attributes);
                 connect.client.socket.connect(20, function() {
 
                   if (Komanda.connections.hasOwnProperty(uuid)) {
