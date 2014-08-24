@@ -12,6 +12,7 @@ requirejs.config({
     "limp": "lib/deps/limp",
     "highlight": "lib/deps/highlight",
     "ion.sound": "lib/deps/ion.sound",
+    "semver": "../vendor/bower/semver/semver",
 
     // Embed
     "gistembed": "lib/deps/embed/gist-embed",

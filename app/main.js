@@ -15,13 +15,14 @@ requirejs(["config"], function(require) {
     "history",
     "lib/settings",
     "helpers",
+    "plugins",
     "window-state",
     "lib/embed/index",
     "command",
     "lib/deps/ion.sound",
     "lib/channels/channel",
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
-    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, Command, ionSound, Channel) {
+    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, PluginLoader, WindowState, Embed, Command, ionSound, Channel) {
 
       // We should use domains instead
       window.process.on("uncaughtException", function(err) {
@@ -44,7 +45,7 @@ requirejs(["config"], function(require) {
 
       Embed(Komanda);
 
-      Helpers.loadPlugins();
+      PluginLoader.loadPlugins();
 
       if (!Komanda.settings.attributes.notifications.hasOwnProperty("badge")) {
         Komanda.settings.set("notifications.badge", true);
