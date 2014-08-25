@@ -1,6 +1,6 @@
 define([], function () {
   return function bootstrapEmbedImage (register) {
-    register("image", /\.(gif|png|jpe?g)$/i, {
+    register("image", /\.(gif|png|jpe?g)/i, {
       title: "Images",
       enabled: true
     },
