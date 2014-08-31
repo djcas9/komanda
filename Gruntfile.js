@@ -342,11 +342,20 @@ module.exports = function(grunt) {
 
   grunt.registerTask("build", function(platforms) {
     var targetPlatforms = parseBuildPlatforms(platforms);
-    // Overwrite initial nodewebkit.options.<target> bool with the
-    // one returned by parseBuildPlatforms
+    // Overwrite initial nodewebkit.options.platforms array with the
+    // platforms returned by parseBuildPlatforms
+    var targetPlatformsArray = [];
     Object.keys(targetPlatforms).forEach(function(target) {
-      grunt.config("nodewebkit.options." + target, targetPlatforms[target]);
+      if (targetPlatforms[target]) {
+        // grunt-node-webkit-builder doesn't understand `mac`,
+        // so map it to `osx` before adding it to the array
+        if (target === "mac") {
+          target = "osx";
+        }
+        targetPlatformsArray.push(target);
+      }
     });
+    grunt.config.set("nodewebkit.options.platforms", targetPlatformsArray);
 
     grunt.task.run([
       "clean:some",
