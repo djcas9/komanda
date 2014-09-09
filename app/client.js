@@ -421,7 +421,7 @@ define([
       }
 
       if( error.code == "EPROTO"){
-        message = "Komando Error: You have connected to the server with mismatching protocol. Please disable/enable SSL based on the server.";
+        message = "Komanda Error: You have connected to the server with mismatching protocol. Please disable/enable SSL based on the server.";
       }
       self.statusMessage(message);
     });
