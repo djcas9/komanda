@@ -28,7 +28,7 @@ requirejs(["config"], function(require) {
         console.log("Caught exception: " + err);
       });
 
-      Komanda.version = requireNode("./package.json").version;
+      Komanda.version = requireNode("./package.json").version + " @@GIT_REVISION";
 
       Komanda.helpers = Helpers;
 
