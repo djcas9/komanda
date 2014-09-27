@@ -285,7 +285,7 @@ requirejs(["config"], function(require) {
             var mb = new Komanda.gui.Menu({ type: "menubar" });
             if (mb.createMacBuiltin) {
                 mb.createMacBuiltin("Komanda");
-                Komanda.window.menu = mb;
+
                 // Add default OSX Preferences menu item and key binding
                 mb.items[0].submenu.insert(new Komanda.gui.MenuItem({ type: "separator" }), 2);
                 mb.items[0].submenu.insert(new Komanda.gui.MenuItem({
@@ -294,9 +294,14 @@ requirejs(["config"], function(require) {
                   key: ",",
                   modifiers: "cmd",
                   click: function() {
-                    $("#master-control .settings").trigger("click");
+                    // Only respond if a dialog box is not currently open
+                    if ($("#limp-box-overlay").length === 0) {
+                      $("#master-control .settings").trigger("click");
+                    }
                   }
                 }), 2);
+
+                Komanda.window.menu = mb;
             }
         }
 
