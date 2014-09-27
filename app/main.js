@@ -286,6 +286,17 @@ requirejs(["config"], function(require) {
             if (mb.createMacBuiltin) {
                 mb.createMacBuiltin("Komanda");
                 Komanda.window.menu = mb;
+                // Add default OSX Preferences menu item and key binding
+                mb.items[0].submenu.insert(new Komanda.gui.MenuItem({ type: "separator" }), 2);
+                mb.items[0].submenu.insert(new Komanda.gui.MenuItem({
+                  type: "normal",
+                  label: "Preferences",
+                  key: ",",
+                  modifiers: "cmd",
+                  click: function() {
+                    $("#master-control .settings").trigger("click");
+                  }
+                }), 2);
             }
         }
 
