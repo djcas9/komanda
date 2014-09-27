@@ -285,6 +285,22 @@ requirejs(["config"], function(require) {
             var mb = new Komanda.gui.Menu({ type: "menubar" });
             if (mb.createMacBuiltin) {
                 mb.createMacBuiltin("Komanda");
+
+                // Add default OSX Preferences menu item and key binding
+                mb.items[0].submenu.insert(new Komanda.gui.MenuItem({ type: "separator" }), 2);
+                mb.items[0].submenu.insert(new Komanda.gui.MenuItem({
+                  type: "normal",
+                  label: "Preferences",
+                  key: ",",
+                  modifiers: "cmd",
+                  click: function() {
+                    // Only respond if a dialog box is not currently open
+                    if ($("#limp-box-overlay").length === 0) {
+                      $("#master-control .settings").trigger("click");
+                    }
+                  }
+                }), 2);
+
                 Komanda.window.menu = mb;
             }
         }
