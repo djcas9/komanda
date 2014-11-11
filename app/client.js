@@ -545,7 +545,9 @@ define([
 
       self.channelsView.render();
 
-      self.addMessage(channel, nick + " [" + message.prefix + "] has joined the room.");
+      if (!Komanda.settings.get("display.hidejoinpart")) {
+        self.addMessage(channel, nick + " [" + message.prefix + "] has joined the room.");
+      }
 
       Komanda.vent.trigger("join", data);
     });
@@ -1009,7 +1011,9 @@ define([
 
       self.removeUser(channel, nick);
 
-      self.addMessage(channel, nick + " [" + message.prefix + "] has left the room. " + (reason ? "[" + reason + "]" : "") + "");
+      if (!Komanda.settings.get("display.hidejoinpart")) {
+        self.addMessage(channel, nick + " [" + message.prefix + "] has left the room. " + (reason ? "[" + reason + "]" : "") + "");
+      }
 
       Komanda.vent.trigger("part", data);
     });
