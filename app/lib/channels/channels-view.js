@@ -94,11 +94,9 @@ define([
     },
 
     handleChannelDragStart: function (e) {
-      this.channelBeingDragged = $(e.currentTarget);
-
       e.originalEvent.dataTransfer.effectAllowed = "move";
-      e.originalEvent.dataTransfer.setData("text/html", this.channelBeingDragged.html());
 
+      this.channelBeingDragged = $(e.currentTarget);
       this.channelBeingDragged.addClass("dragging");
     },
 
@@ -117,8 +115,12 @@ define([
         return;
       }
 
-      this.channelBeingDragged.html(channelToDrop.html());
-      channelToDrop.html(e.originalEvent.dataTransfer.getData("text/html"));
+      var tempChannelItem = this.channelBeingDragged.clone();
+
+      this.channelBeingDragged.replaceWith(channelToDrop.clone());
+      channelToDrop.replaceWith(tempChannelItem);
+
+      this.handleChannelDragEnd();
     },
 
     handleChannelDragEnd: function () {
