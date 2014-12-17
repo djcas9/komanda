@@ -13,10 +13,13 @@ define([
 
     events: {
       "click li.channel-item": "openChannel",
+      "dragstart li.channel-item": "handleChannelDragStart",
+      "dragend li.channel-item": "handleChannelDragEnd",
       "click i.part-channel": "partChannel"
     },
 
     initialize: function() {
+      this.channelBeingDragged = null;
     },
 
     bind: function() {
@@ -60,7 +63,7 @@ define([
       if (!Komanda.store.hasOwnProperty(server)) {
         Komanda.store[server] = {};
       }
-        
+
       if (!Komanda.store[server].hasOwnProperty("count")) {
         Komanda.store[server].count = {};
       }
@@ -86,6 +89,15 @@ define([
       if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
 
       $(select).find("input").focus();
+    },
+
+    handleChannelDragStart: function (e) {
+      this.channelBeingDragged = $(e.currentTarget);
+      this.channelBeingDragged.addClass("dragging");
+    },
+
+    handleChannelDragEnd: function (e) {
+      $("li.channel-item").removeClass("dragging");
     },
 
     getEmptyView: function() {}

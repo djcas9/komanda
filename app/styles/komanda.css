@@ -429,6 +429,12 @@ div.header-box i.show-hide-icon{
     white-space: nowrap;
 }
 
+#sidebar .session .channel-list ul.channels li.dragging{
+    opacity: 0.4;
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+}
+
 #sidebar .session .channel-list ul.channels li span.user-count{
     height: 15px;
     line-height: 15px;

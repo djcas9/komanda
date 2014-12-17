@@ -8,6 +8,9 @@ define([
     tagName: "li",
     className: "channel-item",
     template: template,
+    attributes: {
+      "draggable": "true"
+    },
 
     events: {
     },
