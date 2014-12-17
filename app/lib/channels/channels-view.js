@@ -14,6 +14,8 @@ define([
     events: {
       "click li.channel-item": "openChannel",
       "dragstart li.channel-item": "handleChannelDragStart",
+      "dragover li.channel-item": "handleChannelDragOver",
+      "drop li.channel-item": "handleChannelDrop",
       "dragend li.channel-item": "handleChannelDragEnd",
       "click i.part-channel": "partChannel"
     },
@@ -93,10 +95,33 @@ define([
 
     handleChannelDragStart: function (e) {
       this.channelBeingDragged = $(e.currentTarget);
+
+      e.originalEvent.dataTransfer.effectAllowed = "move";
+      e.originalEvent.dataTransfer.setData("text/html", this.channelBeingDragged.html());
+
       this.channelBeingDragged.addClass("dragging");
     },
 
-    handleChannelDragEnd: function (e) {
+    handleChannelDragOver: function (e) {
+      e.preventDefault();
+
+      e.originalEvent.dataTransfer.dropEffect = "move";
+    },
+
+    handleChannelDrop: function (e) {
+      e.stopPropagation();
+
+      var channelToDrop = $(e.currentTarget);
+
+      if (channelToDrop[0] === this.channelBeingDragged[0]) {
+        return;
+      }
+
+      this.channelBeingDragged.html(channelToDrop.html());
+      channelToDrop.html(e.originalEvent.dataTransfer.getData("text/html"));
+    },
+
+    handleChannelDragEnd: function () {
       $("li.channel-item").removeClass("dragging");
     },
 
