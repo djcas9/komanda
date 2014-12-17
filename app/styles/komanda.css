@@ -432,7 +432,7 @@ div.header-box i.show-hide-icon{
 }
 
 #sidebar .session .channel-list ul.channels li.dragging{
-    opacity: 0.4;
+    opacity: 0.6;
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
 }
