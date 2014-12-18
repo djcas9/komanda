@@ -115,6 +115,10 @@ define([
         return;
       }
 
+      var channelsCollection = this.getChannelsList();
+
+      channelsCollection.swapChannels(this.channelBeingDragged.index(), channelToDrop.index());
+
       var tempChannelItem = this.channelBeingDragged.clone();
 
       this.channelBeingDragged.replaceWith(channelToDrop.clone());
@@ -125,6 +129,10 @@ define([
 
     handleChannelDragEnd: function () {
       $("li.channel-item").removeClass("dragging");
+    },
+
+    getChannelsList: function () {
+      return Komanda.connections[Komanda.current.server].client.channels;
     },
 
     getEmptyView: function() {}
