@@ -9,7 +9,15 @@ define([
     // localStorage: new Backbone.LocalStorage('komanda.channels'),
 
 
-    initialize: function() {
+    initialize: function() {},
+
+    swapChannels: function (firstChannelIndex, secondChannelIndex) {
+      var tempChannel = this.models[firstChannelIndex];
+
+      this.models[firstChannelIndex] = this.models[secondChannelIndex];
+      this.models[secondChannelIndex] = tempChannel;
+
+      return this;
     }
 
   });

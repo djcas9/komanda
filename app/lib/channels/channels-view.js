@@ -13,10 +13,15 @@ define([
 
     events: {
       "click li.channel-item": "openChannel",
+      "dragstart li.channel-item": "handleChannelDragStart",
+      "dragover li.channel-item": "handleChannelDragOver",
+      "drop li.channel-item": "handleChannelDrop",
+      "dragend li.channel-item": "handleChannelDragEnd",
       "click i.part-channel": "partChannel"
     },
 
     initialize: function() {
+      this.channelBeingDragged = null;
     },
 
     bind: function() {
@@ -60,7 +65,7 @@ define([
       if (!Komanda.store.hasOwnProperty(server)) {
         Komanda.store[server] = {};
       }
-        
+
       if (!Komanda.store[server].hasOwnProperty("count")) {
         Komanda.store[server].count = {};
       }
@@ -86,6 +91,48 @@ define([
       if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
 
       $(select).find("input").focus();
+    },
+
+    handleChannelDragStart: function (e) {
+      e.originalEvent.dataTransfer.effectAllowed = "move";
+
+      this.channelBeingDragged = $(e.currentTarget);
+      this.channelBeingDragged.addClass("dragging");
+    },
+
+    handleChannelDragOver: function (e) {
+      e.preventDefault();
+
+      e.originalEvent.dataTransfer.dropEffect = "move";
+    },
+
+    handleChannelDrop: function (e) {
+      e.stopPropagation();
+
+      var channelToDrop = $(e.currentTarget);
+
+      if (channelToDrop[0] === this.channelBeingDragged[0]) {
+        return;
+      }
+
+      var channelsCollection = this.getChannelsList();
+
+      channelsCollection.swapChannels(this.channelBeingDragged.index(), channelToDrop.index());
+
+      var tempChannelItem = this.channelBeingDragged.clone();
+
+      this.channelBeingDragged.replaceWith(channelToDrop.clone());
+      channelToDrop.replaceWith(tempChannelItem);
+
+      this.handleChannelDragEnd();
+    },
+
+    handleChannelDragEnd: function () {
+      $("li.channel-item").removeClass("dragging");
+    },
+
+    getChannelsList: function () {
+      return Komanda.connections[Komanda.current.server].client.channels;
     },
 
     getEmptyView: function() {}

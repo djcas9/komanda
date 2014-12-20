@@ -8,6 +8,9 @@ define([
     tagName: "li",
     className: "channel-item",
     template: template,
+    attributes: {
+      "draggable": "true"
+    },
 
     events: {
     },
@@ -25,7 +28,6 @@ define([
     },
 
     onRender: function() {
-      var self = this;
       var $this = $(this.el);
       var server = this.model.get("server");
       var channel = this.model.get("channel");
