@@ -161,6 +161,17 @@ requirejs(["config"], function(require) {
         }
       });
 
+      Komanda.cmd("umode", function(client, data, args) {
+        if (args.length === 0) {
+          // want modes for the user
+          client.socket.send("MODE", client.nick);
+          return;
+        }
+        modes = args[0];
+        // We are setting modes for the user
+        client.socket.send("MODE", client.nick, modes);
+      });
+
       Komanda.cmd("set", function(client, data, args) {
         var setting;
 
