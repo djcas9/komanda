@@ -1,0 +1,10 @@
+{
+  "name": "komanda-github-toolbar",
+  "description": "github toolbar plugin for the Komanda IRC client",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "komanda-github-toolbar": "^0.0.2",
+    "komanda-github-feed": "^0.0.2"
+  }
+}

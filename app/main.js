@@ -15,13 +15,14 @@ requirejs(["config"], function(require) {
     "history",
     "lib/settings",
     "helpers",
+    "plugins",
     "window-state",
     "lib/embed/index",
     "command",
     "lib/deps/ion.sound",
     "lib/channels/channel",
   ], function(_, Marionette, Backbone, Komanda, $, Router, ContentView,
-    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, WindowState, Embed, Command, ionSound, Channel) {
+    SidebarView, Connect, Sessions, Session, History, Setting, Helpers, PluginLoader, WindowState, Embed, Command, ionSound, Channel) {
 
       // We should use domains instead
       window.process.on("uncaughtException", function(err) {
@@ -43,6 +44,8 @@ requirejs(["config"], function(require) {
       Komanda.settings.save(null);
 
       Embed(Komanda);
+
+      PluginLoader.loadPlugins();
 
       if (!Komanda.settings.attributes.notifications.hasOwnProperty("badge")) {
         Komanda.settings.set("notifications.badge", true);
@@ -159,6 +162,17 @@ requirejs(["config"], function(require) {
         } else {
           client.socket.send("MODE", curChan);
         }
+      });
+
+      Komanda.cmd("umode", function(client, data, args) {
+        if (args.length === 0) {
+          // want modes for the user
+          client.socket.send("MODE", client.nick);
+          return;
+        }
+        modes = args[0];
+        // We are setting modes for the user
+        client.socket.send("MODE", client.nick, modes);
       });
 
       Komanda.cmd("set", function(client, data, args) {

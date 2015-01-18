@@ -3,7 +3,7 @@ define([
   "underscore",
   "highlight"
 ], function($, _, hljs) {
-  
+
   var Helpers = {
     scrollUpdate: function(channel, force, delay) {
       var objDiv = channel.get(0);

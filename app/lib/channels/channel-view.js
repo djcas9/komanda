@@ -6,10 +6,8 @@ define([
   "uuid",
   "moment",
   "highlight",
-  "bluebird",
-  "hbs!templates/plugins/github/index",
-  "hbs!templates/plugins/github/feed-item"
-], function(Marionette, template, _, tab, uuid, moment, hljs, Promise, GithubView, GithubFeedItem) {
+  "templates/helpers/timestamp"
+], function(Marionette, template, _, tab, uuid, moment, hljs, timestamp) {
 
   return Marionette.ItemView.extend({
     tagName: "div",
@@ -32,205 +30,130 @@ define([
       var self = this;
       self.completerSetup = false;
       self.completer = null;
-      self.last_feed_id = 0;
-
-      self.githubUpdateFunction = function() {
-        self.updateAndRender(function(r) {
-
-
-          if (r.feed[0]) {
-            if (r.feed[0].id !== self.last_feed_id) {
-              // .. add new feed items to channel
-
-              var newFeedItems = self.newFeeditems(r.feed);
-
-              self.last_feed_id = r.feed[0].id;
-
-              var html = GithubFeedItem({
-                items: newFeedItems,
-                uuid: uuid.v4(),
-                server: self.model.get("server")
-              });
-
-              $(self.el).find(".messages").append(html);
-
-              // Not sure why this wont scroll the window down
-              setTimeout(function() {
-                Komanda.helpers.scrollUpdate($(self.el).find(".messages"));
-              }, 100);
-            }
-          }
-
-        });
-      };
-
-      self.githubUpdateCheck = null;
-
-      self.repo = {
-        metadata: {},
-        feed: []
-      };
+      self.plugs = [];
+      self.messageAttachPoint = null; // gets set in onRender when the DOM node is loaded.
+      self.toolbarAttachPoint = null; // gets set in onRender when the DOM node is loaded.
+      self.toolbarElement = null;
+      self.topicChangeCallbacks = []; // Array of callbacks to trigger when the channel topic is changed.
 
       Komanda.vent.on(self.model.get("server") + ":" + self.model.get("channel") + ":update:words", function(words, channels) {
         self.updateWords(false, false);
       });
-
-      // Load Channel Plugins
-      self.plugins();
     },
 
-    newFeeditems: function(feed) {
+    /*
+    **  Returns a new instance of the komanda channel API.
+    */
+    getChannelAPI: function() {
       var self = this;
 
-      var newFeedItems = [];
-      var len = feed.length;
+      var channelAPI = {
+        getTimestamp: function(timeToStamp) {
+          return timestamp(timeToStamp);
+        },
 
-      if (len > 0) {
+        addChannelMessage: function(html) {
+          if (html) {
+            self.messageAttachPoint.append(html);
 
-        for (var i = 0; i < len; i += 1) {
-          var id = feed[i].id;
-
-          if (id === self.last_feed_id) {
-            return newFeedItems;
-          } else {
-            newFeedItems.push(feed[i]);
+            // Not sure why this wont scroll the window down
+            setTimeout(function() {
+              Komanda.helpers.scrollUpdate(self.messageAttachPoint);
+            }, 100);
           }
-        }
+        },
 
-      } else {
-        return [];
-      }
-    },
-
-    plugins: function() {
-      var self = this;
-
-      // Not sure this is the best place for this.
-      Komanda.vent.on(self.model.get("server") + ":" + self.model.get("channel") + ":topic", function(topic) {
-        self.githubBar = $(".github-plugin-bar[data-server-id=\"" + self.model.get("server") + "\"][data-name=\"" + self.model.get("channel") + "\"]");
-
-        if (topic) {
-          var match = topic.match(/http(s)?:\/\/.*\.?github.com\/(.[\w|\-|\/]+)/);
-
-          if (match && match[2]) {
-            var key = match[2];
-
-            self.metadataURL = "";
-            self.feedURL = "";
-
-            if (/\/$/.test(key)) {
-              key = key.replace(/\/$/, "");
-            }
-
-            if (/\//.test(key)) {
-              self.metadataURL = "https://api.github.com/repos/" + key;
-              self.feedURL = "https://api.github.com/repos/" + key + "/events";
-            } else {
-              self.metadataURL = "https://api.github.com/orgs/" + key;
-              self.feedURL = "https://api.github.com/orgs/" + key + "/events";
-            }
-
-            self.pluginReDraw(function() {
-              // set the first feed cache id
-              if (self.repo.feed[0]) self.last_feed_id = self.repo.feed[0].id;
-            });
-
-            return;
+        setToolbar: function(html) {
+          if (html) {
+            // if we already have an attached toolbar clear it before adding the new one.
+            this.removeToolbar();
+            self.toolbarElement = $(html).prependTo(self.toolbarAttachPoint);
+            self.toolbarAttachPoint.addClass("toolbar-attached");
           }
+        },
+
+        removeToolbar: function() {
+          if (self.toolbarElement) {
+            self.toolbarAttachPoint.removeClass("toolbar-attached");
+            self.toolbarElement.remove();
+            self.toolbarElement = null;
+          }
+        },
+
+        onChannelTopicChange: function(topicChangeCallback) {
+          self.topicChangeCallbacks.push(topicChangeCallback);
         }
-
-        if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
-        if (self.githubBar) self.githubBar.remove();
-        $(self.el).removeClass("github-plugin");
-      });
-    },
-
-    pluginToolbar: function(repo) {
-      var self = this;
-
-      var params = {
-        server: self.model.get("server"),
-        channel: self.model.get("channel"),
-        repo: repo,
-        isOrg: false
       };
 
-      self.githubBar = $(".github-plugin-bar[data-server-id=\"" + params.server + "\"][data-name=\"" + params.channel + "\"]");
-
-      if (repo.metadata.hasOwnProperty("type")) {
-        if (repo.metadata.type === "Organization") {
-          params.isOrg = true;
-        }
-      }
-
-      var html = GithubView(params);
-
-      if (self.githubBar && self.githubBar.length > 0) {
-        self.githubBar.replaceWith(html);
-      } else {
-        $(self.el).prepend(html).addClass("github-plugin");
-        self.githubBar = $(".github-plugin-bar[data-server-id=\"" + params.server + "\"][data-name=\"" + params.channel + "\"]");
-      }
+      return _.extend({}, channelAPI); // return a new instance every time
     },
 
-    pluginReDraw: function(callback) {
+    /*
+    **  Instantiates new instances of each loaded channel plugin and adds it to self.plugs.
+    **  If the plugin has a stylesheet specified it gets loaded and added to the page.
+    **  A new instance of the komanda channel API is passed to the plugin's initialize method.
+    */
+    loadPlugins: function() {
+      // Needs to be called after the view has been rendered [onRender()] to ensure that the attach points have been inserted
+      // in the DOM and can be passed safely to the plugins.
       var self = this;
 
-      self.updateAndRender(function(repo) {
+      // Get a list of channel plugins from Komanda.settings:
+      var channelPlugins = _.where(Komanda.settings.plugins, {"channel": true});
 
-        self.pluginToolbar(repo);
+      _.each(channelPlugins, function(channelPlugin) {
+        // Instantiate a new instance of the plugin.
+        var thePlugin = new channelPlugin.plugin();
+        // Add plugin info relevant to the channel.
+        self.plugs.push({
+          "name": channelPlugin.name,
+          "topic": channelPlugin.topic,
+          "plugin": thePlugin
+        });
+        // If this plugin has a stylesheet append it to the head now [overwriting any other stylesheet for this plugin].
+        if (_.has(channelPlugin, "stylesheetPath")) {
+          var pluginStyleId = channelPlugin.name + "-stylesheet";
+          var pluginStyleLink = $("<link id=\"" + pluginStyleId + "\" rel=\"stylesheet\" href=\"" + channelPlugin.stylesheetPath + "\">");
+          if ($("head #" + pluginStyleId).length > 0) {
+            $("head #" + pluginStyleId).remove();
+          }
+          $("head").append(pluginStyleLink);
+        }
 
-        if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
-
-        self.githubUpdateCheck = setInterval(self.githubUpdateFunction, 20000);
-
-        if (_.isFunction(callback)) callback(repo);
+        // Get a new instance of the channel API for this plugin.
+        var pluginChannelAPI = self.getChannelAPI();
+        // Initialize the plugin.
+        thePlugin.initialize({ channelAPI: pluginChannelAPI });
       });
 
+      // Now that all the plugins are loaded, hook in to topic changes.
+      self.addTopicHooks();
     },
 
-    updateAndRender: function(callback, errorback) {
+    addTopicHooks: function() {
       var self = this;
 
-      if (!_.isFunction(callback)) callback = _.noop;
-      if (!_.isFunction(errorback)) errorback = _.noop;
-
-      Promise.resolve($.ajax({
-        url: self.metadataURL,
-        dataType: "json",
-        type: "get",
-        ifModified: true
-      }))
-      .then(function(metadata) {
-        return Promise.resolve($.ajax({
-          url: self.feedURL,
-          dataType: "json",
-          type: "get",
-          ifModified: true
-        }))
-        .then(function(feed) {
-          if (metadata && !_.isEmpty(metadata)) {
-            self.repo.metadata = metadata;
-            self.pluginToolbar(self.repo);
+      // Listen for topic changes.
+      Komanda.vent.on(self.model.get("server") + ":" + self.model.get("channel") + ":topic", function(topic) {
+          // Call all registered topic change callbacks.
+          if (!_.isEmpty(self.topicChangeCallbacks)) {
+            _.each(self.topicChangeCallbacks, function(topicChangeCallback) {
+              if (_.isFunction(topicChangeCallback)) {
+                topicChangeCallback(topic);
+              }
+            });
           }
-
-          if (feed && feed.length > 0) {
-            self.repo.feed = feed;
-          }
-
-          return self.repo;
-        });
-      })
-      .catch(errorback)
-      .then(callback);
+      });
     },
 
     onClose: function() {
       var self = this;
 
-      if (self.githubUpdateCheck) clearInterval(self.githubUpdateCheck);
-      if (self.githubBar) self.githubBar.remove();
-      self.githubUpdateFunction = null;
+      // Foreach plugin, call plugin.close():
+      _.each(self.plugs, function(channelPlug) {
+        var thePlugin = channelPlug.plugin;
+        thePlugin.close();
+      });
     },
 
     zenmode: function(e) {
@@ -289,7 +212,7 @@ define([
 
       keys.push(Komanda.command.getCommands());
 
-      if (Komanda.connections && Komanda.connections.hasOwnProperty(self.model.get("server"))) {
+      if (Komanda.connections && _.has(Komanda.connections, self.model.get("server"))) {
         channels = _.map(Komanda.connections[self.model.get("server")].client.channels.models, function(c) {
           return c.get("channel").toLowerCase();
         });
@@ -324,12 +247,16 @@ define([
     onRender: function() {
       var self = this;
       var $this = $(this.el);
+      self.messageAttachPoint = $(self.el).find(".messages");
+      self.toolbarAttachPoint = $(self.el);
 
       $this.attr("data-server-id", this.model.get("server"));
       $this.attr("data-name", this.model.get("channel"));
 
       self.setupAutoComplete();
       self.updateWords();
+      // Load Channel Plugins
+      self.loadPlugins();
     },
 
     focus: function(e) {

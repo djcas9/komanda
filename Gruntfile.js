@@ -191,7 +191,13 @@ module.exports = function(grunt) {
           { src: "package.json", dest: "build/komanda-source/package.json" },
           { src: ["app/**"], dest: "build/komanda-source/" },
           { src: "vendor/**", dest: "build/komanda-source/" },
-          { src: "themes/**", dest: "build/komanda-source/" }
+          { src: "themes/**", dest: "build/komanda-source/" },
+          {
+            expand: true,
+            cwd: "plugins/node_modules/",
+            src: "**",
+            dest: "build/komanda-source/plugins/"
+          }
         ]
       }
     },
@@ -245,6 +251,10 @@ module.exports = function(grunt) {
       },
       createWinUpdate: {
         cmd: "makensis dist/windows/updater.nsi"
+      },
+      pluginInstall: {
+        cwd: "./plugins/",
+        cmd: "npm install"
       }
     },
 
@@ -385,6 +395,7 @@ module.exports = function(grunt) {
       //"npm-install",
       "jshint",
       "processhtml",
+      "exec:pluginInstall",
       "copy",
       "revision",
       "replace:revision",

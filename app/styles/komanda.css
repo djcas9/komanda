@@ -584,32 +584,13 @@ div.header-box i.show-hide-icon{
     padding-right: 45px;
 }
 
-.channel.github-plugin .messages{
-    top: 80px;
+.channel.toolbar-attached .messages{
+	top: 80px;	
 }
 
-.channel.github-plugin .topic{
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-.channel .github-plugin-bar{
-    z-index: 999;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    height: 39px;
-    display: block;
-    position: absolute;
-    top: 40px;
-    right: 180px;
-    left: 0;
-    line-height: 39px;
-    padding-left: 10px;
-    padding-right: 45px;
-    background-color: #495561;
-    font-size: 0.9em;   
-    box-shadow: 0px 0px 0px 1px rgba( 0,0,0,1), 0px 2px 0px rgba( 255,255,255,0.03 ), inset 0px 1px 0px rgba( 255,255,255,0.14);
+.channel.toolbar-attached .topic{
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 
 .channel .input{
@@ -1053,9 +1034,6 @@ body.zenmode .channel button.zen-button,
 body.zenmode .channel .input,
 body.zenmode .channel .messages,
 body.zenmode .channel .topic,
-body.zenmode .channel .plugin{
-    right: 0 !important;
-}
 
 /* @end */
 
@@ -1101,211 +1079,6 @@ body.zenmode .channel .plugin{
     margin-bottom: 20px;
     display: block;
     position: relative;
-}
-
-/* @end */
-
-/* @group Github */
-
-div.message.github-message{
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-div.message.github-message .body{
-    display: block;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-.plugin{
-
-}
-
-.plugin .plugin-logo{
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 10px;
-    width: 100px;
-}
-
-.plugin .plugin-logo span{
-    vertical-align: middle; 
-    cursor: pointer !important;
-}
-
-.plugin .plugin-options{
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 5px;
-    bottom: 0;
-    width: 350px;
-}
-
-.plugin .plugin-options button{
-    margin-top: 10px;
-    float: right;
-    margin-right: 5px;
-}
-
-.plugin-button{
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    background-color: #d5d6d9;
-    background-image: linear-gradient(to bottom, #d5d6d9, #afb0b7);
-    box-shadow: 0px 1px 3px rgba(0,0,0,0.4),inset 0px 1px 0px rgba(255,255,255,0.6);
-    text-shadow: rgba(255,255,255,0.5) 0 1px 0;
-    padding-right: 8px;
-    padding-left: 8px;
-    display: block;
-    position: relative;
-    overflow: hidden;
-    font-size: 0.8em;
-}
-
-.plugin-button span{
-    padding-right: 3px;
-    padding-left: 3px;
-    font-size: 1.0em;
-    cursor: pointer; 
-}
-
-.plugin .title{
-    display: block;
-    position: absolute;
-    overflow: hidden;
-    top: 0;
-    bottom: 0;
-    left: 36px;
-    width: 300px;
-    color: #949494;
-    font-size: 0.8em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.plugin .title span.name{
-    font-weight: bold;
-    color: #fff;
-    padding-right: 5px;
-    font-size: 1.3em;
-}
-
-.plugin .title span.description{
-    color: #949494;
-}
-
-div.github-wrapper{
-    display: block;
-    position: relative;
-    left: 130px;
-    top: -16px;
-    padding-right: 150px;
-    overflow: hidden;
-}
-
-div.github-wrapper .github-title{
-    display: block;
-}
-
-div.github-wrapper a{
-    color: #D0DAF5;
-    margin-right: 3px;
-    margin-left: 3px;
-}
-
-div.github-wrapper .github-title strong{
-    font-weight: bold;
-    text-decoration: none;
-    font-variant: normal;
-}
-
-div.github-wrapper .github-title span{
-    margin-right: 5px;
-    vertical-align: middle;
-}
-
-div.github-wrapper .github-actor-image {
-    float: left;
-    margin-right: 10px;
-    top: 25px;
-    position: absolute;
-}
-
-div.github-wrapper .github-actor-image img {
-    vertical-align: middle;
-    border-radius: 3px;
-    width: 30px;
-    height: 30px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-div.github-wrapper .github-body{
-    min-height: 35px;
-    margin-top: 10px;
-    display: block;
-    margin-left: 40px;
-    color: #afafaf;
-}
-
-div.github-wrapper .github-body hr{
-    background: rgba(41, 43, 46, 1);
-    border: 0 none;
-    color: #3389E7;
-    height: 2px;
-    padding: 0;
-    margin: 15px 0;
-}
-
-div.github-wrapper .github-body img{
-    max-width: 100%;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-div.github-wrapper .github-body p {
-    display: block;
-    -webkit-margin-before: 0.5em;
-    -webkit-margin-after: 0.5em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-}
-
-div.github-wrapper .github-body ul{
-    padding-left: 30px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    list-style-type: disc;
-}
-
-div.github-wrapper .github-body ul.commits{
-
-    margin-top: 5px;
-    margin-bottom: 5px;
-    list-style-type: none;
-    padding: 0;
-}
-
-div.github-wrapper .github-body ul.commits li{
-    margin-top: 7px;
-    list-style-type: none;
-    color: #b2b2b2;
-    line-height: 22px;
-}
-
-div.github-wrapper .github-body ul li{
-    display: list-item;
-    text-align: -webkit-match-parent;
 }
 
 .irc-text-bold {
