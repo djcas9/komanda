@@ -729,7 +729,8 @@ div.message .body .text .embed-items .show-more i{
 }
 
 div.message .body .text .embed-items .gist,
-div.message .body .text .embed-items .jsfiddle-holder{
+div.message .body .text .embed-items .jsfiddle-holder,
+div.message .body .text .embed-items .video-holder{
     display: none;
     margin-top: 10px;
 }
