@@ -29,16 +29,24 @@ define("templates/helpers/message", [
     },
 
     setColor: function (fg, bg) {
-      if (_.isNaN(fg)) return;
+      if (!_.isNaN(fg)) {
+        this.removeClass("irc-text-foreground-" + this.foreground);
+        this.addClass("irc-text-foreground-" + fg);
+        this.foreground = fg;
 
-      this.removeClass("irc-text-foreground-" + this.foreground);
-      this.addClass("irc-text-foreground-" + fg);
-      this.foreground = fg;
-
-      if (!_.isNaN(bg)) {
-        this.removeClass("irc-text-background-" + this.background);
-        this.addClass("irc-text-background-" + bg);
-        this.background = bg;
+        if (!_.isNaN(bg)) {
+          this.removeClass("irc-text-background-" + this.background);
+          this.addClass("irc-text-background-" + bg);
+          this.background = bg;
+        }
+        else if (this.background != null) {
+          this.removeClass("irc-text-background-" + this.background);
+          this.background = null;
+        }
+      }
+      else if (this.foreground != null) {
+        this.removeClass("irc-text-foreground-" + this.foreground);
+        this.foreground = null;
       }
     },
 
@@ -101,7 +109,9 @@ define("templates/helpers/message", [
 
           fg = parseInt(parts[0], 10);
 
-          i += String(fg).length;
+          if (!_.isNaN(fg)) {
+            i += String(fg).length;
+          }
 
           if (parts.length > 1) {
             bg = parseInt(parts[1], 10);
