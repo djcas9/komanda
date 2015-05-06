@@ -21,6 +21,9 @@ define([
    * 2014-03-22
    * - Repared workaround (from 2013-12-01) behaviour when use frameless window.
    *   Now it works correctly.
+   *
+   * 2015-05-06
+   * - Added support for minimization to tray
    */
 
   var gui = requireNode("nw.gui");
@@ -28,6 +31,7 @@ define([
   var winState;
   var currWinMode;
   var resizeTimeout;
+  var tray = new gui.Tray({icon: "images/logo/16x16.png"});
   var isMaximizationEvent = false;
 
   // extra height added in linux x64 gnome-shell env, use it as workaround
@@ -53,6 +57,7 @@ define([
       dumpWindowState();
     }
 
+    tray.tooltip = "Komanda IRC Client";
     win.show();
   }
 
@@ -111,6 +116,9 @@ define([
 
   win.on("minimize", function () {
     currWinMode = "minimized";
+    if (Komanda.settings.get("display.minimizeTray")) {
+      win.hide();
+    }
   });
 
   win.on("restore", function () {
@@ -156,6 +164,21 @@ define([
       Komanda.window.close(true);
 
     this.close(true);
+  });
+
+  tray.on("click", function() {
+    if (Komanda.settings.get("display.minimizeTray")) {
+      if (currWinMode === "minimized") {
+        win.show();
+        currWinMode = isMaximizationEvent ? "maximized" : "normal";
+        if (currWinMode === "maximized") {
+          win.maximize();
+        }
+      } else {
+        currWinMode = "minimized";
+        win.hide();
+      }
+    }
   });
 
   return initWindowState;
