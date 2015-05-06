@@ -1,4 +1,4 @@
-<img height="150px" width="150px" src="https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/logo/komanda%20(PNG)/256x256.png">
+<img height="150px" width="150px" src="https://raw.githubusercontent.com/mephux/komanda/master/app/styles/images/logo/256x256.png">
 
 # Komanda [http://komanda.io](http://komanda.io)
 
