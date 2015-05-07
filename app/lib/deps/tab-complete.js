@@ -29,7 +29,7 @@ define([
    * Add a single word to the trie.
    */
   Trie.prototype.word = function (word) {
-    var c = word.charAt(0);
+    var c = word.charAt(0).toLowerCase();
 
     if (!(c in this.children)) {
       this.children["" + c + ""] = new Trie(this.prefix + c);
@@ -145,7 +145,7 @@ define([
           value = value;
         }
 
-        var trie = root.find(value);
+        var trie = root.find(value.toLowerCase());
 
         if (trie) {
           // items[(items.length - 1)] = trie.uniquePrefix();
