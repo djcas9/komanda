@@ -215,7 +215,8 @@ module.exports = function(grunt) {
         cacheDir: "./build/cache",
         platforms: ["osx", "win", "linux32", "linux64"],
         macIcns: "app/styles/images/logo/komanda.icns",
-        macCredits: "credits.html"
+        macCredits: "credits.html",
+        winIco: "app/styles/images/logo/komanda.ico"
       },
       // src: ["./**/*"],
       src: [

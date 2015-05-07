@@ -46,7 +46,8 @@ define([
       display: {
         timestamp: "MM/DD/YY hh:mm:ss",
         system: true,
-        hidejoinpart: false
+        hidejoinpart: false,
+        minimizeTray: true
       },
       sounds: {
         chat: false,
