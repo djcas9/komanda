@@ -1,4 +1,5 @@
 var rimraf = require("rimraf");
+var targz = require('tar.gz');
 var fs = require("fs-extra");
 var util = require("util");
 
@@ -70,7 +71,7 @@ module.exports = function(grunt) {
             return file;
           }
         },
-        files:{
+        files: {
           "app/templates.js": ["app/templates/*.hbs"]
         }
       }
@@ -188,10 +189,22 @@ module.exports = function(grunt) {
     copy: {
       release: {
         files: [
-          { src: "package.json", dest: "build/komanda-source/package.json" },
-          { src: ["app/**"], dest: "build/komanda-source/" },
-          { src: "vendor/**", dest: "build/komanda-source/" },
-          { src: "themes/**", dest: "build/komanda-source/" }
+          {
+            src: "package.json",
+            dest: "build/komanda-source/package.json"
+          },
+          {
+            src: ["app/**"],
+            dest: "build/komanda-source/"
+          },
+          {
+            src: "vendor/**",
+            dest: "build/komanda-source/"
+          },
+          {
+            src: "themes/**",
+            dest: "build/komanda-source/"
+          }
         ]
       }
     },
@@ -216,7 +229,8 @@ module.exports = function(grunt) {
         platforms: ["osx", "win", "linux32", "linux64"],
         macIcns: "app/styles/images/logo/komanda.icns",
         macCredits: "credits.html",
-        winIco: "app/styles/images/logo/komanda.ico"
+        // winIco: "app/styles/images/logo/komanda.ico"
+        winIco: null
       },
       // src: ["./**/*"],
       src: [
@@ -360,9 +374,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-git-revision");
   grunt.loadNpmTasks("grunt-replace");
 
-  grunt.registerTask("default", [
-
-  ]);
+  grunt.registerTask("default", []);
 
   grunt.registerTask("build", function(platforms) {
     var targetPlatforms = parseBuildPlatforms(platforms);
@@ -393,8 +405,39 @@ module.exports = function(grunt) {
       "styles",
       "cssmin",
       "cleanBuildDir",
-      "nodewebkit"
+      "nodewebkit",
+      "komanda-package"
     ]);
+  });
+
+  grunt.registerTask("komanda-package", function(platforms) {
+    try {
+    fs.mkdirSync("package/");
+    } catch(e) {
+    }
+    var done = this.async();
+
+    var builds = {
+      "linux32": "komanda-linux-32-current.tar.gz",
+      "linux64": "komanda-linux-64-current.tar.gz",
+      "osx32": "komanda-osx32-current.tar.gz",
+      "osx64": "komanda-osx64-current.tar.gz",
+      "win32": "komanda-win32-current.tar.gz",
+      "win64": "komanda-win64-current.tar.gz"
+    }
+
+    var i
+    for (i in builds) {
+      var b = builds[i];
+
+      var compress = new targz().compress('build/Komanda/' + i, 'package/' + b, function(err) {
+        if (err) {
+          done(err)
+        }
+        done()
+      });
+    }
+
   });
 
   grunt.registerTask("build-all", function(platforms) {
@@ -416,15 +459,15 @@ module.exports = function(grunt) {
 
   grunt.registerTask("run", function() {
     var start = parseBuildPlatforms();
-    if(start.win){
+    if (start.win) {
       grunt.task.run("run:win");
-    }else if(start.mac){
+    } else if (start.mac) {
       grunt.task.run("run:mac");
-    }else if(start.linux32){
+    } else if (start.linux32) {
       grunt.task.run("run:linux32");
-    }else if(start.linux64){
+    } else if (start.linux64) {
       grunt.task.run("run:linux64");
-    }else{
+    } else {
       grunt.log.writeln("OS not supported.");
     }
   });

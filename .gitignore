@@ -14,6 +14,7 @@ node-webkit-builds
 
 # build
 /build/
+package/
 /dist/
 /tmp/
 /vendor

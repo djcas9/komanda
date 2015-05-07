@@ -1,0 +1,12 @@
+image: node
+git:
+  path: github.com/mephux/komanda
+  branch: master
+script:
+  - npm install
+  - grunt build-all 
+  - grunt komanda-package
+notify:
+  email:
+    recipients:
+      - dustin.webber@gmail.com
