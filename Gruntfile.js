@@ -208,7 +208,7 @@ module.exports = function(grunt) {
 
     nodewebkit: {
       options: {
-        version: "0.10.2",
+        version: "0.12.1",
         appName: "Komanda",
         appVersion: "1.0.0.beta",
         buildDir: "./build",
@@ -381,6 +381,23 @@ module.exports = function(grunt) {
     });
     grunt.config.set("nodewebkit.options.platforms", targetPlatformsArray);
 
+    grunt.task.run([
+      "clean:some",
+      //"npm-install",
+      "jshint",
+      "processhtml",
+      "copy",
+      "revision",
+      "replace:revision",
+      "requirejs",
+      "styles",
+      "cssmin",
+      "cleanBuildDir",
+      "nodewebkit"
+    ]);
+  });
+
+  grunt.registerTask("build-all", function(platforms) {
     grunt.task.run([
       "clean:some",
       //"npm-install",

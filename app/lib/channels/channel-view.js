@@ -37,7 +37,6 @@ define([
       self.githubUpdateFunction = function() {
         self.updateAndRender(function(r) {
 
-
           if (r.feed[0]) {
             if (r.feed[0].id !== self.last_feed_id) {
               // .. add new feed items to channel

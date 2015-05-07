@@ -276,6 +276,7 @@ div.message.highlight{
 
 div.message .body .timestamp{
 	color: #39474c;
+	margin-right: 5px;
 }
 
 div.message .body .nickname.highlight{
