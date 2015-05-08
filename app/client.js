@@ -1221,8 +1221,34 @@ define([
       isAction: isAction
     };
 
-    if (text.match(self.nick) && !self.me(nick)) {
-      data.highlight = true;
+    // Cannot be cached as a global variable as value isn't updated when user changes settings
+    var highlightParse = Komanda.settings.get("notifications.regexHighlight");
+    // We always want to highlight our own nick so include that even if the regex string is empty
+    if (highlightParse === "") {
+      highlightParse = self.nick;
+    } else {
+      highlightParse.concat("|" + self.nick);
+    }
+    var regex = new RegExp(highlightParse, "i");
+    var exclParse = Komanda.settings.get("notifications.regexIgnoreNicks").replace(" ", "").split(",");
+    var exclRegexString = "";
+    for (var i = 0; i < exclParse.length; i++) {
+      if (i > 0) {
+        exclRegexString = exclRegexString + "|";
+      }
+      exclRegexString = exclRegexString + exclParse[i];
+    }
+    var testExcludes = exclRegexString !== ""; // Don't test exclusions if its empty, i.e. short circuit
+    var exclRegex = new RegExp(exclRegexString, "i");
+
+    if (regex.test(text) && !self.me(nick)) {
+      if (testExcludes) {
+        if (!exclRegex.test(nick)) {
+          data.highlight = true;
+        }
+      } else {
+        data.highlight = true;
+      }
     }
 
     var channel;
