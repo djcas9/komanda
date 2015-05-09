@@ -107,17 +107,17 @@ define("templates/helpers/message", [
           var parts = message.substr(i + 1, 5).split(",");
           var fg, bg;
 
-          fg = parseInt(parts[0], 10);
+          fg = parseInt(parts[0].substring(0, 2), 10);
 
           if (!_.isNaN(fg)) {
-            i += String(fg).length;
+            i += new RegExp("(0" + fg + "|" + fg + ")").exec(parts[0])[1].length;
           }
 
           if (parts.length > 1) {
-            bg = parseInt(parts[1], 10);
+            bg = parseInt(parts[1].substring(0, 2), 10);
 
             if (!_.isNaN(bg)) {
-              i += String(bg).length + 1;
+              i += new RegExp("(0" + bg + "|" + bg + ")").exec(parts[1])[1].length + 1;
             }
           }
 
