@@ -110,14 +110,14 @@ define("templates/helpers/message", [
           fg = parseInt(parts[0], 10);
 
           if (!_.isNaN(fg)) {
-            i += String(fg).length;
+            i += new RegExp("(0*" + fg + ")").exec(parts[0])[1].length;
           }
 
           if (parts.length > 1) {
             bg = parseInt(parts[1], 10);
 
             if (!_.isNaN(bg)) {
-              i += String(bg).length + 1;
+              i += new RegExp("(0*" + bg + ")").exec(parts[1])[1].length + 1;
             }
           }
 
