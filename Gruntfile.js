@@ -420,37 +420,27 @@ module.exports = function(grunt) {
       "cssmin",
       "cleanBuildDir",
       "nodewebkit",
-      "komanda-package"
     ]);
+    var i;
+    for (i in targetPlatformsArray) {
+      grunt.task.run(["komanda-package:" + targetPlatformsArray[i]]);
+    }
   });
 
-  grunt.registerTask("komanda-package", function(platforms) {
+  grunt.registerTask("komanda-package", function(platform) {
     try {
     fs.mkdirSync("package/");
     } catch(e) {
     }
-    var done = this.async();
+    
+    var b = "komanda-$platform-current.tar.gz".replace("$platform", platform);
 
-    var builds = {
-      "linux32": "komanda-linux-32-current.tar.gz",
-      "linux64": "komanda-linux-64-current.tar.gz",
-      "osx32": "komanda-osx32-current.tar.gz",
-      "osx64": "komanda-osx64-current.tar.gz",
-      "win32": "komanda-win32-current.tar.gz",
-      "win64": "komanda-win64-current.tar.gz"
-    }
-
-    var i
-    for (i in platforms) {
-      var b = builds[i];
-
-      var compress = new targz().compress('build/Komanda/' + i, 'package/' + b, function(err) {
-        if (err) {
-          done(err)
-        }
-        done()
-      });
-    }
+    var compress = new targz().compress('build/Komanda/' + platform, 'package/' + b, function(err) {
+      if (err) {
+        grunt.log.write(err);
+      }
+      grunt.log.writeln("Package created: " + b);
+    });
 
   });
 
