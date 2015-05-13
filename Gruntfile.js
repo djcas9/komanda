@@ -19,18 +19,29 @@ var parseBuildPlatforms = function(argumentPlatform) {
 
   // Do some scrubbing to make it easier to match in the regexes bellow
   inputPlatforms = inputPlatforms.replace("darwin", "mac");
+  inputPlatforms = inputPlatforms.replace("win32;", "win;"); // platform will always be win32 for windows systems, even on 64 bit architectures (tested w/ win 7 and win 8.1 x64)
   inputPlatforms = inputPlatforms.replace(/;ia|;x|;arm/, "");
 
   var buildAll = /^all$/.test(inputPlatforms);
+  
+  if (/^all$/.test(inputPlatforms)) {
+    return {
+      mac: true,
+      win32: true,
+      win64: true,
+      linux32: true,
+      linux64: true
+    };    
+  } else {
 
-  var buildPlatforms = {
-    mac: /mac/.test(inputPlatforms) || buildAll,
-    win: /win/.test(inputPlatforms) || buildAll,
-    linux32: /linux32/.test(inputPlatforms) || buildAll,
-    linux64: /linux64/.test(inputPlatforms) || buildAll
-  };
-
-  return buildPlatforms;
+    return {
+      mac: /mac/.test(inputPlatforms),
+      win32: /win32/.test(inputPlatforms),
+      win64: /win64/.test(inputPlatforms),
+      linux32: /linux32/.test(inputPlatforms),
+      linux64: /linux64/.test(inputPlatforms)
+    };
+  }
 };
 
 module.exports = function(grunt) {
@@ -240,8 +251,11 @@ module.exports = function(grunt) {
     },
 
     exec: {
-      win: {
-        cmd: '"build/cache/<%= nodewebkit.options.version %>/win/nw.exe" .'
+      win32: {
+        cmd: '"build/cache/<%= nodewebkit.options.version %>/win32/nw.exe" .'
+      },
+      win64: {
+        cmd: '"build/cache/<%= nodewebkit.options.version %>/win64/nw.exe" .'
       },
       mac: {
         cmd: "build/cache/<%= nodewebkit.options.version %>/osx/node-webkit.app/Contents/MacOS/node-webkit ."
@@ -278,7 +292,7 @@ module.exports = function(grunt) {
           stderr: false,
           stdin: false
         },
-        command: "./build/cache/0.10.2/osx/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
+        command: "./build/cache/<%= nodewebkit.options.version %>/osx/node-webkit.app/Contents/MacOS/node-webkit . > /dev/null 2>&1"
       },
 
       linux64: {
@@ -287,7 +301,7 @@ module.exports = function(grunt) {
           stderr: false,
           stdin: false,
         },
-        command: "./build/cache/0.10.2/linux64/nw ./build/komanda-source/"
+        command: "./build/cache/<%= nodewebkit.options.version %>/linux64/nw ./build/komanda-source/"
       },
 
       linux32: {
@@ -296,7 +310,7 @@ module.exports = function(grunt) {
           stderr: false,
           stdin: false,
         },
-        command: "./build/cache/0.10.2/linux32/nw ./build/komanda-source/"
+        command: "./build/cache/<%= nodewebkit.options.version %>/linux32/nw ./build/komanda-source/"
       },
 
       create_dmg: {
@@ -427,7 +441,7 @@ module.exports = function(grunt) {
     }
 
     var i
-    for (i in builds) {
+    for (i in platforms) {
       var b = builds[i];
 
       var compress = new targz().compress('build/Komanda/' + i, 'package/' + b, function(err) {
@@ -457,39 +471,68 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask("run", function() {
-    var start = parseBuildPlatforms();
-    if (start.win) {
-      grunt.task.run("run:win");
-    } else if (start.mac) {
+  grunt.registerTask("run", function(parameter) {
+    var start = parseBuildPlatforms(parameter);
+    var build = false;
+    if (start.win32) {
+      build = true;
+      grunt.log.writeln("Building win32");
+      grunt.task.run("run:win32");
+    } 
+    if (start.win64) {
+      build = true;
+      grunt.log.writeln("Building win64");
+      grunt.task.run("run:win64");
+    } 
+    if (start.mac) {
+      build = true;
+      grunt.log.writeln("Building mac");
       grunt.task.run("run:mac");
-    } else if (start.linux32) {
+    } 
+    if (start.linux32) {
+      build = true;
+      grunt.log.writeln("Building linux32");
       grunt.task.run("run:linux32");
-    } else if (start.linux64) {
+    } 
+    if (start.linux64) {
+      build = true;
+      grunt.log.writeln("Building linux64");
       grunt.task.run("run:linux64");
-    } else {
-      grunt.log.writeln("OS not supported.");
+    } 
+    if (!build) {      
+      grunt.log.writeln("Requested OS not supported. Defaulted to your current platform!");
     }
   });
 
+  grunt.registerTask("run:win", [
+    "build",
+    "exec:win32",
+    "exec:win64"
+  ]);
+  
   grunt.registerTask("run:mac", [
-    "default",
+    "build",
     "shell:runnw"
   ]);
 
-  grunt.registerTask("run:win", [
-    "default",
-    "exec:win"
+  grunt.registerTask("run:win32", [
+    "build",
+    "exec:win32"
+  ]);
+  
+  grunt.registerTask("run:win64", [
+    "build",
+    "exec:win64"
   ]);
 
   grunt.registerTask("run:linux32", [
-    "default",
+    "build",
     "copy",
     "exec:linux32"
   ]);
 
   grunt.registerTask("run:linux64", [
-    "default",
+    "build",
     "copy",
     "exec:linux64"
   ]);
