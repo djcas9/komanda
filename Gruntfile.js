@@ -463,6 +463,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask("run", function(parameter) {
     var start = parseBuildPlatforms(parameter);
+    grunt.task.run("build");
     var build = false;
     if (start.win32) {
       build = true;
@@ -495,28 +496,23 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask("run:win", [
-    "build",
     "exec:win32",
     "exec:win64"
   ]);
   
   grunt.registerTask("run:mac", [
-    "build",
     "shell:runnw"
   ]);
 
   grunt.registerTask("run:win32", [
-    "build",
     "exec:win32"
   ]);
   
   grunt.registerTask("run:win64", [
-    "build",
     "exec:win64"
   ]);
 
   grunt.registerTask("run:linux32", [
-    "build",
     "copy",
     "exec:linux32"
   ]);
