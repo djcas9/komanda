@@ -501,8 +501,8 @@ module.exports = function(grunt) {
       grunt.task.run(["build"]);
     }
     grunt.task.run([
-      "exec:win32",
-      "exec:win64",
+      //"exec:win32",
+      //"exec:win64",
       "komanda-package:win32",
       "komanda-package:win64"
     ]);
@@ -515,8 +515,8 @@ module.exports = function(grunt) {
       grunt.task.run(["build"]);
     }
     grunt.task.run([
-    "shell:runnw",
-    "komanda-package:mac"
+      //"shell:runnw",
+      "komanda-package:mac"
     ]);
   });
 
@@ -526,7 +526,7 @@ module.exports = function(grunt) {
       grunt.task.run(["build"]);
     }
     grunt.task.run([
-      "exec:win32",
+      //"exec:win32",
       "komanda-package:win32"
     ]);
   });
@@ -537,7 +537,7 @@ module.exports = function(grunt) {
       grunt.task.run(["build"]);
     }
     grunt.task.run([
-      "exec:win64",
+      //"exec:win64",
       "komanda-package:win64"
     ]);
   });
@@ -549,7 +549,7 @@ module.exports = function(grunt) {
     }
     grunt.task.run([
       "copy",
-      "exec:linux32",
+      //"exec:linux32",
       "komanda-package:linux32"
     ]);
    });
@@ -561,7 +561,7 @@ module.exports = function(grunt) {
     }
     grunt.task.run([
       "copy",
-      "exec:linux64",
+      //"exec:linux64",
       "komanda-package:linux64"
     ]);
   });
