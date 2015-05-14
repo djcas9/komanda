@@ -5,8 +5,7 @@ git:
 script:
   - npm install
   - npm install -g grunt-cli
-  - grunt build-all 
-  - grunt komanda-package
+  - grunt run:all
 notify:
   email:
     recipients:
