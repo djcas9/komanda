@@ -497,29 +497,35 @@ module.exports = function(grunt) {
 
   grunt.registerTask("run:win", [
     "exec:win32",
-    "exec:win64"
+    "exec:win64",
+    "komanda-package:win32",
+    "komanda-package:win64"
   ]);
   
   grunt.registerTask("run:mac", [
-    "shell:runnw"
+    "shell:runnw",
+    "komanda-package:mac"
   ]);
 
   grunt.registerTask("run:win32", [
-    "exec:win32"
+    "exec:win32",
+    "komanda-package:win32"
   ]);
   
   grunt.registerTask("run:win64", [
-    "exec:win64"
+    "exec:win64",
+    "komanda-package:win32"
   ]);
 
   grunt.registerTask("run:linux32", [
     "copy",
-    "exec:linux32"
+    "exec:linux32",
+    "komanda-package:linux32"
   ]);
 
   grunt.registerTask("run:linux64", [
-    "build",
     "copy",
-    "exec:linux64"
+    "exec:linux64",
+    "komanda-package:linux64"
   ]);
 };
