@@ -432,6 +432,7 @@ module.exports = function(grunt) {
     fs.mkdirSync("package/");
     } catch(e) {
     }
+        
     
     var b = "komanda-$platform-current.tar.gz".replace("$platform", platform);
 
@@ -439,9 +440,8 @@ module.exports = function(grunt) {
       if (err) {
         grunt.log.write(err);
       }
-      grunt.log.writeln("Package created: " + b);
-    });
-
+    });    
+    grunt.log.writeln("Package created: " + b);
   });
 
   grunt.registerTask("build-all", function(platforms) {
@@ -468,64 +468,101 @@ module.exports = function(grunt) {
     if (start.win32) {
       build = true;
       grunt.log.writeln("Building win32");
-      grunt.task.run("run:win32");
+      grunt.task.run("run:win32:true");
     } 
     if (start.win64) {
       build = true;
       grunt.log.writeln("Building win64");
-      grunt.task.run("run:win64");
+      grunt.task.run("run:win64:true");
     } 
     if (start.mac) {
       build = true;
       grunt.log.writeln("Building mac");
-      grunt.task.run("run:mac");
+      grunt.task.run("run:mac:true");
     } 
     if (start.linux32) {
       build = true;
       grunt.log.writeln("Building linux32");
-      grunt.task.run("run:linux32");
+      grunt.task.run("run:linux32:true");
     } 
     if (start.linux64) {
       build = true;
       grunt.log.writeln("Building linux64");
-      grunt.task.run("run:linux64");
+      grunt.task.run("run:linux64:true");
     } 
     if (!build) {      
       grunt.log.writeln("Requested OS not supported. Defaulted to your current platform!");
     }
   });
 
-  grunt.registerTask("run:win", [
-    "exec:win32",
-    "exec:win64",
-    "komanda-package:win32",
-    "komanda-package:win64"
-  ]);
+  grunt.registerTask("run:win", function(parameter) {
+    var alreadyBuilt = parameter;
+    if (!alreadyBuilt) {
+      grunt.task.run(["build"]);
+    }
+    grunt.task.run([
+      "exec:win32",
+      "exec:win64",
+      "komanda-package:win32",
+      "komanda-package:win64"
+    ]);
+    
+  });
   
-  grunt.registerTask("run:mac", [
+  grunt.registerTask("run:mac", function(parameter) {
+    var alreadyBuilt = parameter;
+    if (!alreadyBuilt) {
+      grunt.task.run(["build"]);
+    }
+    grunt.task.run([
     "shell:runnw",
     "komanda-package:mac"
-  ]);
+    ]);
+  });
 
-  grunt.registerTask("run:win32", [
-    "exec:win32",
-    "komanda-package:win32"
-  ]);
+  grunt.registerTask("run:win32", function(parameter) {
+    var alreadyBuilt = parameter;
+    if (!alreadyBuilt) {
+      grunt.task.run(["build"]);
+    }
+    grunt.task.run([
+      "exec:win32",
+      "komanda-package:win32"
+    ]);
+  });
   
-  grunt.registerTask("run:win64", [
-    "exec:win64",
-    "komanda-package:win32"
-  ]);
+  grunt.registerTask("run:win64", function(parameter) {
+    var alreadyBuilt = parameter;
+    if (!alreadyBuilt) {
+      grunt.task.run(["build"]);
+    }
+    grunt.task.run([
+      "exec:win64",
+      "komanda-package:win64"
+    ]);
+  });
 
-  grunt.registerTask("run:linux32", [
-    "copy",
-    "exec:linux32",
-    "komanda-package:linux32"
-  ]);
+  grunt.registerTask("run:linux32", function(parameter) {
+    var alreadyBuilt = parameter;
+    if (!alreadyBuilt) {
+      grunt.task.run(["build"]);
+    }
+    grunt.task.run([
+      "copy",
+      "exec:linux32",
+      "komanda-package:linux32"
+    ]);
+   });
 
-  grunt.registerTask("run:linux64", [
-    "copy",
-    "exec:linux64",
-    "komanda-package:linux64"
-  ]);
+  grunt.registerTask("run:linux64", function(parameter) {
+    var alreadyBuilt = parameter;
+    if (!alreadyBuilt) {
+      grunt.task.run(["build"]);
+    }
+    grunt.task.run([
+      "copy",
+      "exec:linux64",
+      "komanda-package:linux64"
+    ]);
+  });
 };
