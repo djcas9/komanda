@@ -4,8 +4,8 @@ git:
   branch: master
 script:
   - npm install
-  - grunt build-all 
-  - grunt komanda-package
+  - npm install -g grunt-cli
+  - grunt run:all
 notify:
   email:
     recipients:

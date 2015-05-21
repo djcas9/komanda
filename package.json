@@ -11,7 +11,7 @@
     "frame": false,
     "show": false,
     "title": "Komanda",
-    "icon": "app://../images/logo/komanda.png",
+    "icon": "app://host/images/logo/komanda.png",
     "width": 1100,
     "height": 618,
     "min_width": 800,
