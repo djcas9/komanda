@@ -41,7 +41,10 @@ define([
         highlight: true,
         pm: true,
         status: true,
-        badge: true
+        badge: true,
+        regexHighlight: "",
+        defaultRegexHighlight: "",
+        regexIgnoreNicks: ""
       },
       display: {
         timestamp: "MM/DD/YY hh:mm:ss",
@@ -52,7 +55,7 @@ define([
       sounds: {
         chat: false,
         pm: true,
-        hightlight: true
+        highlight: true
       },
       messages: {
         quit: "",

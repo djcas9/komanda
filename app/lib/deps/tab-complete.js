@@ -51,14 +51,38 @@ define([
 
     if (prefix.length == 0) {
       return this;
-    } else {
-      var c = prefix[0];
-      if (c in this.children) {
-        return this.children["" + c + ""].find(prefix.substring(1));
-      } else {
-        return null;
-      }
     }
+
+    var c = prefix[0];
+    var c2;
+
+    if (prefix.charCodeAt(0) > 96) {
+      c2 = c.toUpperCase();
+    } else {
+      c2 = c.toLowerCase();
+    }
+
+    var ret1;
+    var ret2;
+
+    if (c in this.children) {
+      ret1 = this.children["" + c + ""].find(prefix.substring(1));
+    }
+
+    if (c2 in this.children) {
+      ret2 = this.children["" + c2 + ""].find(prefix.substring(1));
+    }
+
+    if (ret1 && !ret2) {
+      return ret1;
+    } else if (!ret1 && ret2) {
+      return ret2;
+    } else if (ret1 && ret2) {
+      return [ret1, ret2];
+    } else {
+      return null;
+    }
+
   }
 
   /*
@@ -101,10 +125,10 @@ define([
         walk(child);
       });
     }
-
     walk(this);
     return result;
   }
+
 
   function moveCursorToEnd(el) {
     if (typeof el.selectionStart == "number") {
@@ -150,7 +174,13 @@ define([
         if (trie) {
           // items[(items.length - 1)] = trie.uniquePrefix();
 
-          var choices = trie.choices();
+          var choices;
+          if (trie.constructor.toString().indexOf("Array") > -1) {
+            choices = trie[0].choices();
+            choices = choices.concat(trie[1].choices());
+          } else {
+            choices = trie.choices();
+          }
 
           if (choices.length > 1) {
 
