@@ -87,9 +87,6 @@ define([
       var select = ".channel-holder .channel[data-server-id=\"" + server + "\"][data-name=\"" + channel + "\"]";
       $(select).show();
 
-      var objDiv = $(select).find(".messages").get(0);
-      if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
-
       $(select).find("input").focus();
     },
 
