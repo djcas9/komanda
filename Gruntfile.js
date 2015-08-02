@@ -20,12 +20,16 @@ var parseBuildPlatforms = function(argumentPlatform) {
   // Do some scrubbing to make it easier to match in the regexes bellow
   inputPlatforms = inputPlatforms.replace("darwin", "mac");
   inputPlatforms = inputPlatforms.replace(/;ia|;x|;arm/, "");
+  if (process.arch === "x64") {
+    inputPlatforms = inputPlatforms.replace("32", "64");
+  }
 
   var buildAll = /^all$/.test(inputPlatforms);
 
   var buildPlatforms = {
     mac: /mac/.test(inputPlatforms) || buildAll,
-    win: /win/.test(inputPlatforms) || buildAll,
+    win32: /win32/.test(inputPlatforms) || buildAll,
+    win64: /win64/.test(inputPlatforms) || buildAll,
     linux32: /linux32/.test(inputPlatforms) || buildAll,
     linux64: /linux64/.test(inputPlatforms) || buildAll
   };
@@ -226,7 +230,7 @@ module.exports = function(grunt) {
         appVersion: "1.0.0.beta",
         buildDir: "./build",
         cacheDir: "./build/cache",
-        platforms: ["osx", "win", "linux32", "linux64"],
+        platforms: ["osx", "win32", "win64", "linux32", "linux64"],
         macIcns: "app/styles/images/logo/komanda.icns",
         macCredits: "credits.html",
         // winIco: "app/styles/images/logo/komanda.ico"
@@ -240,8 +244,11 @@ module.exports = function(grunt) {
     },
 
     exec: {
-      win: {
-        cmd: '"build/cache/<%= nodewebkit.options.version %>/win/nw.exe" .'
+      win32: {
+        cmd: '"build/cache/<%= nodewebkit.options.version %>/win32/nw.exe" .'
+      },
+      win64: {
+        cmd: '"build/cache/<%= nodewebkit.options.version %>/win64/nw.exe" .'
       },
       mac: {
         cmd: "build/cache/<%= nodewebkit.options.version %>/osx/node-webkit.app/Contents/MacOS/node-webkit ."
@@ -343,13 +350,8 @@ module.exports = function(grunt) {
     fs.copySync("node_modules/gitter-marked/", "build/komanda-source/node_modules/gitter-marked/");
     fs.copySync("node_modules/highlight.js/", "build/komanda-source/node_modules/highlight.js/");
 
-    rimraf.sync("build/komanda-source/app", function(error) {
-      console.log(error);
-    });
-
-    rimraf.sync("build/komanda-source/vendor", function(error) {
-      console.log(error);
-    });
+    rimraf.sync("build/komanda-source/app");
+    rimraf.sync("build/komanda-source/vendor");
 
   });
 
@@ -412,9 +414,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask("komanda-package", function(platforms) {
     try {
-    fs.mkdirSync("package/");
-    } catch(e) {
-    }
+      fs.mkdirSync("package/");
+    } catch(e) {}
     var done = this.async();
 
     var builds = {
@@ -426,8 +427,10 @@ module.exports = function(grunt) {
       "win64": "komanda-win64-current.tar.gz"
     }
 
-    var i
-    for (i in builds) {
+    platforms = platforms || grunt.config.get("nodewebkit.options.platforms") || Object.keys(builds);
+
+    var i;
+    platforms.forEach(function(i) {
       var b = builds[i];
 
       var compress = new targz().compress('build/Komanda/' + i, 'package/' + b, function(err) {
@@ -436,7 +439,7 @@ module.exports = function(grunt) {
         }
         done()
       });
-    }
+    });
 
   });
 
@@ -459,8 +462,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask("run", function() {
     var start = parseBuildPlatforms();
-    if (start.win) {
-      grunt.task.run("run:win");
+    if (start.win32) {
+      grunt.task.run("run:win32");
+    } else if (start.win64) {
+      grunt.task.run("run:win64");
     } else if (start.mac) {
       grunt.task.run("run:mac");
     } else if (start.linux32) {
@@ -477,9 +482,14 @@ module.exports = function(grunt) {
     "shell:runnw"
   ]);
 
-  grunt.registerTask("run:win", [
+  grunt.registerTask("run:win32", [
     "default",
-    "exec:win"
+    "exec:win32"
+  ]);
+
+  grunt.registerTask("run:win64", [
+    "default",
+    "exec:win64"
   ]);
 
   grunt.registerTask("run:linux32", [
